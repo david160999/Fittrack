@@ -39,7 +39,6 @@ class ExerciseFragment : Fragment() {
         val pagerAdapter = ExercisePageAdapter(childFragmentManager, lifecycle)
         viewPager2.adapter = pagerAdapter
 
-
         TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
             when (position) {
                 0 -> {

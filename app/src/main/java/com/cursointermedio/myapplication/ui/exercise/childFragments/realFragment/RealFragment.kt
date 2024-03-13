@@ -1,4 +1,4 @@
-package com.cursointermedio.myapplication.ui.exercise.childFragments
+package com.cursointermedio.myapplication.ui.exercise.childFragments.realFragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -24,6 +24,8 @@ class RealFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var adapter: ExerciseAdapter
+
+
 
     private var listDetails = listOf("qqq", "baa", "qq", "a", "a")
 

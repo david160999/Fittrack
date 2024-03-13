@@ -22,4 +22,6 @@ class TrainingViewModel : ViewModel() {
     private fun getTypeFeature(): TypeFeature {
        return Feature.getTypeFeature()
     }
+
+
 }

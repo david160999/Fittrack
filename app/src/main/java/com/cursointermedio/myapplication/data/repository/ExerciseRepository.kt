@@ -4,22 +4,22 @@ import com.cursointermedio.myapplication.data.database.dao.ExerciseDao
 import com.cursointermedio.myapplication.data.database.entities.ExerciseEntity
 import com.cursointermedio.myapplication.domain.model.ExerciseModel
 import com.cursointermedio.myapplication.domain.model.toDomain
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class ExerciseRepository @Inject constructor(
     private val exerciseDao: ExerciseDao
 ) {
 
-    suspend fun getAllExercisesFromDatabase(): List<ExerciseModel>{
+    suspend fun getAllExercisesFromDatabase(): Flow<List<ExerciseModel>> {
         val response = exerciseDao.getAllExercises()
-        return response.map { it.toDomain() }
+        return response.map { it -> it.map { it.toDomain() } }
     }
 
-    suspend fun insertExercises(exercises:List<ExerciseEntity>){
-        exerciseDao.insertAll(exercises)
+    suspend fun insertExercise(exercises: ExerciseEntity) {
+        exerciseDao.insertExercise(exercises)
     }
 
-    suspend fun clearExercises(){
-        exerciseDao.deleteAllExercises()
-    }
+
 }

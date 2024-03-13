@@ -1,4 +1,4 @@
-package com.cursointermedio.myapplication.ui.exercise.childFragments
+package com.cursointermedio.myapplication.ui.exercise.childFragments.objectiveFragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

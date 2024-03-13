@@ -3,11 +3,11 @@ package com.cursointermedio.myapplication.domain.model
 import com.cursointermedio.myapplication.data.database.entities.ExerciseEntity
 
 data class ExerciseModel(
-    val id: Int?,
+    val id: Int,
     val name: String?,
     val description: String?,
 )
-fun ExerciseEntity.toDomain() = ExerciseModel(id, name, description)
+fun ExerciseEntity.toDomain() = ExerciseModel(exerciseId, name, description)
 
 
 data class RealSeriesModel(

@@ -39,5 +39,15 @@
     <string name="exercise_notas">Notas</string>
     <string name="exercise_notas_del_ejercicio">Notas del ejercicio</string>
 
+    <!--    ExerciseCategories-->
+    <string name="exerciseKnee">Dominante de Rodilla</string>
+    <string name="exerciseHip">Dominante de Cadera</string>
+    <string name="exercisePushHorizontal">Empuje Horizontal</string>
+    <string name="exercisePushVertical">Empuje Vertical</string>
+    <string name="exercisePullHorizontal">Tracción Horizontal</string>
+    <string name="exercisePullVertical">Tracción Vertical</string>
+    <string name="exerciseweightlifting">Halterofilia</string>
+    <string name="exerciseOthers">Otros</string>
+
 
 </resources>

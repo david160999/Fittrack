@@ -102,8 +102,7 @@ data class CategoryWithExercises(
 data class CategoryEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "categoryId") val categoryId: Int = 0,
-    @ColumnInfo(name = "name") val name: String?,
-    @ColumnInfo(name = "description") val description: String?
+    @ColumnInfo(name = "name") val name: String,
 )
 
 

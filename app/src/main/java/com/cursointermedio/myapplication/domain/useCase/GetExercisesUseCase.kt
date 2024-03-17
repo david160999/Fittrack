@@ -8,7 +8,7 @@ import javax.inject.Inject
 class GetExercisesUseCase @Inject constructor(
     private val repository: ExerciseRepository
 ) {
-    suspend operator fun invoke(): Flow<List<ExerciseModel>> {
+    suspend operator fun invoke(): Flow<MutableList<ExerciseModel>> {
         return repository.getAllExercisesFromDatabase()
     }
 }

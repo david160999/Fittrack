@@ -4,10 +4,11 @@ import com.cursointermedio.myapplication.data.database.entities.ExerciseEntity
 
 data class ExerciseModel(
     val id: Int,
-    val name: String?,
+    val categoryExerciseId:Int,
+    val name: String,
     val description: String?,
 )
-fun ExerciseEntity.toDomain() = ExerciseModel(exerciseId, name, description)
+fun ExerciseEntity.toDomain() = ExerciseModel(exerciseId, categoryExerciseId, name, description)
 
 
 data class RealSeriesModel(

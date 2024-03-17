@@ -4,13 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.cursointermedio.myapplication.R
+import com.cursointermedio.myapplication.domain.model.TrainingModel
 
-class TrainingAdapter(
-    private var trainingList: List<String> = emptyList(),
+class TrainingAdapter (
+    private var trainingList: List<TrainingModel> = mutableListOf(),
     private val onItemSelected: (Int) -> Unit
 ) : RecyclerView.Adapter<TrainingViewHolder>() {
 
-    fun updateList(trainingList: List<String>) {
+    fun updateList(trainingList: List<TrainingModel>) {
         this.trainingList = trainingList
         notifyDataSetChanged()
     }

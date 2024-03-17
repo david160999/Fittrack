@@ -35,13 +35,21 @@ class RealFragment : Fragment() {
     }
 
     private fun initUI() {
+        initList()
+        initListeners()
+    }
+
+    private fun initList(){
         adapter = ExerciseAdapter {}
         binding.rvDetail.layoutManager = LinearLayoutManager(context)
         binding.rvDetail.adapter = adapter
         adapter.updateList(listDetails)
-        binding.cvPlus.setOnTouchListener(binding)
     }
 
+    private fun initListeners(){
+        binding.cvPlus.setOnTouchListener(binding)
+
+    }
 
     override fun onCreateView(
 
@@ -60,7 +68,7 @@ class RealFragment : Fragment() {
 
     @SuppressLint("ClickableViewAccessibility", "PrivateResource")
     private fun CardView.setOnTouchListener(binding: FragmentRealBinding) {
-        binding.cvPlus.setOnTouchListener { v, event ->
+        binding.cvPlus.setOnTouchListener { _, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     binding.cvPlus.alpha = 0.2F

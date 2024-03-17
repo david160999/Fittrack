@@ -7,16 +7,19 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import androidx.room.Relation
 import com.cursointermedio.myapplication.domain.model.ExerciseModel
+import com.cursointermedio.myapplication.domain.model.TrainingModel
 
 @Entity(tableName = "training_table")
 data class TrainingEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "trainingId") val trainingId: Int = 0,
-    @ColumnInfo(name = "name") val name: String?,
+    @ColumnInfo(name = "trainingId") val trainingId: Int? = 0,
+    @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "description") val description: String?
 
 
 )
+
+fun TrainingModel.toDatabase() = TrainingEntity(null, name, description)
 
 data class TrainingWithWeeks(
     @Embedded val training: TrainingEntity,
@@ -75,16 +78,22 @@ data class RoutineExerciseCrossRef(
     val exerciseId: Int
 )
 
-@Entity(tableName = "exercise_table")
+@Entity(tableName = "exercise_table", foreignKeys = [androidx.room.ForeignKey(
+    entity = CategoryEntity::class,
+    parentColumns = kotlin.arrayOf("categoryId"),
+    childColumns = kotlin.arrayOf("categoryExerciseId"),
+    onDelete = androidx.room.ForeignKey.SET_NULL
+)])
 data class ExerciseEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "exerciseId") val exerciseId: Int = 0,
     @ColumnInfo(name = "categoryExerciseId") val categoryExerciseId: Int = 0,
-    @ColumnInfo(name = "name") val name: String?,
+    @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "description") val description: String?
 )
 
 fun ExerciseModel.toDatabase() = ExerciseEntity(
+    categoryExerciseId = categoryExerciseId,
     name = name,
     description = description
 )

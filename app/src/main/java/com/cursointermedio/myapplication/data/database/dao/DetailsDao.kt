@@ -1,5 +1,6 @@
 package com.cursointermedio.myapplication.data.database.dao
 
+import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -10,10 +11,11 @@ import com.cursointermedio.myapplication.data.database.entities.ExerciseEntity
 import com.cursointermedio.myapplication.data.database.entities.RoutineExerciseCrossRef
 import kotlinx.coroutines.flow.Flow
 
+@Dao
 interface DetailsDao {
 
     @Query("SELECT * FROM details_table WHERE :routineID = routineDetailsId AND :exerciseID = exerciseDetailsId")
-    suspend fun getDetailOfRoutineExercise(routineID: Int, exerciseID: Int): Flow<List<DetailsEntity>>
+    fun getDetailOfRoutineExercise(routineID: Int, exerciseID: Int): Flow<MutableList<DetailsEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDetailToRoutineExercise(details: DetailsEntity)

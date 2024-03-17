@@ -12,10 +12,10 @@ import kotlinx.coroutines.flow.Flow
 interface ExerciseDao {
 
     @Query("SELECT * FROM exercise_table")
-    suspend fun getAllExercises(): Flow<List<ExerciseEntity>>
+    fun getAllExercises(): Flow<MutableList<ExerciseEntity>>
 
     @Query("SELECT * FROM exercise_table WHERE :routineID = exerciseId")
-    suspend fun getExercisesRoutine(routineID: Int): Flow<List<ExerciseEntity>>
+    fun getExercisesRoutine(routineID: Int): Flow<MutableList<ExerciseEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertExercise(exercise: ExerciseEntity)

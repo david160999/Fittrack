@@ -49,5 +49,13 @@
     <string name="exerciseweightlifting">Halterofilia</string>
     <string name="exerciseOthers">Otros</string>
 
+    <!--    TrainingFragment-->
+    <string name="training_new_block">Crea un nuevo bloque</string>
+
+
+
+    <string name="btn_cancel">Cancelar</string>
+    <string name="btn_save">Guardar</string>
+
 
 </resources>

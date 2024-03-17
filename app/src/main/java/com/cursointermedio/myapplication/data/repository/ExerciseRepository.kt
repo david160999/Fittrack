@@ -12,9 +12,9 @@ class ExerciseRepository @Inject constructor(
     private val exerciseDao: ExerciseDao
 ) {
 
-    suspend fun getAllExercisesFromDatabase(): Flow<List<ExerciseModel>> {
+    suspend fun getAllExercisesFromDatabase(): Flow<MutableList<ExerciseModel>> {
         val response = exerciseDao.getAllExercises()
-        return response.map { it -> it.map { it.toDomain() } }
+        return response.map { it -> it.map { it.toDomain() }.toMutableList() }
     }
 
     suspend fun insertExercise(exercises: ExerciseEntity) {

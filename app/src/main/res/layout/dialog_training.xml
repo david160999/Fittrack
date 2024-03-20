@@ -48,7 +48,8 @@
                 android:hint="@string/exercise_notas_del_ejercicio"
                 android:padding="6dp"
                 android:textColor="@color/secondary_text"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:text=""/>
         </androidx.cardview.widget.CardView>
 
         <Button

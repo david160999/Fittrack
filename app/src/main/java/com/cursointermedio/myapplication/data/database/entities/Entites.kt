@@ -21,6 +21,16 @@ data class TrainingEntity(
 
 fun TrainingModel.toDatabase() = TrainingEntity(null, name, description)
 
+data class TrainingWithWeeksAndRoutines(
+    @Embedded val training: TrainingEntity,
+    @Relation(
+        entity = WeekEntity::class,
+        parentColumn = "trainingId",
+        entityColumn = "trainingWeekId"
+    )
+    val weekWithRoutinesList: List<WeekWithRoutines>
+)
+
 data class TrainingWithWeeks(
     @Embedded val training: TrainingEntity,
     @Relation(
@@ -29,6 +39,8 @@ data class TrainingWithWeeks(
     )
     val weekList: List<WeekEntity>
 )
+
+
 
 @Entity(
     tableName = "week_table", foreignKeys = [ForeignKey(

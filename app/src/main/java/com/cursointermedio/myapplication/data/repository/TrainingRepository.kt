@@ -4,6 +4,7 @@ import com.cursointermedio.myapplication.data.database.dao.ExerciseDao
 import com.cursointermedio.myapplication.data.database.dao.TrainingDao
 import com.cursointermedio.myapplication.data.database.entities.ExerciseEntity
 import com.cursointermedio.myapplication.data.database.entities.TrainingEntity
+import com.cursointermedio.myapplication.data.database.entities.TrainingWithWeeksAndRoutines
 import com.cursointermedio.myapplication.domain.model.ExerciseModel
 import com.cursointermedio.myapplication.domain.model.TrainingModel
 import com.cursointermedio.myapplication.domain.model.toDomain
@@ -25,6 +26,14 @@ class TrainingRepository @Inject constructor(
 
     suspend fun deleteTraining(training: TrainingEntity) {
         trainingDao.deleteTraining(training)
+    }
+
+
+    fun getTrainingWithWeeksAndRoutines(): Flow<List<TrainingWithWeeksAndRoutines>> = trainingDao.getTrainingWithWeeksAndRoutines()
+
+
+    suspend fun deleteAll(){
+        return trainingDao.deleteAllTraining()
     }
 
 }

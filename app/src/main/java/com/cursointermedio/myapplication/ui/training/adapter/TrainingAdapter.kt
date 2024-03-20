@@ -4,16 +4,17 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.cursointermedio.myapplication.R
-import com.cursointermedio.myapplication.domain.model.TrainingModel
+import com.cursointermedio.myapplication.data.database.entities.TrainingWithWeeksAndRoutines
 
-class TrainingAdapter (
-    private var trainingList: List<TrainingModel> = mutableListOf(),
+class TrainingAdapter(
+    private var trainingWithWeeksAndRoutinesList: List<TrainingWithWeeksAndRoutines> = mutableListOf(),
     private val onItemSelected: (Int) -> Unit
 ) : RecyclerView.Adapter<TrainingViewHolder>() {
 
-    fun updateList(trainingList: List<TrainingModel>) {
-        this.trainingList = trainingList
+    fun updateList(trainingList: List<TrainingWithWeeksAndRoutines>) {
+        this.trainingWithWeeksAndRoutinesList = trainingList
         notifyDataSetChanged()
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrainingViewHolder {
@@ -24,9 +25,9 @@ class TrainingAdapter (
 
 
     override fun onBindViewHolder(holder: TrainingViewHolder, position: Int) {
-        holder.bind(trainingList[position], onItemSelected)
+        holder.bind(trainingWithWeeksAndRoutinesList[position], onItemSelected)
     }
 
-    override fun getItemCount() = trainingList.size
+    override fun getItemCount() = trainingWithWeeksAndRoutinesList.size
 }
 

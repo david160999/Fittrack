@@ -12,11 +12,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.cursointermedio.myapplication.data.database.entities.TrainingWithWeeksAndRoutines
 import com.cursointermedio.myapplication.databinding.FragmentTrainingBinding
 import com.cursointermedio.myapplication.domain.model.TrainingModel
 import com.cursointermedio.myapplication.ui.training.adapter.TrainingAdapter
 import com.cursointermedio.myapplication.ui.training.dialog.TrainingDialog
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -33,10 +35,12 @@ class TrainingFragment @Inject constructor() : Fragment() {
 
     private var listTraining = flowOf<List<TrainingModel>>()
     private lateinit var sizeListTraining: String
+    private lateinit var listTrainingWithWeeksAndRoutines: Flow<List<TrainingWithWeeksAndRoutines>>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUI()
+
     }
 
     private fun initUI() {
@@ -45,14 +49,19 @@ class TrainingFragment @Inject constructor() : Fragment() {
     }
 
     private fun initList() {
+        listTrainingWithWeeksAndRoutines = trainingViewModel.getTrainingWithWeeksAndRoutines()
         listTraining = trainingViewModel.getTrainingsFromDataBase()
 
-        adapter = TrainingAdapter { trainingId -> navigateToWeek(trainingId) }
+        adapter = TrainingAdapter(
+            onItemSelected = { trainingId ->
+                navigateToWeek(trainingId)
+            },
+        )
         binding.rvTraining.layoutManager = LinearLayoutManager(context)
         binding.rvTraining.adapter = adapter
 
         lifecycleScope.launch {
-            listTraining.collect {
+            listTrainingWithWeeksAndRoutines.collect {
                 adapter.updateList(it)
                 sizeListTraining = it.size.toString()
             }
@@ -120,11 +129,11 @@ class TrainingFragment @Inject constructor() : Fragment() {
         )
 
         val navController = findNavController()
-        val feature = trainingViewModel.getFeature()
+//        val feature = trainingViewModel.getFeature()
 
-        if (feature != null) {
-            navController.navigate(feature)
-        }
+//        if (feature != null) {
+//            navController.navigate(feature)
+//        }
         return binding.root
     }
 

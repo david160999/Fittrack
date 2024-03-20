@@ -2,6 +2,7 @@ package com.cursointermedio.myapplication.ui.training
 
 import androidx.lifecycle.ViewModel
 import com.cursointermedio.myapplication.R
+import com.cursointermedio.myapplication.data.database.entities.TrainingWithWeeksAndRoutines
 import com.cursointermedio.myapplication.domain.model.TrainingModel
 import com.cursointermedio.myapplication.domain.useCase.GetTrainingUseCase
 import com.cursointermedio.myapplication.ui.training.CurrentFeature.*
@@ -30,16 +31,17 @@ class TrainingViewModel @Inject constructor(
     private fun getTypeFeature(): TypeFeature = Feature.getTypeFeature()
 
 
-
     fun getTrainingsFromDataBase(): Flow<List<TrainingModel>> = getTrainingUseCase.invoke()
 
 
+    suspend fun insertTraining(training: TrainingModel) {
+        getTrainingUseCase.insertTraining(training)
+    }
 
+    fun getTrainingWithWeeksAndRoutines(): Flow<List<TrainingWithWeeksAndRoutines>> = getTrainingUseCase.getTrainingWithWeeksAndRoutines()
 
-
-    suspend fun insertTraining(training : TrainingModel){
-
-        getTrainingUseCase.invoke2(training)
+    suspend fun deleteAll(){
+        getTrainingUseCase.deleteAll()
     }
 
 }

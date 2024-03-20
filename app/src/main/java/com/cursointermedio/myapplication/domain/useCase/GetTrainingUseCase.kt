@@ -1,5 +1,6 @@
 package com.cursointermedio.myapplication.domain.useCase
 
+import com.cursointermedio.myapplication.data.database.entities.TrainingWithWeeksAndRoutines
 import com.cursointermedio.myapplication.data.database.entities.toDatabase
 import com.cursointermedio.myapplication.data.repository.ExerciseRepository
 import com.cursointermedio.myapplication.data.repository.TrainingRepository
@@ -15,7 +16,14 @@ class GetTrainingUseCase @Inject constructor(
         return repository.getAllTrainingsFromDatabase()
     }
 
-    suspend fun invoke2(training :TrainingModel) {
+    suspend fun insertTraining(training :TrainingModel) {
         return repository.insertTraining(training.toDatabase())
+    }
+
+    fun getTrainingWithWeeksAndRoutines() : Flow<List<TrainingWithWeeksAndRoutines>> = repository.getTrainingWithWeeksAndRoutines()
+
+
+    suspend fun deleteAll(){
+        return repository.deleteAll()
     }
 }

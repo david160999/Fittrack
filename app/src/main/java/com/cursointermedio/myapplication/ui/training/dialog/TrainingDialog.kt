@@ -25,15 +25,19 @@ class TrainingDialog(
 
         val dialog = builder.create()
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        binding.editText.hint = binding.editText.hint.toString() + " " +newTrainingNum
+        binding.editText.hint = binding.editText.hint.toString() + " " + newTrainingNum
 
         binding.btnCancel.setOnClickListener {
             dialog.dismiss()
         }
         binding.btnSave.setOnClickListener {
-            onSaveClickListener.invoke(binding.editText.toString())
+            if (binding.editText.text.isEmpty()) {
+                onSaveClickListener.invoke(binding.editText.hint.toString())
+            } else {
+                onSaveClickListener.invoke(binding.editText.text.toString())
+            }
+            dialog.dismiss()
         }
-
         return dialog
     }
 }

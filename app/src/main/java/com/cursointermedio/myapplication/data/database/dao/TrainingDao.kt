@@ -5,7 +5,9 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import com.cursointermedio.myapplication.data.database.entities.TrainingEntity
+import com.cursointermedio.myapplication.data.database.entities.TrainingWithWeeksAndRoutines
 import com.cursointermedio.myapplication.data.database.entities.WeekEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -21,4 +23,23 @@ interface TrainingDao {
     @Delete
     suspend fun deleteTraining(training: TrainingEntity)
 
+    @Query("DELETE FROM training_table")
+    suspend fun deleteAllTraining()
+
+    //    @Query("SELECT COUNT(*) AS numWeeks FROM week_table WHERE trainingWeekId = :trainingId\n"  +
+//            "UNION\n" +
+//            "SELECT COUNT(*) AS numRoutines FROM routine_table WHERE routineId=weekRoutineId AND weekRoutineId IN (SELECT weekId FROM WEEK_TABLE WHERE trainingWeekId = :trainingId)")
+    @Transaction
+    @Query("SELECT * FROM training_table")
+    fun getTrainingWithWeeksAndRoutines(): Flow<List<TrainingWithWeeksAndRoutines>>
 }
+
+//SELECT columna
+//FROM tabla
+//WHERE columna IN (SELECT columna FROM otra_tabla WHERE condición)
+
+//SELECT
+//(SELECT COUNT(*) FROM semanas WHERE entrenos_id = entrenos.id) AS numero_semanas,
+//(SELECT SUM(numero_rutinas) FROM (SELECT COUNT(*) AS numero_rutinas FROM rutinas WHERE semanas_id IN (SELECT id FROM semanas WHERE entrenos_id = entrenos.id) GROUP BY semanas_id)) AS numero_rutinas
+//FROM entrenos
+//WHERE id = tu_id_de_entreno;

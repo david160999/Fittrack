@@ -26,6 +26,10 @@ class WeekFragment : Fragment() {
     private lateinit var adapter: WeekAdapter
     private var listRoutine = listOf("qqq", "baa", "qq")
 
+    val args = WeekFragmentArgs.fromBundle(requireArguments())
+
+    val trainingID = args.id
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUI()

@@ -11,6 +11,7 @@ class TrainingViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val binding = ItemTrainingBinding.bind(view)
     private lateinit var numWeeks: String
     private lateinit var numRoutines: String
+    private var trainingId: Int = 0
 
     fun bind(
         trainingItemResponse: TrainingWithWeeksAndRoutines,
@@ -33,7 +34,8 @@ class TrainingViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         binding.tvNumCurrentsWeeks.text = numWeeks
 
         binding.root.setOnClickListener {
-            onItemSelected(0)
+            trainingId = trainingItemResponse.training.trainingId!!
+            onItemSelected(trainingId)
         }
 
     }

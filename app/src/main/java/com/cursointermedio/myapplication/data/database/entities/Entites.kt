@@ -15,8 +15,6 @@ data class TrainingEntity(
     @ColumnInfo(name = "trainingId") val trainingId: Int? = 0,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "description") val description: String?
-
-
 )
 
 fun TrainingModel.toDatabase() = TrainingEntity(null, name, description)

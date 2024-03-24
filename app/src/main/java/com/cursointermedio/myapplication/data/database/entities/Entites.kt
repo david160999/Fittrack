@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey
 import androidx.room.Relation
 import com.cursointermedio.myapplication.domain.model.ExerciseModel
 import com.cursointermedio.myapplication.domain.model.TrainingModel
+import com.cursointermedio.myapplication.domain.model.WeekModel
 
 @Entity(tableName = "training_table")
 data class TrainingEntity(
@@ -50,11 +51,14 @@ data class TrainingWithWeeks(
 )
 data class WeekEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "weekId") val weekId: Int = 0,
+    @ColumnInfo(name = "weekId") val weekId: Int? = 0,
     @ColumnInfo(name = "trainingWeekId") val trainingWeekId: Int,
     @ColumnInfo(name = "name") val name: String?,
     @ColumnInfo(name = "description") val description: String?
 )
+
+fun WeekModel.toDatabase() = WeekEntity(null, trainingWeekId, name, description)
+
 
 data class WeekWithRoutines(
     @Embedded val week: WeekEntity,

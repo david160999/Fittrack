@@ -26,9 +26,6 @@ interface TrainingDao {
     @Query("DELETE FROM training_table")
     suspend fun deleteAllTraining()
 
-    //    @Query("SELECT COUNT(*) AS numWeeks FROM week_table WHERE trainingWeekId = :trainingId\n"  +
-//            "UNION\n" +
-//            "SELECT COUNT(*) AS numRoutines FROM routine_table WHERE routineId=weekRoutineId AND weekRoutineId IN (SELECT weekId FROM WEEK_TABLE WHERE trainingWeekId = :trainingId)")
     @Transaction
     @Query("SELECT * FROM training_table")
     fun getTrainingWithWeeksAndRoutines(): Flow<List<TrainingWithWeeksAndRoutines>>

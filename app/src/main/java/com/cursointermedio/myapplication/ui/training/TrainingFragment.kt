@@ -50,8 +50,6 @@ class TrainingFragment @Inject constructor() : Fragment() {
 
     private fun initList() {
         listTrainingWithWeeksAndRoutines = trainingViewModel.getTrainingWithWeeksAndRoutines()
-        listTraining = trainingViewModel.getTrainingsFromDataBase()
-
         adapter = TrainingAdapter(
             onItemSelected = { trainingId ->
                 navigateToWeek(trainingId)
@@ -75,7 +73,7 @@ class TrainingFragment @Inject constructor() : Fragment() {
     private fun navigateToWeek(trainingId: Int) {
         findNavController().navigate(
             TrainingFragmentDirections.actionTrainingFragmentToWeekFragment(
-                trainingId
+                id = trainingId
             )
         )
     }

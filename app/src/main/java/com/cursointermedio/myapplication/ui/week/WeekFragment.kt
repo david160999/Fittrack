@@ -5,47 +5,73 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.cursointermedio.myapplication.R
-import com.cursointermedio.myapplication.databinding.FragmentTrainingBinding
+import com.cursointermedio.myapplication.data.database.entities.WeekWithRoutines
 import com.cursointermedio.myapplication.databinding.FragmentWeekBinding
-import com.cursointermedio.myapplication.ui.training.CurrentFeature
 import com.cursointermedio.myapplication.ui.training.CurrentFeature.*
 import com.cursointermedio.myapplication.ui.training.CurrentFeature.TypeFeature.*
-import com.cursointermedio.myapplication.ui.training.adapter.TrainingAdapter
 import com.cursointermedio.myapplication.ui.week.adapter.WeekAdapter
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
 class WeekFragment : Fragment() {
 
     private val currentFeature = Feature
 
+    private val weekViewModel by viewModels<WeekViewModel>()
+
     private var _binding: FragmentWeekBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var adapter: WeekAdapter
-    private var listRoutine = listOf("qqq", "baa", "qq")
+    private lateinit var listWeekWithRoutines: Flow<List<WeekWithRoutines>>
 
-    val args = WeekFragmentArgs.fromBundle(requireArguments())
+    private lateinit var adapterWeeks : ArrayAdapter<WeekWithRoutines>
 
-    val trainingID = args.id
-
+    private val args: WeekFragmentArgs by navArgs()
+    private var trainingId: Int = 0
+    private var weekId: Int = 0
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initUI()
-
         currentFeature.setFeature(WeekFeature)
+        trainingId = args.id
+        initUI()
     }
 
     private fun initUI() {
-        adapter = WeekAdapter{routineId -> navigateToRoutine(routineId)}
+        listWeekWithRoutines = weekViewModel.getWeeksWithRoutines(trainingId)
+
+        adapter = WeekAdapter(
+            onItemSelected = { routineId ->
+                navigateToRoutine(routineId)
+            },
+            weekId = weekId
+        )
+
         binding.rvRoutine.layoutManager = LinearLayoutManager(context)
         binding.rvRoutine.adapter = adapter
-        adapter.updateList(listRoutine)
+
+        lifecycleScope.launch {
+            listWeekWithRoutines.collect {
+                adapter.updateList(it)
+            }
+        }
+
     }
 
+
+
     private fun navigateToRoutine(routineId: Int) {
-        findNavController().navigate(WeekFragmentDirections.actionWeekFragmentToRoutineFragment(routineId))
+        findNavController().navigate(
+            WeekFragmentDirections.actionWeekFragmentToRoutineFragment(
+                routineId
+            )
+        )
     }
 
     override fun onCreateView(

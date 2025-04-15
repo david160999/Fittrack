@@ -5,14 +5,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.cursointermedio.myapplication.R
 import com.cursointermedio.myapplication.data.database.entities.WeekWithRoutines
+import com.cursointermedio.myapplication.domain.model.WeekWithRoutinesModel
 
 class WeekAdapter(
-    private var listWeekWithRoutines: List<WeekWithRoutines> = emptyList(),
+    private var listWeekWithRoutines: List<WeekWithRoutinesModel> = emptyList(),
     private val onItemSelected: (Int) -> Unit,
-    private val weekId : Int
+    private val weekNum: Int
 ) : RecyclerView.Adapter<WeekViewHolder>() {
 
-    fun updateList(weekList: List<WeekWithRoutines>) {
+    fun updateList(weekList: List<WeekWithRoutinesModel>) {
         this.listWeekWithRoutines = weekList
         notifyDataSetChanged()
     }
@@ -25,7 +26,13 @@ class WeekAdapter(
 
 
     override fun onBindViewHolder(holder: WeekViewHolder, position: Int) {
-        holder.bind(listWeekWithRoutines[weekId].routineList[position], onItemSelected)
+
+        if (listWeekWithRoutines.isNotEmpty()) {
+            val routineList = listWeekWithRoutines[weekNum].routineList
+            if (routineList.isNotEmpty()) {
+                holder.bind(routineList[position], onItemSelected)
+            }
+        }
     }
 
     override fun getItemCount() = listWeekWithRoutines.size

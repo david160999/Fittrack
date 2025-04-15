@@ -8,7 +8,7 @@ import com.cursointermedio.myapplication.data.database.entities.TrainingWithWeek
 
 class TrainingAdapter(
     private var trainingWithWeeksAndRoutinesList: List<TrainingWithWeeksAndRoutines> = mutableListOf(),
-    private val onItemSelected: (Int) -> Unit
+    private val onItemSelected: (Long) -> Unit
 ) : RecyclerView.Adapter<TrainingViewHolder>() {
 
     fun updateList(trainingList: List<TrainingWithWeeksAndRoutines>) {

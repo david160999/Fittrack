@@ -1,5 +1,6 @@
 package com.cursointermedio.myapplication.domain.useCase
 
+import com.cursointermedio.myapplication.data.database.entities.RoutineExerciseCrossRef
 import com.cursointermedio.myapplication.data.repository.ExerciseRepository
 import com.cursointermedio.myapplication.domain.model.ExerciseModel
 import kotlinx.coroutines.flow.Flow
@@ -11,4 +12,7 @@ class GetExercisesUseCase @Inject constructor(
     suspend operator fun invoke(): Flow<MutableList<ExerciseModel>> {
         return repository.getAllExercisesFromDatabase()
     }
+
+    suspend fun insertExerciseToRoutine(exercise: RoutineExerciseCrossRef) = repository.insertExerciseToRoutine(exercise)
+
 }

@@ -18,7 +18,7 @@ interface TrainingDao {
     fun getAllTraining(): Flow<List<TrainingEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTraining(training: TrainingEntity)
+    suspend fun insertTraining(training: TrainingEntity): Long
 
     @Delete
     suspend fun deleteTraining(training: TrainingEntity)

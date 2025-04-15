@@ -11,11 +11,11 @@ class TrainingViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val binding = ItemTrainingBinding.bind(view)
     private lateinit var numWeeks: String
     private lateinit var numRoutines: String
-    private var trainingId: Int = 0
+    private var trainingId: Long = 0
 
     fun bind(
         trainingItemResponse: TrainingWithWeeksAndRoutines,
-        onItemSelected: (Int) -> Unit
+        onItemSelected: (Long) -> Unit
     ) {
         numWeeks = try {
             trainingItemResponse.weekWithRoutinesList.size.toString()

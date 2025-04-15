@@ -16,7 +16,7 @@ class GetTrainingUseCase @Inject constructor(
         return repository.getAllTrainingsFromDatabase()
     }
 
-    suspend fun insertTraining(training :TrainingModel) {
+    suspend fun insertTraining(training :TrainingModel): Long {
         return repository.insertTraining(training.toDatabase())
     }
 

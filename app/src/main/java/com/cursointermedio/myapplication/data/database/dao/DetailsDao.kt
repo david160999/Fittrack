@@ -15,7 +15,10 @@ import kotlinx.coroutines.flow.Flow
 interface DetailsDao {
 
     @Query("SELECT * FROM details_table WHERE :routineID = routineDetailsId AND :exerciseID = exerciseDetailsId")
-    fun getDetailOfRoutineExercise(routineID: Int, exerciseID: Int): Flow<MutableList<DetailsEntity>>
+    fun getDetailOfRoutineExercise(routineID: Long, exerciseID: Long): Flow<MutableList<DetailsEntity>>
+
+    @Query("SELECT * FROM details_table WHERE :routineID = routineDetailsId ")
+    fun getDetailOfRoutine(routineID: Long): List<DetailsEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDetailToRoutineExercise(details: DetailsEntity)

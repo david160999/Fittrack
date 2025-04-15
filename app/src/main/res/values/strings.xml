@@ -52,6 +52,11 @@
     <!--    TrainingFragment-->
     <string name="training_new_block">Crea un nuevo bloque</string>
 
+    <!--    WeekFragment-->
+    <string name="week_all">Copiar semana completa</string>
+    <string name="week_objective">Copiar semana al objetivo</string>
+    <string name="week_all_exercise">Copiar ejercicios</string>
+
 
 
     <string name="btn_cancel">Cancelar</string>

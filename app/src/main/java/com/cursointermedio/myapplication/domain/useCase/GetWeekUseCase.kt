@@ -7,24 +7,31 @@ import com.cursointermedio.myapplication.data.repository.TrainingRepository
 import com.cursointermedio.myapplication.data.repository.WeekRepository
 import com.cursointermedio.myapplication.domain.model.TrainingModel
 import com.cursointermedio.myapplication.domain.model.WeekModel
+import com.cursointermedio.myapplication.domain.model.WeekWithRoutinesModel
+import com.cursointermedio.myapplication.domain.model.toDomain
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetWeekUseCase @Inject constructor(
     private val repository: WeekRepository
 ) {
-    operator fun invoke(trainingId:Int): Flow<List<WeekModel>> {
+    operator fun invoke(trainingId:Long): Flow<List<WeekModel>> {
         return repository.getWeeksTrainingFromDatabase(trainingId)
     }
 
-    suspend fun insertWeekToTraining(week : WeekModel) {
+    suspend fun insertWeekToTraining(week : WeekModel): Long {
         return repository.insertWeekToTraining(week.toDatabase())
+
     }
 
-    fun getWeeksWithRoutines(trainingId: Int) : Flow<List<WeekWithRoutines>> = repository.getWeeksWithRoutines(trainingId)
+     fun getAllWeeksWithRoutines(trainingId: Long) : Flow<List<WeekWithRoutinesModel>> = repository.getAllWeeksWithRoutines(trainingId)
 
 
     suspend fun deleteWeek(week: WeekModel){
         return repository.deleteWeek(week)
+    }
+
+    suspend fun getWeekWithRoutines(weekId:Long): WeekWithRoutinesModel{
+       return repository.getWeekWithRoutines(weekId)
     }
 }

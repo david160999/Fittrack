@@ -4,12 +4,14 @@ import androidx.room.ColumnInfo
 import androidx.room.PrimaryKey
 import com.cursointermedio.myapplication.data.database.entities.TrainingEntity
 import com.cursointermedio.myapplication.data.database.entities.WeekEntity
+import kotlinx.coroutines.flow.Flow
+
 
 data class TrainingModel
     (
-    val trainingId: Int?,
+    val trainingId: Long?,
     val name: String,
-    val description: String?
+    val description: String?,
 )
 
 fun TrainingEntity.toDomain() = TrainingModel(trainingId, name,description)

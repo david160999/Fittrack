@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.cursointermedio.myapplication.data.database.entities.TrainingWithWeeksAndRoutines
 import com.cursointermedio.myapplication.databinding.FragmentTrainingBinding
 import com.cursointermedio.myapplication.domain.model.TrainingModel
+import com.cursointermedio.myapplication.domain.model.WeekModel
 import com.cursointermedio.myapplication.ui.training.adapter.TrainingAdapter
 import com.cursointermedio.myapplication.ui.training.dialog.TrainingDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -70,10 +71,10 @@ class TrainingFragment @Inject constructor() : Fragment() {
         binding.ivPlus.setOnTouchListener(binding)
     }
 
-    private fun navigateToWeek(trainingId: Int) {
+    private fun navigateToWeek(trainingId: Long) {
         findNavController().navigate(
             TrainingFragmentDirections.actionTrainingFragmentToWeekFragment(
-                id = trainingId
+                id = trainingId.toInt()
             )
         )
     }
@@ -109,7 +110,10 @@ class TrainingFragment @Inject constructor() : Fragment() {
             onSaveClickListener = { name ->
                 lifecycleScope.launch {
                     val training = TrainingModel(null, name, null)
-                    trainingViewModel.insertTraining(training)
+                    val trainingId = trainingViewModel.insertTraining(training)
+
+                    val week = WeekModel(null, trainingId, null, null)
+                    trainingViewModel.insertWeek(week)
                 }
             }, sizeListTraining
         )

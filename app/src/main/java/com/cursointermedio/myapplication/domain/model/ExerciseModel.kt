@@ -3,8 +3,8 @@ package com.cursointermedio.myapplication.domain.model
 import com.cursointermedio.myapplication.data.database.entities.ExerciseEntity
 
 data class ExerciseModel(
-    val id: Int,
-    val categoryExerciseId:Int,
+    val id: Long?,
+    val categoryExerciseId:Long,
     val name: String,
     val description: String?,
 )
@@ -12,7 +12,7 @@ fun ExerciseEntity.toDomain() = ExerciseModel(exerciseId, categoryExerciseId, na
 
 
 data class RealSeriesModel(
-    val id: Int?,
+    val id: Long?,
     val weight: Int?,
     val reps: Int?,
     val rpe: Int?,
@@ -20,7 +20,7 @@ data class RealSeriesModel(
 )
 
 data class ObjectiveSeriesModel(
-    val id: Int?,
+    val id: Long?,
     val weight: Int?,
     val reps: Int?,
     val rpe: Int?,

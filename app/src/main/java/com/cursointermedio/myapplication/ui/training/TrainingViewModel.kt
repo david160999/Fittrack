@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import com.cursointermedio.myapplication.R
 import com.cursointermedio.myapplication.data.database.entities.TrainingWithWeeksAndRoutines
 import com.cursointermedio.myapplication.domain.model.TrainingModel
+import com.cursointermedio.myapplication.domain.model.WeekModel
 import com.cursointermedio.myapplication.domain.useCase.GetTrainingUseCase
+import com.cursointermedio.myapplication.domain.useCase.GetWeekUseCase
 import com.cursointermedio.myapplication.ui.training.CurrentFeature.*
 import com.cursointermedio.myapplication.ui.training.CurrentFeature.TypeFeature.*
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TrainingViewModel @Inject constructor(
-    private val getTrainingUseCase: GetTrainingUseCase
+    private val getTrainingUseCase: GetTrainingUseCase,
+    private val getWeekUseCase: GetWeekUseCase
 ) : ViewModel() {
 
 
@@ -34,14 +37,20 @@ class TrainingViewModel @Inject constructor(
     fun getTrainingsFromDataBase(): Flow<List<TrainingModel>> = getTrainingUseCase.invoke()
 
 
-    suspend fun insertTraining(training: TrainingModel) {
-        getTrainingUseCase.insertTraining(training)
+    suspend fun insertTraining(training: TrainingModel): Long {
+        return getTrainingUseCase.insertTraining(training)
     }
 
-    fun getTrainingWithWeeksAndRoutines(): Flow<List<TrainingWithWeeksAndRoutines>> = getTrainingUseCase.getTrainingWithWeeksAndRoutines()
+    suspend fun insertWeek(week: WeekModel): Long {
+        return getWeekUseCase.insertWeekToTraining(week)
+    }
 
-    suspend fun deleteAll(){
+    fun getTrainingWithWeeksAndRoutines(): Flow<List<TrainingWithWeeksAndRoutines>> =
+        getTrainingUseCase.getTrainingWithWeeksAndRoutines()
+
+    suspend fun deleteAll() {
         getTrainingUseCase.deleteAll()
     }
+
 
 }

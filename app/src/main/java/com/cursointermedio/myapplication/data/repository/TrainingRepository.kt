@@ -20,8 +20,8 @@ class TrainingRepository @Inject constructor(
         return response.map { it -> it.map { it.toDomain()} }
     }
 
-    suspend fun insertTraining(training: TrainingEntity) {
-        trainingDao.insertTraining(training)
+    suspend fun insertTraining(training: TrainingEntity): Long {
+        return trainingDao.insertTraining(training)
     }
 
     suspend fun deleteTraining(training: TrainingEntity) {

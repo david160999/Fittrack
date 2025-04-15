@@ -23,4 +23,6 @@ interface ExerciseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertExerciseToRoutine(exercise: RoutineExerciseCrossRef)
 
+
+
 }

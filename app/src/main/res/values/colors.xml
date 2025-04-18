@@ -26,4 +26,11 @@
 
     <color name="red">#FF0000</color>
 
+
+    <!--    BoxStrokeColor-->
+    <color name="mtrl_textinput_default_box_stroke_color">#407B8D</color>
+
+
+
+
 </resources>

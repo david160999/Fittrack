@@ -4,6 +4,7 @@ import android.adservices.adid.AdId
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import com.cursointermedio.myapplication.data.database.entities.RoutineEntity
 import com.cursointermedio.myapplication.data.database.entities.RoutineExerciseCrossRef
 import com.cursointermedio.myapplication.data.database.entities.TrainingWithWeeksAndRoutines
@@ -21,8 +22,11 @@ import com.cursointermedio.myapplication.domain.useCase.GetWeekUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.forEach
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -35,22 +39,31 @@ class WeekViewModel @Inject constructor(
     private val getExercisesUseCase: GetExercisesUseCase
 ) : ViewModel() {
 
-    fun getAllWeeksWithRoutines(trainingId: Long): Flow<List<WeekWithRoutinesModel>> =
-        getWeekUseCase.getAllWeeksWithRoutines(trainingId)
+
+    fun getAllWeeksWithRoutines(trainingId: Long): StateFlow<List<WeekWithRoutinesModel>> =
+        getWeekUseCase.getAllWeeksWithRoutines(trainingId).stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = emptyList()
+        )
 
     suspend fun insertWeek(week: WeekModel) {
         getWeekUseCase.insertWeekToTraining(week)
     }
 
+    suspend fun insertRoutine(routine: RoutineModel){
+        getRoutineUseCase.insertRoutineToWeek(routine)
+    }
     suspend fun createCopyOfWeek(
-        weekIdOriginal: Long,
+        weekIdOriginal: Long?,
         trainingWeekId: Long,
-        optionSelected: String
+        optionSelected: String,
+
     ) {
         withContext(Dispatchers.IO) {
             try {
                 // Paso 1: Obtener la semana con sus rutinas
-                val semanaConRutinasOriginal = getWeekUseCase.getWeekWithRoutines(weekIdOriginal)
+                val semanaConRutinasOriginal = getWeekUseCase.getWeekWithRoutines(weekIdOriginal!!)
 
                 val semanaOriginal = semanaConRutinasOriginal.week
                 val rutinasOriginales = semanaConRutinasOriginal.routineList

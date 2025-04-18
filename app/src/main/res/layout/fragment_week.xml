@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
+    android:padding="10dp"
     tools:context=".ui.week.WeekFragment">
 
     <ImageView
@@ -26,23 +28,40 @@
         app:layout_constraintTop_toBottomOf="@id/ivPlus"
         tools:text="Bloques" />
 
-
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/dropMenu"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
+        android:id="@+id/dropdownContainer"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingVertical="0dp"
+        app:boxBackgroundColor="@android:color/transparent"
+        app:boxCornerRadiusBottomEnd="14dp"
+        app:boxCornerRadiusBottomStart="14dp"
+        app:boxCornerRadiusTopEnd="14dp"
+        app:boxCornerRadiusTopStart="14dp"
+        app:boxStrokeColor="@color/icons"
+        app:boxStrokeWidth="1dp"
+        app:endIconDrawable="@drawable/ic_arrow_down"
+        app:endIconMode="dropdown_menu"
+        app:endIconTint="@color/icons"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTitle">
 
-    <AutoCompleteTextView
-        android:id="@+id/tvWeekId"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:inputType="text"
-        />
-    </com.google.android.material.textfield.TextInputLayout>
 
+        <AutoCompleteTextView
+            android:id="@+id/dropMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:inputType="none"
+            android:paddingVertical="2dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textColor="@color/icons"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:boxStrokeWidth="1dp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <ImageView
         android:id="@+id/ivPlusWeek"
@@ -51,22 +70,39 @@
         android:layout_margin="8dp"
         android:background="@drawable/ic_plus"
         android:backgroundTint="@color/icons"
-        app:layout_constraintStart_toEndOf="@+id/dropMenu"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+        app:layout_constraintBottom_toBottomOf="@id/dropdownContainer"
+        app:layout_constraintStart_toEndOf="@+id/dropdownContainer"
+        app:layout_constraintTop_toTopOf="@id/dropdownContainer"
+        />
 
-    <Button
 
-        android:id="@+id/btnCalendar"
+    <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/icons"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="@id/dropdownContainer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:layout_constraintTop_toTopOf="@id/dropdownContainer">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="Añadir al calendario"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+
+
+    </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRoutine"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dropMenu" />
+        app:layout_constraintTop_toBottomOf="@id/dropdownContainer" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

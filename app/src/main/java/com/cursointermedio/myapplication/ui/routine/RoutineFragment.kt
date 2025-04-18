@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.cursointermedio.myapplication.R
 import com.cursointermedio.myapplication.databinding.FragmentRoutineBinding
 import com.cursointermedio.myapplication.databinding.FragmentTrainingBinding
+import com.cursointermedio.myapplication.ui.exercise.adapter.ExerciseAdapter
 import com.cursointermedio.myapplication.ui.routine.adapter.RoutineAdapter
 import com.cursointermedio.myapplication.ui.training.CurrentFeature
 import com.cursointermedio.myapplication.ui.training.TrainingFragmentDirections
@@ -28,7 +29,7 @@ class RoutineFragment : Fragment() {
     private var _binding: FragmentRoutineBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var adapter: RoutineAdapter
+    private lateinit var adapter: ExerciseAdapter
     private var listExercise = listOf("qqq", "baa", "qq")
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,7 +39,7 @@ class RoutineFragment : Fragment() {
     }
 
     private fun initUI() {
-        adapter = RoutineAdapter{exerciseId -> navigateToExercise(exerciseId)}
+        adapter = ExerciseAdapter{exerciseId -> navigateToExercise(exerciseId)}
         binding.rvExercise.layoutManager = LinearLayoutManager(context)
         binding.rvExercise.adapter = adapter
         adapter.updateList(listExercise)

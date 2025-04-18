@@ -13,7 +13,7 @@ plugins {
 
 android {
     namespace = "com.cursointermedio.myapplication"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.cursointermedio.myapplication"
@@ -57,7 +57,10 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
 
     //ViewPager2
-    implementation("androidx.viewpager2:viewpager2:1.0.0")
+    implementation("androidx.viewpager2:viewpager2:1.1.0")
+    //Recycler view
+    implementation ("androidx.recyclerview:recyclerview:1.4.0")
+
 
     //Material Design
     implementation ("com.google.android.material:material:1.11.0")
@@ -71,8 +74,12 @@ dependencies {
     implementation("androidx.room:room-runtime:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
     annotationProcessor("androidx.room:room-compiler:$room_version")
+
+    //Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
     // To use Kotlin annotation processing tool (kapt)
+
     kapt("androidx.room:room-compiler:$room_version")
 
 

@@ -30,8 +30,6 @@ class WeekDialog(
 
         dialog.setCanceledOnTouchOutside(true)
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//      setupDialogProperties(dialog)
-
 
         binding.tvAllWeek.setOnClickListener {
             onSaveClickListener.invoke("CopyWeek")
@@ -53,20 +51,4 @@ class WeekDialog(
 
         return dialog
     }
-    /* private fun setupDialogProperties(alertDialog: AlertDialog) {
-         val OFFSET_IN_PX = 140
-         alertDialog.apply {
-             window?.let { window ->
-                 window.setDimAmount(0.1f) // from 0 for no dim to 1 for full dim.
-                 window.attributes?.let { params ->
-                     params.width = WindowManager.LayoutParams.MATCH_PARENT
-                     params.height = WindowManager.LayoutParams.MATCH_PARENT
-                     params.gravity = Gravity.TOP or Gravity.END
-                     params.y = (OFFSET_IN_PX).toFloat().toInt()
-                     params.x = 0
-                 }
-             }
-             requestWindowFeature(Window.FEATURE_NO_TITLE)
-         }
-     }*/
 }

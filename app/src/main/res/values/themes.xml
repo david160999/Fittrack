@@ -19,12 +19,38 @@
     <style name="text">
         <item name="android:textColor">@color/primary_text</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
 
     </style>
 
     <style name="sub_text">
         <item name="android:textColor">@color/secondary_text</item>
         <item name="android:textSize">11sp</item>
+    </style>
+
+<!--    DialogsStyle-->
+    <style name="dialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="windowMinWidthMinor">85%</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowAnimationStyle">@style/anim1</item>
+    </style>
+
+    <style name="anim1">
+        <item name="android:windowEnterAnimation">@anim/slide_in_up</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_down</item>
+    </style>
+
+
+<!--    CardViewStyle-->
+    <style name="CustomCardCorners" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance_custom_corners</item>
+    </style>
+
+    <style name="ShapeAppearance_custom_corners">
+        <item name="cornerSizeTopLeft">16dp</item>
+        <item name="cornerSizeTopRight">16dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
     </style>
 
 </resources>

@@ -27,6 +27,14 @@
     <!--    WeekFragment-->
     <string name="week_prueba">EStoy en WEEK</string>
     <string name="week_title">Título</string>
+    <string name="week_calendar"></string>
+    <string name="week_edit">Editar</string>
+    <string name="week_addRoutine_title">Crea un nuevo entrenamiento</string>
+    <string name="week_addRoutine_name">Día %1$d </string>
+    <string name="week_saveRoutine">Guardar</string>
+    <string name="week_all">Copiar semana completa</string>
+    <string name="week_objective">Copiar semana al objetivo</string>
+    <string name="week_all_exercise">Copiar ejercicios</string>
 
     <!--    ExerciseFragment-->
     <string name="exercise_name">NOMBRE EJERCICIO</string>
@@ -38,6 +46,7 @@
     <string name="exercise_tonelaje">Tonelaje</string>
     <string name="exercise_notas">Notas</string>
     <string name="exercise_notas_del_ejercicio">Notas del ejercicio</string>
+
 
     <!--    ExerciseCategories-->
     <string name="exerciseKnee">Dominante de Rodilla</string>
@@ -53,9 +62,7 @@
     <string name="training_new_block">Crea un nuevo bloque</string>
 
     <!--    WeekFragment-->
-    <string name="week_all">Copiar semana completa</string>
-    <string name="week_objective">Copiar semana al objetivo</string>
-    <string name="week_all_exercise">Copiar ejercicios</string>
+
 
 
 

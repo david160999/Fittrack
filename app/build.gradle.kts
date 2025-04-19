@@ -63,8 +63,7 @@ dependencies {
 
 
     //Material Design
-    implementation ("com.google.android.material:material:1.11.0")
-
+    implementation ("com.google.android.material:material:1.12.0")
 
     //DaggerHilt
     implementation("com.google.dagger:hilt-android:2.50")

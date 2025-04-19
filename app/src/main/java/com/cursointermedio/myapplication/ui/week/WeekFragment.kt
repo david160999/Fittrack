@@ -150,7 +150,7 @@ class WeekFragment : Fragment() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun ImageView.setOnTouchListener(binding: FragmentWeekBinding) {
-        binding.ivPlusWeek.setOnTouchListener { _, event ->
+        binding.ivPlusWeek.setOnTouchListener { v, event ->
             when (event.action) {
                 android.view.MotionEvent.ACTION_DOWN -> {
                     binding.ivPlusWeek.alpha = 0.2F
@@ -159,7 +159,11 @@ class WeekFragment : Fragment() {
                 android.view.MotionEvent.ACTION_MOVE -> {}
                 android.view.MotionEvent.ACTION_UP -> {
                     binding.ivPlusWeek.alpha = 1F
-                    createDialog()
+                    val x = event.x
+                    val y = event.y
+                    if (x >= 0 && x <= v.width && y >= 0 && y <= v.height) {
+                        createDialog()
+                    }
 
                 }
 
@@ -169,21 +173,25 @@ class WeekFragment : Fragment() {
             }
             true
         }
-        binding.ivPlus.setOnTouchListener { _, event ->
+        binding.ivPlus.setOnTouchListener { v, event ->
             when (event.action) {
                 android.view.MotionEvent.ACTION_DOWN -> {
-                    binding.ivPlusWeek.alpha = 0.2F
+                    binding.ivPlus.alpha = 0.2F
                 }
 
                 android.view.MotionEvent.ACTION_MOVE -> {}
                 android.view.MotionEvent.ACTION_UP -> {
-                    binding.ivPlusWeek.alpha = 1F
-                    createRoutineDialog()
+                    binding.ivPlus.alpha = 1F
+                    val x = event.x
+                    val y = event.y
+                    if (x >= 0 && x <= v.width && y >= 0 && y <= v.height) {
+                        createRoutineDialog()
+                    }
 
                 }
 
                 android.view.MotionEvent.ACTION_CANCEL -> {
-                    binding.ivPlusWeek.alpha = 1F
+                    binding.ivPlus.alpha = 1F
                 }
             }
             true
@@ -212,15 +220,18 @@ class WeekFragment : Fragment() {
 
     private fun createRoutineDialog() {
         val selected = getSelectedItemFromDropMenu()
-        val weekId = listWeekWithRoutines.value[selected].week.weekId
+        val weekId = listWeekWithRoutines.value.getOrNull(selected)?.week?.weekId
+
 
         if (weekId != null) {
+            val numRoutines = listWeekWithRoutines.value[selected].routineList.size
+
             val dialog = RoutineDialog(onSaveClickListener = {
                 lifecycleScope.launch {
                     val routine = RoutineModel(null, weekId, null, null)
                     weekViewModel.insertRoutine(routine)
                 }
-            }, weekId)
+            }, weekId, numRoutines)
             dialog.show(parentFragmentManager, "dialog")
         }
     }

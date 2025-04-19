@@ -59,7 +59,6 @@ class WeekFragment : Fragment() {
 
     private val args: WeekFragmentArgs by navArgs()
     private var trainingId: Long = 0
-    private var weekNum: Int = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -75,12 +74,17 @@ class WeekFragment : Fragment() {
     }
 
     private fun initUI() {
+        var spinnerInitialized = false
+
         listWeekWithRoutines = weekViewModel.getAllWeeksWithRoutines(trainingId)
         lifecycleScope.launch {
             listWeekWithRoutines.collect { weeks ->
                 // Solo hacemos esto si hay datos
                 if (weeks.isNotEmpty()) {
-                    setupWeekSpinner(weeks)
+                    if (!spinnerInitialized) {
+                        setupWeekSpinner(weeks)
+                        spinnerInitialized = true
+                    }
 
                     val selected = getSelectedItemFromDropMenu()
                     val updatedRoutine = weeks.getOrNull(selected)?.routineList.orEmpty()
@@ -93,6 +97,8 @@ class WeekFragment : Fragment() {
                         )
                         binding.rvRoutine.layoutManager = LinearLayoutManager(context)
                         binding.rvRoutine.adapter = adapter
+                        binding.rvRoutine.setHasFixedSize(true)
+
                     } else {
                         adapter.updateList(updatedRoutine)
                     }
@@ -128,24 +134,11 @@ class WeekFragment : Fragment() {
             val item = dropMenu.adapter.getItem(itemCount - 1)
             dropMenu.setText(item.toString(), false)
         }
-
-        binding.dropMenu.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>, view: View?, position: Int, id: Long
-            ) {
-                val selectedWeek = weeks[position]
-                adapter.updateList(selectedWeek.routineList)
-                updateRoutineList(selectedWeek.routineList)
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {}
+        binding.dropMenu.setOnItemClickListener { parent, view, position, id ->
+            val selectedWeek = weeks[position]
+            adapter.updateList(selectedWeek.routineList)
         }
-    }
 
-    private fun updateRoutineList(routines: List<RoutineEntity>) {
-        binding.rvRoutine.adapter = RoutineAdapter(onItemSelected = { routineId ->
-            navigateToRoutine(routineId)
-        }, routines = routines)
     }
 
     @SuppressLint("ClickableViewAccessibility")

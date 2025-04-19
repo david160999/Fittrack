@@ -38,6 +38,7 @@
             app:boxCornerRadiusTopStart="6dp">>
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextRoutineName"
                 style="@style/sub_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

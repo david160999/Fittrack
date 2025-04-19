@@ -97,7 +97,6 @@ class WeekFragment : Fragment() {
                         )
                         binding.rvRoutine.layoutManager = LinearLayoutManager(context)
                         binding.rvRoutine.adapter = adapter
-                        binding.rvRoutine.setHasFixedSize(true)
 
                     } else {
                         adapter.updateList(updatedRoutine)
@@ -219,9 +218,9 @@ class WeekFragment : Fragment() {
         if (weekId != null) {
             val numRoutines = listWeekWithRoutines.value[selected].routineList.size
 
-            val dialog = RoutineDialog(onSaveClickListener = {
+            val dialog = RoutineDialog(onSaveClickListener = {name->
                 lifecycleScope.launch {
-                    val routine = RoutineModel(null, weekId, null, null)
+                    val routine = RoutineModel(null, weekId, name, null)
                     weekViewModel.insertRoutine(routine)
                 }
             }, weekId, numRoutines)

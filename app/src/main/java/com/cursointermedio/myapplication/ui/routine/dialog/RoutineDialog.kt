@@ -20,7 +20,7 @@ import com.cursointermedio.myapplication.databinding.DialogTrainingBinding
 import com.cursointermedio.myapplication.databinding.FragmentWeekBinding
 
 class RoutineDialog(
-    private val onSaveClickListener: () -> Unit,
+    private val onSaveClickListener: (String) -> Unit,
     private val weekId: Long,
     private val numRoutines: Int
 ) : DialogFragment() {
@@ -72,7 +72,11 @@ class RoutineDialog(
                     val x = event.x
                     val y = event.y
                     if (x >= 0 && x <= v.width && y >= 0 && y <= v.height) {
-                        onSaveClickListener.invoke()
+
+                        val name = binding.editTextRoutineName.text.toString().ifBlank {
+                            binding.textInputLayout.hint.toString()
+                        }
+                        onSaveClickListener(name)
                         dialog.dismiss()
                     }
                 }

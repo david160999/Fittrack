@@ -6,6 +6,14 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
+    <string name="btn_back">Atrás</string>
+    <string name="btn_cancel">Cancelar</string>
+    <string name="btn_save">Guardar</string>
+    <string name="btn_edit">Editar</string>
+    <string name="btn_OK">Editar</string>
+    <string name="search">Buscar</string>
+
+
     <!--    HomeFragment-->
     <string name="home_training">Entrenamiento</string>
     <string name="home_sub_training">¡Empieza a registrar tus entrenamientos!</string>
@@ -61,13 +69,8 @@
     <!--    TrainingFragment-->
     <string name="training_new_block">Crea un nuevo bloque</string>
 
-    <!--    WeekFragment-->
 
 
-
-
-    <string name="btn_cancel">Cancelar</string>
-    <string name="btn_save">Guardar</string>
 
 
 </resources>

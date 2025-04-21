@@ -108,26 +108,29 @@ data class RoutineWithExercises(
     val exercises: List<ExerciseEntity>
 )
 
+
 @Entity(
     tableName = "exercise_table", foreignKeys = [androidx.room.ForeignKey(
         entity = CategoryEntity::class,
         parentColumns = kotlin.arrayOf("categoryId"),
         childColumns = kotlin.arrayOf("categoryExerciseId"),
-        onDelete = androidx.room.ForeignKey.SET_NULL
+        onDelete = androidx.room.ForeignKey.SET_DEFAULT
     )]
 )
 data class ExerciseEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "exerciseId") val exerciseId: Long?,
-    @ColumnInfo(name = "categoryExerciseId") val categoryExerciseId: Long,
-    @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "description") val description: String?
+    @ColumnInfo(name = "key") val key: String?,
+    @ColumnInfo(defaultValue = "8", name = "categoryExerciseId")
+    val categoryExerciseId: Long?,
+    @ColumnInfo(name = "name") val name: String?,
 )
 
-fun ExerciseModel.toDatabase() = ExerciseEntity(null,
+fun ExerciseModel.toDatabase() = ExerciseEntity(
+    null,
+    null,
     categoryExerciseId = categoryExerciseId,
-    name = name,
-    description = description
+    name = name
 )
 
 data class CategoryWithExercises(

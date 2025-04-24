@@ -18,7 +18,7 @@ import com.cursointermedio.myapplication.data.database.entities.WeekEntity
 
 @Database(
     entities = [TrainingEntity::class, WeekEntity::class, RoutineEntity::class, RoutineExerciseCrossRef::class, ExerciseEntity::class, DetailsEntity::class, CategoryEntity::class],
-    version = 5
+    version = 7
 )
 abstract class TrainingDatabase : RoomDatabase() {
 

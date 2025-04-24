@@ -25,5 +25,4 @@ interface RoutineDao {
     @Query("SELECT * FROM routine_table WHERE routineId = :routineId")
     suspend fun getRoutineWithExercises(routineId: Long): RoutineWithExercises
 
-
 }

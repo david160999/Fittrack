@@ -28,7 +28,22 @@
         <item name="android:textSize">11sp</item>
     </style>
 
-<!--    DialogsStyle-->
+    <!--    Botones y texto de la interfaz-->
+    <style name="btn_text">
+        <item name="android:textColor">@color/icons</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="btn_view">
+        <item name="android:backgroundTint">@color/icons</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_width">25dp</item>
+        <item name="android:layout_height">25dp</item>
+
+    </style>
+
+
+    <!--    DialogsStyle-->
     <style name="dialog" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="windowMinWidthMinor">85%</item>
         <item name="android:windowIsFloating">false</item>
@@ -41,7 +56,7 @@
     </style>
 
 
-<!--    CardViewStyle-->
+    <!--    CardViewStyle-->
     <style name="CustomCardCorners" parent="@style/Widget.MaterialComponents.CardView">
         <item name="shapeAppearanceOverlay">@style/ShapeAppearance_custom_corners</item>
     </style>
@@ -52,5 +67,8 @@
         <item name="cornerSizeBottomLeft">0dp</item>
         <item name="cornerSizeBottomRight">0dp</item>
     </style>
+
+    <!--    Btn Category-->
+
 
 </resources>

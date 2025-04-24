@@ -4,7 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="Grey">#ACA5A5</color>
 
-<!--    Text color-->
+    <!--    Text color-->
     <color name="primary_text">#FF000000</color>
     <color name="secondary_text">#A5A0A0</color>
 
@@ -13,9 +13,7 @@
 
     <!--Icon color-->
     <color name="icons">#407B8D</color>
-
-
-
+    <color name="iconPressed"></color>
 
     <color name="primary">#1f1f1f</color>
     <color name="primaryDark">#181818</color>

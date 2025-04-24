@@ -87,6 +87,9 @@
                 android:name="id"
                 app:argType="integer"
                 android:defaultValue="0" />
+            <action
+                android:id="@+id/action_routineFragment_to_addExerciseFragment"
+                app:destination="@id/addExerciseFragment" />
         </fragment>
         <fragment
             android:id="@+id/exerciseFragment"
@@ -101,5 +104,9 @@
         <action
             android:id="@+id/action_global_homeFragment"
             app:destination="@id/homeFragment" />
+        <fragment
+            android:id="@+id/addExerciseFragment"
+            android:name="com.cursointermedio.myapplication.ui.addExercise.AddExerciseFragment"
+            android:label="AddExerciseFragment" />
     </navigation>
 </navigation>

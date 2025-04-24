@@ -1,5 +1,6 @@
 package com.cursointermedio.myapplication.data.database.entities
 
+import android.content.Context
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
@@ -7,6 +8,7 @@ import androidx.room.ForeignKey
 import androidx.room.Junction
 import androidx.room.PrimaryKey
 import androidx.room.Relation
+import com.cursointermedio.myapplication.domain.model.CategoryInfo
 import com.cursointermedio.myapplication.domain.model.DetailModel
 import com.cursointermedio.myapplication.domain.model.ExerciseModel
 import com.cursointermedio.myapplication.domain.model.RoutineModel
@@ -91,7 +93,24 @@ data class RoutineEntity(
 fun RoutineModel.toDatabase() = RoutineEntity(null, weekRoutineId, name, description)
 
 
-@Entity(primaryKeys = ["routineId", "exerciseId"])
+@Entity(
+    tableName = "RoutineExerciseCrossRef",
+    primaryKeys = ["routineId", "exerciseId"],  // Aquí estamos creando una clave primaria compuesta
+    foreignKeys = [
+        ForeignKey(
+            entity = RoutineEntity::class,
+            parentColumns = ["routineId"],
+            childColumns = ["routineId"],
+            onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = ExerciseEntity::class,
+            parentColumns = ["exerciseId"],
+            childColumns = ["exerciseId"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
 data class RoutineExerciseCrossRef(
     val routineId: Long,
     val exerciseId: Long
@@ -128,7 +147,7 @@ data class ExerciseEntity(
 
 fun ExerciseModel.toDatabase() = ExerciseEntity(
     null,
-    null,
+    key,
     categoryExerciseId = categoryExerciseId,
     name = name
 )

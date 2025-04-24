@@ -1,14 +1,26 @@
 package com.cursointermedio.myapplication.domain.model
 
+import android.annotation.SuppressLint
+import android.content.Context
 import com.cursointermedio.myapplication.data.database.entities.ExerciseEntity
 
 data class ExerciseModel(
     val id: Long?,
-    val categoryExerciseId:Long,
-    val name: String,
-    val description: String?,
+    val key: String?,
+    val categoryExerciseId:Long?,
+    val name: String?,
 )
-fun ExerciseEntity.toDomain() = ExerciseModel(exerciseId, categoryExerciseId, name, description)
+@SuppressLint("DiscouragedApi")
+fun ExerciseModel.getExerciseNameFromKey(context: Context): String? {
+    val resId = context.resources.getIdentifier(key, "string", context.packageName)
+    return if (resId != 0) context.getString(resId) else key // fallback si no encuentra
+}
+fun ExerciseModel.getExerciseDescriptionFromKey(context: Context): String? {
+    val resId = context.resources.getIdentifier(key, "string", context.packageName)
+    return if (resId != 0) context.getString(resId) else key // fallback si no encuentra
+}
+
+fun ExerciseEntity.toDomain() = ExerciseModel(exerciseId, key, categoryExerciseId, name)
 
 
 data class RealSeriesModel(

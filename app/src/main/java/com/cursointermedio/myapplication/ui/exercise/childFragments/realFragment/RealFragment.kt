@@ -15,6 +15,7 @@ import com.cursointermedio.myapplication.databinding.FragmentExerciseBinding
 import com.cursointermedio.myapplication.databinding.FragmentRealBinding
 import com.cursointermedio.myapplication.databinding.ItemDetailsBinding
 import com.cursointermedio.myapplication.ui.exercise.adapter.ExerciseAdapter
+import com.cursointermedio.myapplication.ui.exercise.adapter.detailsAdapter.DetailAdapter
 import com.cursointermedio.myapplication.ui.training.CurrentFeature
 
 class RealFragment : Fragment() {
@@ -23,7 +24,7 @@ class RealFragment : Fragment() {
     private var _binding: FragmentRealBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var adapter: ExerciseAdapter
+    private lateinit var adapter: DetailAdapter
 
 
 
@@ -40,7 +41,7 @@ class RealFragment : Fragment() {
     }
 
     private fun initList(){
-        adapter = ExerciseAdapter {}
+        adapter = DetailAdapter {}
         binding.rvDetail.layoutManager = LinearLayoutManager(context)
         binding.rvDetail.adapter = adapter
         adapter.updateList(listDetails)

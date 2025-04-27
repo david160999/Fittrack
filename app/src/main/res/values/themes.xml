@@ -18,8 +18,7 @@
 
     <style name="text">
         <item name="android:textColor">@color/primary_text</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">14sp</item>
 
     </style>
 

@@ -2,7 +2,9 @@ package com.cursointermedio.myapplication.ui.addExercise
 
 import androidx.lifecycle.ViewModel
 import com.cursointermedio.myapplication.data.database.entities.ExerciseEntity
+import com.cursointermedio.myapplication.data.database.entities.RoutineExerciseCrossRef
 import com.cursointermedio.myapplication.data.database.entities.RoutineWithExercises
+import com.cursointermedio.myapplication.data.database.entities.toDatabase
 import com.cursointermedio.myapplication.domain.model.CategoryInfo
 import com.cursointermedio.myapplication.domain.model.ExerciseModel
 import com.cursointermedio.myapplication.domain.useCase.GetExercisesUseCase
@@ -28,4 +30,20 @@ class AddExerciseViewModel @Inject constructor(
     }
 
     suspend fun getCategories(): List<CategoryInfo> = getExercisesUseCase.getCategories()
+
+    suspend fun insertExerciseToRoutine(
+        routineId: Long,
+        selectedExercises: List<ExerciseModel>
+    ) {
+        selectedExercises.forEach { exercise ->
+            val crossRef = RoutineExerciseCrossRef(
+                routineId = routineId,
+                exerciseId = exercise.id ?: return@forEach
+            )
+            getExercisesUseCase.insertExerciseToRoutine(crossRef)
+        }
+    }
+    suspend fun insertExercise(exercise: ExerciseModel) {
+        getExercisesUseCase.insertExercise(exercise)
+    }
 }

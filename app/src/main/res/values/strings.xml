@@ -11,8 +11,11 @@
     <string name="btn_save">Guardar</string>
     <string name="btn_edit">Editar</string>
     <string name="btn_OK">Editar</string>
-    <string name="search">Buscar</string>
-    <string name="next">Siguiente</string>
+    <string name="tv_search">Buscar</string>
+    <string name="tv_next">Siguiente</string>
+    <string name="btn_eliminate">Eliminar</string>
+    <string name="tv_description">Descripción</string>
+
 
 
 
@@ -71,8 +74,12 @@
     <!--    TrainingFragment-->
     <string name="training_new_block">Crea un nuevo bloque</string>
 
-
-
+    <!--AddExerciseFragment-->
+    <string name="addExercise_create_name">Nombre del ejercicio nuevo</string>
+    <string name="addExercise_create_title">Crea un nuevo ejercicio</string>
+    <string name="load_menu">Desplegar menú</string>
+    <string name="addExercise_dialogRemove_title">ELIMINAR EJERCICIO</string>
+    <string name="addExercise_dialogRemove_text">¿Estás seguro/a de que deseas eliminar "%1$s?"</string>
 
 
 </resources>

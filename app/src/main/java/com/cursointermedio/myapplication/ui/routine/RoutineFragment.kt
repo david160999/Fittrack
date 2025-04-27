@@ -59,7 +59,6 @@ class RoutineFragment : Fragment() {
     }
 
     private fun initUI() {
-
         lifecycleScope.launch {
             routine = routineViewModel.getRoutineWithExercises(routineId)
 
@@ -86,7 +85,7 @@ class RoutineFragment : Fragment() {
 
     private fun navigateToAddExercise() {
         findNavController().navigate(
-            RoutineFragmentDirections.actionRoutineFragmentToAddExerciseFragment()
+            RoutineFragmentDirections.actionRoutineFragmentToAddExerciseFragment(routineId)
         )
     }
 

@@ -2,6 +2,7 @@ package com.cursointermedio.myapplication.domain.useCase
 
 import com.cursointermedio.myapplication.data.database.entities.ExerciseEntity
 import com.cursointermedio.myapplication.data.database.entities.RoutineExerciseCrossRef
+import com.cursointermedio.myapplication.data.database.entities.toDatabase
 import com.cursointermedio.myapplication.data.repository.ExerciseRepository
 import com.cursointermedio.myapplication.domain.model.CategoryInfo
 import com.cursointermedio.myapplication.domain.model.ExerciseModel
@@ -22,5 +23,9 @@ class GetExercisesUseCase @Inject constructor(
     }
 
     suspend fun getCategories(): List<CategoryInfo> = repository.getCategories()
+
+    suspend fun insertExercise(exercise: ExerciseModel) {
+        repository.insertExercise(exercise.toDatabase())
+    }
 
 }

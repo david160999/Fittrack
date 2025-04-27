@@ -1,7 +1,9 @@
 package com.cursointermedio.myapplication.data.database
 
 import androidx.room.Database
+import androidx.room.DatabaseConfiguration
 import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteOpenHelper
 import com.cursointermedio.myapplication.data.database.dao.CategoryDao
 import com.cursointermedio.myapplication.data.database.dao.DetailsDao
 import com.cursointermedio.myapplication.data.database.dao.ExerciseDao

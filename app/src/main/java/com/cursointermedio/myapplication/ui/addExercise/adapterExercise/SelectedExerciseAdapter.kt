@@ -1,7 +1,9 @@
 package com.cursointermedio.myapplication.ui.addExercise.adapterExercise
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.cursointermedio.myapplication.databinding.ItemSelectedexerciseBinding
 import com.cursointermedio.myapplication.domain.model.ExerciseModel
@@ -27,6 +29,7 @@ class SelectedExerciseAdapter(
     override fun getItemCount() = exercises.size
 
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateList(exerciseList: List<ExerciseModel>) {
         this.exercises = exerciseList
         notifyDataSetChanged()

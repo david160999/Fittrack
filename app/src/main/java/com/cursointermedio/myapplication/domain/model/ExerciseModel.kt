@@ -12,8 +12,13 @@ data class ExerciseModel(
 )
 @SuppressLint("DiscouragedApi")
 fun ExerciseModel.getExerciseNameFromKey(context: Context): String? {
-    val resId = context.resources.getIdentifier(key, "string", context.packageName)
-    return if (resId != 0) context.getString(resId) else key // fallback si no encuentra
+    return if (name == null){
+        val resId = context.resources.getIdentifier(key, "string", context.packageName)
+        if (resId != 0) context.getString(resId) else key // fallback si no encuentra
+    }else{
+        name.toString()
+    }
+
 }
 fun ExerciseModel.getExerciseDescriptionFromKey(context: Context): String? {
     val resId = context.resources.getIdentifier(key, "string", context.packageName)

@@ -1,23 +1,31 @@
 package com.cursointermedio.myapplication.ui.addExercise
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.cursointermedio.myapplication.databinding.FragmentAddexerciseBinding
 import com.cursointermedio.myapplication.domain.model.CategoryInfo
 import com.cursointermedio.myapplication.domain.model.ExerciseModel
 import com.cursointermedio.myapplication.ui.addExercise.adapterCategory.CategoryAdapter
 import com.cursointermedio.myapplication.ui.addExercise.adapterExercise.AddExerciseAdapter
 import com.cursointermedio.myapplication.ui.addExercise.adapterExercise.SelectedExerciseAdapter
+import com.cursointermedio.myapplication.ui.addExercise.dialog.AddExerciseDialog
+import com.cursointermedio.myapplication.ui.addExercise.dialog.RemoveExerciseDialog
+import com.cursointermedio.myapplication.ui.routine.RoutineFragmentArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -40,9 +48,14 @@ class AddExerciseFragment : Fragment() {
     private lateinit var categories: List<CategoryInfo>
     private var nameCategory = ""
 
+    private val args: AddExerciseFragmentArgs by navArgs()
+    private var routineId: Long = 0
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        routineId = args.routineId
+        Log.e("AAAa", args.routineId.toString())
         initUI()
         initListener()
     }
@@ -53,9 +66,17 @@ class AddExerciseFragment : Fragment() {
         }
 
         binding.ivPlusExercise.setAlphaTouchListener {
+            createDialogAdd()
+        }
 
+        binding.tvNext.setAlphaTouchListener {
+            lifecycleScope.launch {
+                addExerciseViewModel.insertExerciseToRoutine(routineId, selectedExercises)
+
+            }
         }
     }
+
 
     private fun initUI() {
 
@@ -85,7 +106,7 @@ class AddExerciseFragment : Fragment() {
     private fun setUpSelectedAdapter() {
         adapterSelected = SelectedExerciseAdapter(
             onItemSelected = { exercise ->
-                createDialog(exercise)
+                createDialogRemove(exercise)
             },
             selectedExercises
         )
@@ -97,6 +118,24 @@ class AddExerciseFragment : Fragment() {
             LinearLayoutManager.VERTICAL // Asegúrate de que sea un layout vertical
         )
         binding.lvAddExercises.addItemDecoration(dividerItemDecoration)
+
+        adapterSelected.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                updateNextVisibility()
+            }
+
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                updateNextVisibility()
+            }
+
+            override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+                updateNextVisibility()
+            }
+        })
+    }
+
+    private fun updateNextVisibility() {
+        binding.tvNext.isVisible = adapterSelected.itemCount != 0
     }
 
     private fun setUpExerciseAdapter(exercise: List<ExerciseModel>) {
@@ -117,16 +156,16 @@ class AddExerciseFragment : Fragment() {
     }
 
     private suspend fun setUpCategoryAdapter() {
-        val categories = addExerciseViewModel.getCategories()
+        this.categories = addExerciseViewModel.getCategories()
 
-        if (categories.isNotEmpty()) {
+        if (this.categories.isNotEmpty()) {
             adapterCategory =
                 CategoryAdapter({ categoryId, isSelected ->
                     selectCategory(
                         categoryId,
                         isSelected
                     )
-                }, categories)
+                }, this.categories)
             binding.rvCategory.layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             binding.rvCategory.adapter = adapterCategory
@@ -135,6 +174,11 @@ class AddExerciseFragment : Fragment() {
 
     private fun addToListAddExercise(exercise: ExerciseModel) {
         selectedExercises.add(exercise) // compatible con todas las APIs
+        adapterSelected.updateList(selectedExercises)
+    }
+
+    private fun removeToListAddExercise(exercise: ExerciseModel) {
+        selectedExercises.remove(exercise) // compatible con todas las APIs
         adapterSelected.updateList(selectedExercises)
     }
 
@@ -152,24 +196,30 @@ class AddExerciseFragment : Fragment() {
 
     }
 
-    private fun createDialog(exercise: ExerciseModel) {
+    private fun createDialogAdd() {
+            val dialog = AddExerciseDialog(onSaveClickListener = { exercise ->
+                lifecycleScope.launch {
+                    addExerciseViewModel.insertExercise(exercise)
+                }
+            }, this.categories)
 
-//        val selected = getSelectedItemFromDropMenu()
-//        val weekId = listWeekWithRoutines.value.getOrNull(selected)?.week?.weekId
-//
-//
-//        val dialog = WeekDialog(onSaveClickListener = { option ->
-//            lifecycleScope.launch {
-//                when (option) {
-//                    "CopyWeek", "CopyWeekWithObj", "CopyWeekWithAll" -> weekViewModel.createCopyOfWeek(
-//                        weekId, trainingId, option,
-//                    )
-//
-//                }
-//            }
-//        })
-//
-//        dialog.show(parentFragmentManager, "dialog")
+            dialog.show(parentFragmentManager, "dialog")
+
+    }
+    private fun createDialogRemove(exercise: ExerciseModel) {
+
+        val dialog = RemoveExerciseDialog(onSaveClickListener = {
+            lifecycleScope.launch {
+                removeToListAddExercise(exercise)
+            }
+        })
+
+        dialog.show(parentFragmentManager, "dialog")
+    }
+
+    private fun createDialogNext() {
+
+
     }
 
 
@@ -189,7 +239,7 @@ class AddExerciseFragment : Fragment() {
 
                 MotionEvent.ACTION_CANCEL -> v.alpha = 1f
             }
-            false
+            true
         }
     }
 

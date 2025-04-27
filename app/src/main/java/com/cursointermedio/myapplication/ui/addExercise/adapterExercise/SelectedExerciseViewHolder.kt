@@ -17,5 +17,9 @@ class SelectedExerciseViewHolder(private val binding: ItemSelectedexerciseBindin
     fun bind(exerciseItemResponse: ExerciseModel, onItemSelected: (ExerciseModel) -> Unit) {
         binding.tvExerciseName.text = exerciseItemResponse.getExerciseNameFromKey(binding.root.context)
 
+        binding.root.setOnClickListener{
+            onItemSelected(exerciseItemResponse)
+        }
+
     }
 }

@@ -107,6 +107,10 @@
         <fragment
             android:id="@+id/addExerciseFragment"
             android:name="com.cursointermedio.myapplication.ui.addExercise.AddExerciseFragment"
-            android:label="AddExerciseFragment" />
+            android:label="AddExerciseFragment" >
+            <argument
+                android:name="routineId"
+                app:argType="long" />
+        </fragment>
     </navigation>
 </navigation>

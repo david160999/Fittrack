@@ -168,6 +168,10 @@ data class CategoryEntity(
     @ColumnInfo(name = "name") val name: String,
 )
 
+data class ExerciseDetailsCount(
+    val exerciseId: Long,
+    val detailsCount: Int
+)
 
 @Entity(
     tableName = "details_table", foreignKeys = [ForeignKey(

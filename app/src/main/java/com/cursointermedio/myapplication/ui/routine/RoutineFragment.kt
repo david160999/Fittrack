@@ -13,10 +13,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cursointermedio.myapplication.R
+import com.cursointermedio.myapplication.data.database.entities.ExerciseDetailsCount
 import com.cursointermedio.myapplication.data.database.entities.RoutineWithExercises
 import com.cursointermedio.myapplication.databinding.FragmentRoutineBinding
 import com.cursointermedio.myapplication.databinding.FragmentTrainingBinding
 import com.cursointermedio.myapplication.databinding.FragmentWeekBinding
+import com.cursointermedio.myapplication.domain.model.toDomain
 import com.cursointermedio.myapplication.ui.exercise.adapter.ExerciseAdapter
 import com.cursointermedio.myapplication.ui.routine.adapter.RoutineAdapter
 import com.cursointermedio.myapplication.ui.training.CurrentFeature
@@ -42,6 +44,7 @@ class RoutineFragment : Fragment() {
 
     private lateinit var adapter: ExerciseAdapter
     private lateinit var routine: RoutineWithExercises
+    private lateinit var detailsCountList: List<ExerciseDetailsCount>
 
     private val args: RoutineFragmentArgs by navArgs()
     private var routineId: Long = 0
@@ -61,21 +64,25 @@ class RoutineFragment : Fragment() {
     private fun initUI() {
         lifecycleScope.launch {
             routine = routineViewModel.getRoutineWithExercises(routineId)
+            detailsCountList = routineViewModel.getExerciseDetailsCount(routineId)
 
-            if (::routine.isInitialized) {
+            if (::routine.isInitialized && ::detailsCountList.isInitialized) {
                 val name = routine.routine.name.toString()
                 binding.tvTitle.text = name
 
-                adapter = ExerciseAdapter { exerciseId -> navigateToExercise(exerciseId) }
+                adapter = ExerciseAdapter(
+                    onItemSelected = { exerciseId -> navigateToExercise(exerciseId) },
+                    detailsCountList = detailsCountList
+                )
                 binding.rvExercise.layoutManager = LinearLayoutManager(context)
                 binding.rvExercise.adapter = adapter
-                adapter.updateList(routine.exercises)
+                adapter.updateList(routine.exercises.map { it.toDomain() })
             }
         }
 
     }
 
-    private fun navigateToExercise(exerciseId: Int) {
+    private fun navigateToExercise(exerciseId: Long) {
         findNavController().navigate(
             RoutineFragmentDirections.actionRoutineFragmentToExerciseFragment(
                 exerciseId

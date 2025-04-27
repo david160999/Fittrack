@@ -2,6 +2,7 @@ package com.cursointermedio.myapplication.ui.routine
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cursointermedio.myapplication.data.database.entities.ExerciseDetailsCount
 import com.cursointermedio.myapplication.data.database.entities.RoutineWithExercises
 import com.cursointermedio.myapplication.domain.model.WeekWithRoutinesModel
 import com.cursointermedio.myapplication.domain.useCase.GetDetailsUseCase
@@ -17,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RoutineViewModel @Inject constructor(
     private val getRoutineUseCase: GetRoutineUseCase,
+    private val getExercisesUseCase: GetExercisesUseCase
 
     ) : ViewModel() {
 
@@ -24,4 +26,7 @@ class RoutineViewModel @Inject constructor(
         getRoutineUseCase.getRoutineWithExercises(routineId)
 
 
+    suspend fun getExerciseDetailsCount(routineId: Long): List<ExerciseDetailsCount>{
+        return getExercisesUseCase.getExerciseDetailsCount(routineId)
+    }
 }

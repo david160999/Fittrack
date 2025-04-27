@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import com.cursointermedio.myapplication.data.database.dao.ExerciseDao
 import com.cursointermedio.myapplication.data.database.entities.CategoryEntity
+import com.cursointermedio.myapplication.data.database.entities.ExerciseDetailsCount
 import com.cursointermedio.myapplication.data.database.entities.ExerciseEntity
 import com.cursointermedio.myapplication.data.database.entities.RoutineExerciseCrossRef
 import com.cursointermedio.myapplication.domain.model.CategoryInfo
@@ -43,6 +44,10 @@ class ExerciseRepository @Inject constructor(
         return response.map {
             it.toDomain()
         }
+    }
+
+    suspend fun getExerciseDetailsCount(routineId: Long): List<ExerciseDetailsCount>{
+        return exerciseDao.getExerciseDetailsCount(routineId)
     }
 
 }

@@ -1,5 +1,6 @@
 package com.cursointermedio.myapplication.domain.useCase
 
+import com.cursointermedio.myapplication.data.database.entities.ExerciseDetailsCount
 import com.cursointermedio.myapplication.data.database.entities.ExerciseEntity
 import com.cursointermedio.myapplication.data.database.entities.RoutineExerciseCrossRef
 import com.cursointermedio.myapplication.data.database.entities.toDatabase
@@ -28,4 +29,7 @@ class GetExercisesUseCase @Inject constructor(
         repository.insertExercise(exercise.toDatabase())
     }
 
+    suspend fun getExerciseDetailsCount(routineId: Long): List<ExerciseDetailsCount>{
+        return repository.getExerciseDetailsCount(routineId)
+    }
 }

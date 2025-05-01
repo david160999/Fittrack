@@ -27,7 +27,7 @@ interface TrainingDao {
     suspend fun deleteAllTraining()
 
     @Transaction
-    @Query("SELECT * FROM training_table")
+    @Query("SELECT * FROM training_table ORDER BY trainingId DESC ")
     fun getTrainingWithWeeksAndRoutines(): Flow<List<TrainingWithWeeksAndRoutines>>
 }
 

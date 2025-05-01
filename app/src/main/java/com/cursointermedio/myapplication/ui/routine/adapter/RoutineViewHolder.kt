@@ -12,7 +12,7 @@ class RoutineViewHolder(private val binding: ItemTrainingBinding,
     private lateinit var numRoutines: String
 
     fun bind(routine: RoutineEntity, onItemSelected: (Long) -> Unit) {
-        binding.tvTitle.text = routine.name
+        binding.tvTitle.setText(routine.name)
 
         binding.root.setOnClickListener {
             onItemSelected(routine.routineId!!)

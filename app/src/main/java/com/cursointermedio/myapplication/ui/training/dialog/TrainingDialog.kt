@@ -6,7 +6,9 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
+import com.cursointermedio.myapplication.R
 import com.cursointermedio.myapplication.databinding.DialogTrainingBinding
+import com.cursointermedio.myapplication.utils.extensions.setupTouchAction
 
 class TrainingDialog(
     private val onSaveClickListener: (String) -> Unit,
@@ -25,12 +27,13 @@ class TrainingDialog(
 
         val dialog = builder.create()
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        binding.editText.hint = binding.editText.hint.toString() + " " + newTrainingNum
+        binding.editText.hint = binding.root.context.getString(R.string.training_newBlock, newTrainingNum)
 
-        binding.btnCancel.setOnClickListener {
+        binding.btnCancel.setupTouchAction {
             dialog.dismiss()
         }
-        binding.btnSave.setOnClickListener {
+
+        binding.btnSave.setupTouchAction {
             if (binding.editText.text.isEmpty()) {
                 onSaveClickListener.invoke(binding.editText.hint.toString())
             } else {

@@ -10,10 +10,11 @@ import android.view.Window
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import com.cursointermedio.myapplication.databinding.DialogWeekBinding
+import com.cursointermedio.myapplication.domain.useCase.CopyOption
 
 
 class WeekDialog(
-    private val onSaveClickListener: (String) -> Unit,
+    private val onSaveClickListener: (CopyOption?) -> Unit,
 ) : DialogFragment() {
 
     private var _binding: DialogWeekBinding? = null
@@ -32,19 +33,19 @@ class WeekDialog(
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         binding.tvAllWeek.setOnClickListener {
-            onSaveClickListener.invoke("CopyWeek")
+            onSaveClickListener.invoke(null)
             dialog.dismiss()
 
         }
 
         binding.tvAllExercise.setOnClickListener {
-            onSaveClickListener.invoke("CopyWeekWithAll")
+            onSaveClickListener.invoke(CopyOption.CopyAllDetails)
             dialog.dismiss()
 
         }
 
         binding.tvAllObjective.setOnClickListener {
-            onSaveClickListener.invoke("CopyWeekWithObj")
+            onSaveClickListener.invoke(CopyOption.CopyOnlyObjective)
             dialog.dismiss()
 
         }

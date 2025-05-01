@@ -3,8 +3,13 @@ package com.cursointermedio.myapplication.ui.training
 import androidx.lifecycle.ViewModel
 import com.cursointermedio.myapplication.R
 import com.cursointermedio.myapplication.data.database.entities.TrainingWithWeeksAndRoutines
+import com.cursointermedio.myapplication.data.database.entities.toDatabase
+import com.cursointermedio.myapplication.domain.model.DetailModel
+import com.cursointermedio.myapplication.domain.model.RoutineModel
 import com.cursointermedio.myapplication.domain.model.TrainingModel
 import com.cursointermedio.myapplication.domain.model.WeekModel
+import com.cursointermedio.myapplication.domain.useCase.CopyOption
+import com.cursointermedio.myapplication.domain.useCase.GetRoutineUseCase
 import com.cursointermedio.myapplication.domain.useCase.GetTrainingUseCase
 import com.cursointermedio.myapplication.domain.useCase.GetWeekUseCase
 import com.cursointermedio.myapplication.ui.training.CurrentFeature.*
@@ -17,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class TrainingViewModel @Inject constructor(
     private val getTrainingUseCase: GetTrainingUseCase,
-    private val getWeekUseCase: GetWeekUseCase
+    private val getWeekUseCase: GetWeekUseCase,
+    private val getRoutineUseCase: GetRoutineUseCase
 ) : ViewModel() {
 
 
@@ -52,5 +58,27 @@ class TrainingViewModel @Inject constructor(
         getTrainingUseCase.deleteAll()
     }
 
+    suspend fun deleteTraining(training: TrainingModel) {
+        getTrainingUseCase.deleteTraining(training)
+    }
 
+    suspend fun copyTraining(training: TrainingWithWeeksAndRoutines) {
+        val oldTraining = training.training
+        val newTraining = TrainingModel(null, oldTraining.name, null)
+
+        val newTrainingId = getTrainingUseCase.insertTraining(newTraining)
+
+        val oldWeeksAndRoutines = training.weekWithRoutinesList
+        val oldWeekId = oldWeeksAndRoutines[oldWeeksAndRoutines.lastIndex].week.weekId
+
+        getWeekUseCase.createCopyOfWeek(oldWeekId, newTrainingId, CopyOption.CopyAllDetails)
+
+    }
+
+    suspend fun changeNameTraining(training: TrainingModel) {
+
+    }
+
+    suspend fun shareTraining(training: TrainingModel) {
+    }
 }

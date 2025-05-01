@@ -23,6 +23,8 @@
     <color name="black_alpha">#98000000</color>
 
     <color name="red">#FF0000</color>
+    <color name="greyPressed">#DADADA</color>
+    <color name="backgroundMenu">#FBFBFB</color>
 
 
     <!--    BoxStrokeColor-->

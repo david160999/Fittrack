@@ -8,8 +8,17 @@ import com.cursointermedio.myapplication.data.database.entities.TrainingWithWeek
 
 class TrainingAdapter(
     private var trainingWithWeeksAndRoutinesList: List<TrainingWithWeeksAndRoutines> = mutableListOf(),
-    private val onItemSelected: (Long) -> Unit
+    private val onItemSelected: (Long) -> Unit,
+    private val menuActions: TrainingMenuActions
+
 ) : RecyclerView.Adapter<TrainingViewHolder>() {
+
+    private var highlightAll = false
+
+    fun highlightAllItems() {
+        highlightAll = !highlightAll
+        notifyDataSetChanged()
+    }
 
     fun updateList(trainingList: List<TrainingWithWeeksAndRoutines>) {
         this.trainingWithWeeksAndRoutinesList = trainingList
@@ -25,9 +34,14 @@ class TrainingAdapter(
 
 
     override fun onBindViewHolder(holder: TrainingViewHolder, position: Int) {
-        holder.bind(trainingWithWeeksAndRoutinesList[position], onItemSelected)
+        holder.bind(trainingWithWeeksAndRoutinesList[position], onItemSelected, highlightAll, menuActions){
+            highlightAllItems()
+        }
+
     }
 
     override fun getItemCount() = trainingWithWeeksAndRoutinesList.size
+
+
 }
 

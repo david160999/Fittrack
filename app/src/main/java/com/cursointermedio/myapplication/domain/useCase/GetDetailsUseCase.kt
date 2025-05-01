@@ -22,4 +22,44 @@ class GetDetailsUseCase @Inject constructor(
     suspend fun insertDetailToRoutineExercise(detail: DetailModel){
         repository.insertDetailToRoutineExercise(detail.toDatabase())
     }
+
+    suspend fun copyDetailsToNewWeek(routineId: Long, newRoutineId: Long) {
+        val detalles = getDetailOfRoutine(routineId)
+
+        detalles.forEach() { detalle ->
+            val nuevoDetalle = DetailModel(
+                detailsId = 0,
+                routineDetailsId = newRoutineId,
+                exerciseDetailsId = detalle.exerciseDetailsId,
+                realWeight = detalle.realWeight,
+                realReps = detalle.realReps,
+                realRpe = detalle.realRpe,
+                objWeight = detalle.objWeight,
+                objReps = detalle.objReps,
+                objRpe = detalle.objRpe
+            )
+            insertDetailToRoutineExercise(nuevoDetalle)
+        }
+
+    }
+
+    suspend fun copyOnlyObjectiveToNewWeek(routineId: Long, newRoutineId: Long) {
+        val detalles = getDetailOfRoutine(routineId)
+
+        detalles.forEach() { detalle ->
+            val nuevoDetalle = DetailModel(
+                detailsId = 0,
+                routineDetailsId = newRoutineId,
+                exerciseDetailsId = detalle.exerciseDetailsId,
+                realWeight = null,
+                realReps = null,
+                realRpe = null,
+                objWeight = detalle.objWeight,
+                objReps = detalle.objReps,
+                objRpe = detalle.objRpe
+            )
+            insertDetailToRoutineExercise(nuevoDetalle)
+        }
+
+    }
 }

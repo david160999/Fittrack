@@ -27,6 +27,7 @@ import com.cursointermedio.myapplication.domain.model.RoutineModel
 import com.cursointermedio.myapplication.domain.model.TrainingModel
 import com.cursointermedio.myapplication.domain.model.WeekModel
 import com.cursointermedio.myapplication.domain.model.WeekWithRoutinesModel
+import com.cursointermedio.myapplication.domain.useCase.CopyOption
 import com.cursointermedio.myapplication.ui.routine.adapter.RoutineAdapter
 import com.cursointermedio.myapplication.ui.routine.dialog.RoutineDialog
 import com.cursointermedio.myapplication.ui.training.CurrentFeature.*
@@ -198,12 +199,8 @@ class WeekFragment : Fragment() {
 
         val dialog = WeekDialog(onSaveClickListener = { option ->
             lifecycleScope.launch {
-                when (option) {
-                    "CopyWeek", "CopyWeekWithObj", "CopyWeekWithAll" -> weekViewModel.createCopyOfWeek(
-                        weekId, trainingId, option,
-                    )
-
-                }
+                    weekViewModel.createCopyOfWeek(
+                        weekId, trainingId, option)
             }
         })
 

@@ -1,5 +1,6 @@
 package com.cursointermedio.myapplication.domain.useCase
 
+import com.cursointermedio.myapplication.data.database.entities.RoutineEntity
 import com.cursointermedio.myapplication.data.database.entities.RoutineWithExercises
 import com.cursointermedio.myapplication.data.database.entities.toDatabase
 import com.cursointermedio.myapplication.data.repository.ExerciseRepository
@@ -19,6 +20,16 @@ class GetRoutineUseCase @Inject constructor(
 
     suspend fun getRoutineWithExercises(routineId: Long): RoutineWithExercises {
         return repository.getRoutineWithExercises(routineId)
+    }
+
+    suspend fun copyRoutine(rutinaOriginal: RoutineEntity, nuevoWeekId: Long): Long {
+        val nuevaRutina = RoutineModel(
+            routineId = null,
+            weekRoutineId = nuevoWeekId,
+            name = rutinaOriginal.name,
+            description = rutinaOriginal.description
+        )
+        return insertRoutineToWeek(nuevaRutina)
     }
 
 }

@@ -11,7 +11,8 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetExercisesUseCase @Inject constructor(
-    private val repository: ExerciseRepository
+    private val repository: ExerciseRepository,
+    private val getRoutineUseCase:GetRoutineUseCase
 ) {
     fun invoke(): Flow<List<ExerciseModel>> {
         return repository.getAllExercisesFromDatabase()
@@ -31,5 +32,16 @@ class GetExercisesUseCase @Inject constructor(
 
     suspend fun getExerciseDetailsCount(routineId: Long): List<ExerciseDetailsCount>{
         return repository.getExerciseDetailsCount(routineId)
+    }
+
+    suspend fun copyExercise(routineId: Long, newRoutineId: Long) {
+        val exercises = getRoutineUseCase.getRoutineWithExercises(routineId)
+        exercises.exercises.forEach() { exercise ->
+            val relation = RoutineExerciseCrossRef(
+                routineId = newRoutineId,  // ID de la rutina
+                exerciseId = exercise.exerciseId!!  // ID del ejercicio
+            )
+            insertExerciseToRoutine(relation)
+        }
     }
 }

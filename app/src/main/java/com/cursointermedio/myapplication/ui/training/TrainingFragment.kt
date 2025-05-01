@@ -17,12 +17,15 @@ import com.cursointermedio.myapplication.databinding.FragmentTrainingBinding
 import com.cursointermedio.myapplication.domain.model.TrainingModel
 import com.cursointermedio.myapplication.domain.model.WeekModel
 import com.cursointermedio.myapplication.ui.training.adapter.TrainingAdapter
+import com.cursointermedio.myapplication.ui.training.adapter.TrainingMenuActions
 import com.cursointermedio.myapplication.ui.training.dialog.TrainingDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.cursointermedio.myapplication.utils.extensions.setupTouchAction
+
 
 @AndroidEntryPoint
 class TrainingFragment @Inject constructor() : Fragment() {
@@ -51,10 +54,24 @@ class TrainingFragment @Inject constructor() : Fragment() {
 
     private fun initList() {
         listTrainingWithWeeksAndRoutines = trainingViewModel.getTrainingWithWeeksAndRoutines()
+
         adapter = TrainingAdapter(
             onItemSelected = { trainingId ->
                 navigateToWeek(trainingId)
-            },
+            }, menuActions = TrainingMenuActions(
+                onChangeName = { id ->
+                    lifecycleScope.launch { trainingViewModel.changeNameTraining(id) }
+                },
+                onCopy = { id ->
+                    lifecycleScope.launch { trainingViewModel.copyTraining(id) }
+                },
+                onShare = { id ->
+                    lifecycleScope.launch { trainingViewModel.shareTraining(id) }
+                },
+                onEliminate = { id ->
+                    lifecycleScope.launch { trainingViewModel.deleteTraining(id) }
+                }
+            )
         )
         binding.rvTraining.layoutManager = LinearLayoutManager(context)
         binding.rvTraining.adapter = adapter
@@ -68,7 +85,13 @@ class TrainingFragment @Inject constructor() : Fragment() {
     }
 
     private fun initListener() {
-        binding.ivPlus.setOnTouchListener(binding)
+        binding.ivPlus.setupTouchAction {
+            createDialog()
+        }
+        binding.ivDownload.setupTouchAction {
+
+        }
+
     }
 
     private fun navigateToWeek(trainingId: Long) {
@@ -77,31 +100,6 @@ class TrainingFragment @Inject constructor() : Fragment() {
                 id = trainingId.toInt()
             )
         )
-    }
-
-    @SuppressLint("ClickableViewAccessibility", "PrivateResource")
-    private fun ImageView.setOnTouchListener(binding: FragmentTrainingBinding) {
-        binding.ivPlus.setOnTouchListener { _, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    binding.ivPlus.alpha = 0.2F
-                }
-
-                MotionEvent.ACTION_MOVE -> {}
-                MotionEvent.ACTION_UP -> {
-                    binding.ivPlus.alpha = 1F
-                    createDialog()
-
-                }
-
-                MotionEvent.ACTION_CANCEL -> {
-                    binding.ivPlus.alpha = 1F
-                }
-            }
-            true
-        }
-
-
     }
 
     private fun createDialog() {

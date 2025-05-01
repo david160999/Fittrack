@@ -14,6 +14,7 @@ import com.cursointermedio.myapplication.domain.model.RoutineModel
 import com.cursointermedio.myapplication.domain.model.TrainingModel
 import com.cursointermedio.myapplication.domain.model.WeekModel
 import com.cursointermedio.myapplication.domain.model.WeekWithRoutinesModel
+import com.cursointermedio.myapplication.domain.useCase.CopyOption
 import com.cursointermedio.myapplication.domain.useCase.GetDetailsUseCase
 import com.cursointermedio.myapplication.domain.useCase.GetExercisesUseCase
 import com.cursointermedio.myapplication.domain.useCase.GetRoutineUseCase
@@ -51,118 +52,12 @@ class WeekViewModel @Inject constructor(
         getWeekUseCase.insertWeekToTraining(week)
     }
 
-    suspend fun insertRoutine(routine: RoutineModel){
+    suspend fun insertRoutine(routine: RoutineModel) {
         getRoutineUseCase.insertRoutineToWeek(routine)
     }
-    suspend fun createCopyOfWeek(
-        weekIdOriginal: Long?,
-        trainingWeekId: Long,
-        optionSelected: String,
 
-    ) {
-        withContext(Dispatchers.IO) {
-            try {
-                // Paso 1: Obtener la semana con sus rutinas
-                val semanaConRutinasOriginal = getWeekUseCase.getWeekWithRoutines(weekIdOriginal!!)
-
-                val semanaOriginal = semanaConRutinasOriginal.week
-                val rutinasOriginales = semanaConRutinasOriginal.routineList
-
-                // Paso 2: Crear una nueva semana
-                val nuevaSemana = WeekModel(
-                    weekId = null,
-                    trainingWeekId = trainingWeekId,
-                    name = semanaOriginal.name,
-                    description = semanaOriginal.description
-                )
-                val nuevoWeekId = getWeekUseCase.insertWeekToTraining(nuevaSemana)
-
-                // Paso 3: Copiar cada rutina
-                rutinasOriginales.forEach { rutinaOriginal ->
-                    val newRoutineId = copyRoutine(rutinaOriginal, nuevoWeekId)
-
-                    //Paso 4: Copiar ejercicios de esa rutina
-                    copyExercise(rutinaOriginal.routineId!!, newRoutineId)
-
-                    when (optionSelected) {
-                        "CopyWeekWithObj" -> copyOnlyObjectiveToNewWeek(
-                            rutinaOriginal.routineId,
-                            newRoutineId
-                        )
-
-                        "CopyWeekWithAll" -> copyDetailsToNewWeek(
-                            rutinaOriginal.routineId,
-                            newRoutineId
-                        )
-                    }
-
-                }
-            } catch (e: Exception) {
-                // Si ocurre un error (por ejemplo, un valor nulo o cualquier otro problema), lo capturamos aquí
-                Log.e("Error", "Ocurrió un error al intentar copiar la semana: ${e.message}")
-            }
-        }
-    }
-
-    private suspend fun copyRoutine(rutinaOriginal: RoutineEntity, nuevoWeekId: Long): Long {
-        val nuevaRutina = RoutineModel(
-            routineId = null,
-            weekRoutineId = nuevoWeekId,
-            name = rutinaOriginal.name,
-            description = rutinaOriginal.description
-        )
-        return getRoutineUseCase.insertRoutineToWeek(nuevaRutina)
-    }
-
-    private suspend fun copyExercise(routineId: Long, newRoutineId: Long) {
-        val exercises = getRoutineUseCase.getRoutineWithExercises(routineId)
-        exercises.exercises.forEach() { exercise ->
-            val relation = RoutineExerciseCrossRef(
-                routineId = newRoutineId,  // ID de la rutina
-                exerciseId = exercise.exerciseId!!  // ID del ejercicio
-            )
-            getExercisesUseCase.insertExerciseToRoutine(relation)
-        }
-    }
-
-    private suspend fun copyDetailsToNewWeek(routineId: Long, newRoutineId: Long) {
-        val detalles = getDetailUseCase.getDetailOfRoutine(routineId)
-
-        detalles.forEach() { detalle ->
-            val nuevoDetalle = DetailModel(
-                detailsId = 0,
-                routineDetailsId = newRoutineId,
-                exerciseDetailsId = detalle.exerciseDetailsId,
-                realWeight = detalle.realWeight,
-                realReps = detalle.realReps,
-                realRpe = detalle.realRpe,
-                objWeight = detalle.objWeight,
-                objReps = detalle.objReps,
-                objRpe = detalle.objRpe
-            )
-            getDetailUseCase.insertDetailToRoutineExercise(nuevoDetalle)
-        }
-
-    }
-
-    private suspend fun copyOnlyObjectiveToNewWeek(routineId: Long, newRoutineId: Long) {
-        val detalles = getDetailUseCase.getDetailOfRoutine(routineId)
-
-        detalles.forEach() { detalle ->
-            val nuevoDetalle = DetailModel(
-                detailsId = 0,
-                routineDetailsId = newRoutineId,
-                exerciseDetailsId = detalle.exerciseDetailsId,
-                realWeight = null,
-                realReps = null,
-                realRpe = null,
-                objWeight = detalle.objWeight,
-                objReps = detalle.objReps,
-                objRpe = detalle.objRpe
-            )
-            getDetailUseCase.insertDetailToRoutineExercise(nuevoDetalle)
-        }
-
+    suspend fun createCopyOfWeek(weekIdOriginal: Long?, trainingWeekId: Long, optionSelected: CopyOption?) {
+        getWeekUseCase.createCopyOfWeek(weekIdOriginal, trainingWeekId, optionSelected)
     }
 
 

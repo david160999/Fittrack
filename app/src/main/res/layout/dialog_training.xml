@@ -45,7 +45,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:background="@null"
-                android:hint="@string/exercise_notas_del_ejercicio"
                 android:padding="6dp"
                 android:textColor="@color/secondary_text"
                 android:textSize="12sp"

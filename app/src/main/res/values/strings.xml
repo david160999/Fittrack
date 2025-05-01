@@ -17,8 +17,6 @@
     <string name="tv_description">Descripción</string>
 
 
-
-
     <!--    HomeFragment-->
     <string name="home_training">Entrenamiento</string>
     <string name="home_sub_training">¡Empieza a registrar tus entrenamientos!</string>
@@ -73,6 +71,15 @@
 
     <!--    TrainingFragment-->
     <string name="training_new_block">Crea un nuevo bloque</string>
+    <string name="training_block">Bloques</string>
+    <string name="training_numDays">%1$d Días </string>
+    <string name="training_numWeeks">%1$d Semanas</string>
+    <string name="training_menuOption1">Cambiar nombre</string>
+    <string name="training_menuOption2">Copiar</string>
+    <string name="training_menuOption3">Compartir</string>
+    <string name="training_menuOption4">Eliminar</string>
+    <string name="training_newBlock">Nuevo Bloque %1$s</string>
+
 
     <!--AddExerciseFragment-->
     <string name="addExercise_create_name">Nombre del ejercicio nuevo</string>

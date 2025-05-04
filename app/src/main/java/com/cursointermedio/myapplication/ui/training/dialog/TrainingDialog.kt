@@ -12,7 +12,7 @@ import com.cursointermedio.myapplication.utils.extensions.setupTouchAction
 
 class TrainingDialog(
     private val onSaveClickListener: (String) -> Unit,
-    private val newTrainingNum: String
+    private val newTrainingNum: String,
 ) : DialogFragment() {
 
     private var _binding: DialogTrainingBinding? = null

@@ -1,17 +1,17 @@
 package com.cursointermedio.myapplication.ui.training
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.cursointermedio.myapplication.R
 import com.cursointermedio.myapplication.data.database.entities.TrainingWithWeeksAndRoutines
 import com.cursointermedio.myapplication.databinding.FragmentTrainingBinding
 import com.cursointermedio.myapplication.domain.model.TrainingModel
@@ -25,6 +25,11 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.cursointermedio.myapplication.utils.extensions.setupTouchAction
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 
 
 @AndroidEntryPoint
@@ -37,9 +42,7 @@ class TrainingFragment @Inject constructor() : Fragment() {
 
     private lateinit var adapter: TrainingAdapter
 
-    private var listTraining = flowOf<List<TrainingModel>>()
     private lateinit var sizeListTraining: String
-    private lateinit var listTrainingWithWeeksAndRoutines: Flow<List<TrainingWithWeeksAndRoutines>>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -53,13 +56,12 @@ class TrainingFragment @Inject constructor() : Fragment() {
     }
 
     private fun initList() {
-        listTrainingWithWeeksAndRoutines = trainingViewModel.getTrainingWithWeeksAndRoutines()
 
         adapter = TrainingAdapter(
             onItemSelected = { trainingId ->
                 navigateToWeek(trainingId)
             }, menuActions = TrainingMenuActions(
-                onChangeName = { id ->
+                onChangeName = { id->
                     lifecycleScope.launch { trainingViewModel.changeNameTraining(id) }
                 },
                 onCopy = { id ->
@@ -73,13 +75,14 @@ class TrainingFragment @Inject constructor() : Fragment() {
                 }
             )
         )
-        binding.rvTraining.layoutManager = LinearLayoutManager(context)
+        val layoutManager = LinearLayoutManager(context)
+        binding.rvTraining.layoutManager = layoutManager
         binding.rvTraining.adapter = adapter
 
-        lifecycleScope.launch {
-            listTrainingWithWeeksAndRoutines.collect {
-                adapter.updateList(it)
-                sizeListTraining = it.size.toString()
+        lifecycleScope.launch{
+            trainingViewModel.trainings.collectLatest { list ->
+                adapter.submitList(list)
+                sizeListTraining = list.size.toString()
             }
         }
     }
@@ -91,7 +94,6 @@ class TrainingFragment @Inject constructor() : Fragment() {
         binding.ivDownload.setupTouchAction {
 
         }
-
     }
 
     private fun navigateToWeek(trainingId: Long) {
@@ -111,7 +113,9 @@ class TrainingFragment @Inject constructor() : Fragment() {
                     val trainingId = trainingViewModel.insertTraining(training)
 
                     val week = WeekModel(null, trainingId, null, null)
-                    trainingViewModel.insertWeek(week)
+                    val weekId = trainingViewModel.insertWeek(week)
+
+                    navigateToWeek(weekId)
                 }
             }, sizeListTraining
         )
@@ -129,11 +133,6 @@ class TrainingFragment @Inject constructor() : Fragment() {
         )
 
         val navController = findNavController()
-//        val feature = trainingViewModel.getFeature()
-
-//        if (feature != null) {
-//            navController.navigate(feature)
-//        }
         return binding.root
     }
 

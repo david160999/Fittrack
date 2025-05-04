@@ -5,6 +5,7 @@ import com.cursointermedio.myapplication.data.database.dao.TrainingDao
 import com.cursointermedio.myapplication.data.database.entities.ExerciseEntity
 import com.cursointermedio.myapplication.data.database.entities.TrainingEntity
 import com.cursointermedio.myapplication.data.database.entities.TrainingWithWeeksAndRoutines
+import com.cursointermedio.myapplication.data.database.entities.TrainingsWithWeekAndRoutineCounts
 import com.cursointermedio.myapplication.domain.model.ExerciseModel
 import com.cursointermedio.myapplication.domain.model.TrainingModel
 import com.cursointermedio.myapplication.domain.model.toDomain
@@ -17,7 +18,7 @@ class TrainingRepository @Inject constructor(
 ) {
     fun getAllTrainingsFromDatabase(): Flow<List<TrainingModel>> {
         val response = trainingDao.getAllTraining()
-        return response.map { it -> it.map { it.toDomain()} }
+        return response.map { it -> it.map { it.toDomain() } }
     }
 
     suspend fun insertTraining(training: TrainingEntity): Long {
@@ -29,11 +30,21 @@ class TrainingRepository @Inject constructor(
     }
 
 
-    fun getTrainingWithWeeksAndRoutines(): Flow<List<TrainingWithWeeksAndRoutines>> = trainingDao.getTrainingWithWeeksAndRoutines()
+    suspend fun getTrainingWithWeeksAndRoutines(trainingId: Long): TrainingWithWeeksAndRoutines =
+        trainingDao.getTrainingWithWeeksAndRoutines(trainingId)
 
 
-    suspend fun deleteAll(){
+    suspend fun deleteAll() {
         return trainingDao.deleteAllTraining()
     }
+
+    suspend fun changeNameTraining(training: TrainingEntity) {
+        trainingDao.changeNameTraining(training)
+    }
+
+    fun getTrainingsWithWeekAndRoutineCounts(): Flow<List<TrainingsWithWeekAndRoutineCounts>> {
+        return trainingDao.getTrainingsWithWeekAndRoutineCounts()
+    }
+
 
 }

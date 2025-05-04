@@ -34,6 +34,11 @@ data class TrainingWithWeeksAndRoutines(
     )
     val weekWithRoutinesList: List<WeekWithRoutines>
 )
+data class TrainingsWithWeekAndRoutineCounts(
+    @Embedded val training: TrainingEntity,
+    val numWeeks: Int,
+    val numRoutines: Int
+)
 
 data class TrainingWithWeeks(
     @Embedded val training: TrainingEntity,

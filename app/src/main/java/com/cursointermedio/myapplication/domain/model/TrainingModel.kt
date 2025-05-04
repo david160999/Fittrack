@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 data class TrainingModel
     (
     val trainingId: Long?,
-    val name: String,
+    var name: String,
     val description: String?,
 )
 

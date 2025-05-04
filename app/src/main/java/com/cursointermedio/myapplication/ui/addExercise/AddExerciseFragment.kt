@@ -55,7 +55,6 @@ class AddExerciseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         routineId = args.routineId
-        Log.e("AAAa", args.routineId.toString())
         initUI()
         initListener()
     }

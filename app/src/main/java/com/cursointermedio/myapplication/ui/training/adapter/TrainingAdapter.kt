@@ -1,47 +1,53 @@
 package com.cursointermedio.myapplication.ui.training.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.cursointermedio.myapplication.R
+import com.cursointermedio.myapplication.data.database.entities.TrainingEntity
 import com.cursointermedio.myapplication.data.database.entities.TrainingWithWeeksAndRoutines
+import com.cursointermedio.myapplication.data.database.entities.TrainingsWithWeekAndRoutineCounts
+import com.cursointermedio.myapplication.databinding.ItemTrainingBinding
+import com.cursointermedio.myapplication.databinding.ItemWeekBinding
+import com.cursointermedio.myapplication.ui.week.adapter.WeekViewHolder
 
 class TrainingAdapter(
-    private var trainingWithWeeksAndRoutinesList: List<TrainingWithWeeksAndRoutines> = mutableListOf(),
     private val onItemSelected: (Long) -> Unit,
     private val menuActions: TrainingMenuActions
 
-) : RecyclerView.Adapter<TrainingViewHolder>() {
+) : ListAdapter<TrainingsWithWeekAndRoutineCounts, TrainingViewHolder>(TrainingDiffCallback()) {
 
-    private var highlightAll = false
+    class TrainingDiffCallback : DiffUtil.ItemCallback<TrainingsWithWeekAndRoutineCounts>() {
+        override fun areItemsTheSame(
+            oldItem: TrainingsWithWeekAndRoutineCounts,
+            newItem: TrainingsWithWeekAndRoutineCounts
+        ): Boolean {
+            return oldItem.training.trainingId == newItem.training.trainingId
+        }
 
-    fun highlightAllItems() {
-        highlightAll = !highlightAll
-        notifyDataSetChanged()
-    }
-
-    fun updateList(trainingList: List<TrainingWithWeeksAndRoutines>) {
-        this.trainingWithWeeksAndRoutinesList = trainingList
-        notifyDataSetChanged()
-
+        override fun areContentsTheSame(
+            oldItem: TrainingsWithWeekAndRoutineCounts,
+            newItem: TrainingsWithWeekAndRoutineCounts
+        ): Boolean {
+            // Compara el `TrainingEntity` y la lista de `WeekEntity`
+            return oldItem.training == newItem.training
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrainingViewHolder {
-        return TrainingViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_training, parent, false)
-        )
+        val binding =
+            ItemTrainingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return TrainingViewHolder(binding, parent.context)
     }
 
 
     override fun onBindViewHolder(holder: TrainingViewHolder, position: Int) {
-        holder.bind(trainingWithWeeksAndRoutinesList[position], onItemSelected, highlightAll, menuActions){
-            highlightAllItems()
-        }
-
+        val item = getItem(position)
+        holder.bind(item, onItemSelected, menuActions)
     }
-
-    override fun getItemCount() = trainingWithWeeksAndRoutinesList.size
-
 
 }
 

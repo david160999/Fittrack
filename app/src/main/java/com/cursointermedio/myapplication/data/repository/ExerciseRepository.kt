@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import com.cursointermedio.myapplication.data.database.dao.ExerciseDao
 import com.cursointermedio.myapplication.data.database.entities.CategoryEntity
+import com.cursointermedio.myapplication.data.database.entities.DetailsEntity
 import com.cursointermedio.myapplication.data.database.entities.ExerciseDetailsCount
 import com.cursointermedio.myapplication.data.database.entities.ExerciseEntity
 import com.cursointermedio.myapplication.data.database.entities.RoutineExerciseCrossRef

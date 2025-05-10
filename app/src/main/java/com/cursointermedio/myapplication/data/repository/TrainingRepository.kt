@@ -1,20 +1,23 @@
 package com.cursointermedio.myapplication.data.repository
 
-import com.cursointermedio.myapplication.data.database.dao.ExerciseDao
 import com.cursointermedio.myapplication.data.database.dao.TrainingDao
-import com.cursointermedio.myapplication.data.database.entities.ExerciseEntity
 import com.cursointermedio.myapplication.data.database.entities.TrainingEntity
 import com.cursointermedio.myapplication.data.database.entities.TrainingWithWeeksAndRoutines
 import com.cursointermedio.myapplication.data.database.entities.TrainingsWithWeekAndRoutineCounts
-import com.cursointermedio.myapplication.domain.model.ExerciseModel
 import com.cursointermedio.myapplication.domain.model.TrainingModel
 import com.cursointermedio.myapplication.domain.model.toDomain
+import com.google.firebase.FirebaseException
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class TrainingRepository @Inject constructor(
-    private val trainingDao: TrainingDao
+    private val trainingDao: TrainingDao,
+    private val firestore: FirebaseFirestore
+
 ) {
     fun getAllTrainingsFromDatabase(): Flow<List<TrainingModel>> {
         val response = trainingDao.getAllTraining()
@@ -46,5 +49,28 @@ class TrainingRepository @Inject constructor(
         return trainingDao.getTrainingsWithWeekAndRoutineCounts()
     }
 
+    //    FIREBASE
+    suspend fun uploadTrainingData(trainingMapper: Map<String, Any?>, code: String) {
+        try {
+            firestore.collection("trainingData")
+                .document(code)
+                .set(trainingMapper)
+                .await()
+        } catch (e: Exception) {
+            throw FirebaseException("Error al subir datos a Firebase: ${e.message}")
+        }
+    }
 
+    suspend fun downLoadTrainingData(code: String): DocumentSnapshot?{
+        return try {
+            val snapshot = firestore.collection("trainingData")
+                .document(code)
+                .get()
+                .await()
+
+            if (snapshot.exists()) snapshot else null
+        } catch (e: Exception) {
+            throw FirebaseException("Error al descargar los datos a Firebase: ${e.message}")
+        }
+    }
 }

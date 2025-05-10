@@ -54,6 +54,11 @@
         <item name="android:windowExitAnimation">@anim/slide_out_down</item>
     </style>
 
+<!--Animación del menu de 4 opciones en el fragment de Training-->
+    <style name="MenuTRainingPopupFadeAnimation">
+        <item name="android:windowEnterAnimation">@anim/menu_training_fade_in</item>
+        <item name="android:windowExitAnimation">@anim/menu_training_fade_out</item>
+    </style>
 
     <!--    CardViewStyle-->
     <style name="CustomCardCorners" parent="@style/Widget.MaterialComponents.CardView">

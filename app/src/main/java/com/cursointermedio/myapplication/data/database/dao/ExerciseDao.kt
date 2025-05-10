@@ -21,7 +21,7 @@ interface ExerciseDao {
     @Query("SELECT * FROM exercise_table WHERE :routineID = exerciseId")
     fun getExercisesRoutine(routineID: Int): Flow<MutableList<ExerciseEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertExercise(exercise: ExerciseEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

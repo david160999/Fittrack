@@ -10,8 +10,6 @@ import androidx.room.Update
 import com.cursointermedio.myapplication.data.database.entities.TrainingEntity
 import com.cursointermedio.myapplication.data.database.entities.TrainingWithWeeksAndRoutines
 import com.cursointermedio.myapplication.data.database.entities.TrainingsWithWeekAndRoutineCounts
-import com.cursointermedio.myapplication.data.database.entities.WeekEntity
-import com.cursointermedio.myapplication.domain.model.TrainingModel
 import kotlinx.coroutines.flow.Flow
 
 @Dao

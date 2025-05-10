@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "110700243776",
+    "project_id": "effortapp-3f04d",
+    "storage_bucket": "effortapp-3f04d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:110700243776:android:82f1da2a93f4c8d51128a5",
+        "android_client_info": {
+          "package_name": "com.cursointermedio.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSnTPzNXUf_oFauQszhYkFIZzqAJ9Ystc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

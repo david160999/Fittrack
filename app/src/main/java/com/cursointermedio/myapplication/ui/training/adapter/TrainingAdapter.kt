@@ -1,18 +1,12 @@
 package com.cursointermedio.myapplication.ui.training.adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.cursointermedio.myapplication.R
-import com.cursointermedio.myapplication.data.database.entities.TrainingEntity
-import com.cursointermedio.myapplication.data.database.entities.TrainingWithWeeksAndRoutines
 import com.cursointermedio.myapplication.data.database.entities.TrainingsWithWeekAndRoutineCounts
 import com.cursointermedio.myapplication.databinding.ItemTrainingBinding
-import com.cursointermedio.myapplication.databinding.ItemWeekBinding
-import com.cursointermedio.myapplication.ui.week.adapter.WeekViewHolder
 
 class TrainingAdapter(
     private val onItemSelected: (Long) -> Unit,
@@ -47,7 +41,16 @@ class TrainingAdapter(
     override fun onBindViewHolder(holder: TrainingViewHolder, position: Int) {
         val item = getItem(position)
         holder.bind(item, onItemSelected, menuActions)
-    }
 
+        if (position == currentList.lastIndex) {
+            val params = holder.itemView.layoutParams as RecyclerView.LayoutParams
+            params.bottomMargin = 200 // last item bottom margin
+            holder.itemView.layoutParams = params
+        }else{
+            val params = holder.itemView.layoutParams as RecyclerView.LayoutParams
+            params.bottomMargin = 20 // last item bottom margin
+            holder.itemView.layoutParams = params
+        }
+    }
 }
 

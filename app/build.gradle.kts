@@ -8,7 +8,9 @@ plugins {
 
     //NAV NAVIGATION
     id("androidx.navigation.safeargs.kotlin")
-    
+
+    //FireBase
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -102,5 +104,22 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation ("androidx.fragment:fragment-ktx:1.6.2")
+
+
+    // Usar Firebase BOM para gestionar versiones
+    implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
+
+    // Dependencias de Firebase
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-firestore")
+    implementation ("com.google.firebase:firebase-auth")
+    implementation ("com.google.firebase:firebase-functions")
+    implementation("com.google.firebase:firebase-storage")
+
+    // Google Play Services (para autenticación, etc.)
+    implementation ("com.google.android.gms:play-services-auth:20.2.0")
+
+//    Gson
+    implementation ("com.google.code.gson:gson:2.10.1")
 
 }

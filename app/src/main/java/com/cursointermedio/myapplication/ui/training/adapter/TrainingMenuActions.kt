@@ -1,6 +1,5 @@
 package com.cursointermedio.myapplication.ui.training.adapter
 
-import com.cursointermedio.myapplication.data.database.entities.TrainingWithWeeksAndRoutines
 import com.cursointermedio.myapplication.data.database.entities.TrainingsWithWeekAndRoutineCounts
 import com.cursointermedio.myapplication.domain.model.TrainingModel
 

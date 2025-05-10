@@ -3,36 +3,31 @@ package com.cursointermedio.myapplication.ui.training.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.Window
 import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cursointermedio.myapplication.R
-import com.cursointermedio.myapplication.data.database.entities.TrainingWithWeeksAndRoutines
 import com.cursointermedio.myapplication.data.database.entities.TrainingsWithWeekAndRoutineCounts
 import com.cursointermedio.myapplication.databinding.ItemTrainingBinding
-import com.cursointermedio.myapplication.databinding.ItemWeekBinding
 import com.cursointermedio.myapplication.domain.model.TrainingModel
 import com.cursointermedio.myapplication.domain.model.toDomain
 import com.cursointermedio.myapplication.utils.extensions.setupTouchAction
+import com.cursointermedio.myapplication.utils.extensions.setupTouchActionRecyclerView
 
 
 class TrainingViewHolder(
     private val binding: ItemTrainingBinding, private val context: Context
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    var isChangeName = false
     val editText: EditText = binding.root.findViewById(R.id.editTextTitleItemTraining)
 
     @SuppressLint("ClickableViewAccessibility")
@@ -50,7 +45,7 @@ class TrainingViewHolder(
         binding.tvNumTrainings.text = context.getString(R.string.training_numDays, numRoutines)
         binding.tvNumCurrentsWeeks.text = context.getString(R.string.training_numWeeks, numWeeks)
 
-        binding.root.setupTouchAction() {
+        binding.root.setupTouchActionRecyclerView() {
             onItemSelected(trainingItemResponse.training.trainingId!!)
         }
 
@@ -59,7 +54,8 @@ class TrainingViewHolder(
                 binding.root,
                 context,
                 trainingItemResponse,
-                menuActions
+                menuActions,
+                onItemSelected
             )
         }
 
@@ -69,7 +65,8 @@ class TrainingViewHolder(
         view: View,
         context: Context,
         trainingItemResponse: TrainingsWithWeekAndRoutineCounts,
-        menuActions: TrainingMenuActions
+        menuActions: TrainingMenuActions,
+        onItemSelected: (Long) -> Unit
     ) {
 
         val popupView = LayoutInflater.from(context).inflate(R.layout.popup_menu_training, null)
@@ -95,7 +92,9 @@ class TrainingViewHolder(
             when (position) {
                 0 -> changeName(
                     trainingItemResponse.training.toDomain(),
-                    menuActions
+                    menuActions,
+                    trainingItemResponse,
+                    onItemSelected
                 )
 
                 1 -> menuActions.onCopy(trainingItemResponse)
@@ -108,27 +107,64 @@ class TrainingViewHolder(
         recyclerView.adapter = adapter
         popupWindow.isFocusable = true
         popupWindow.isOutsideTouchable = true
-        popupWindow.elevation = 24f
+        popupWindow.elevation = 12f
         popupWindow.isClippingEnabled = true
         popupWindow.softInputMode = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
-        popupWindow.showAsDropDown(view, 450, -30)
+        popupWindow.animationStyle = R.style.MenuTRainingPopupFadeAnimation
+
+        if (isItemBelowThreshold()){
+            popupWindow.showAsDropDown(view, 450, -630)
+        }else{
+            popupWindow.showAsDropDown(view, 450, -30)
+        }
+
+
     }
 
+    private fun isItemBelowThreshold(): Boolean {
+        val location = IntArray(2)
+        binding.root.getLocationOnScreen(location)
+
+        val itemTop = location[1] // Coordenada Y del top del item
+        val itemBottom = itemTop + binding.root.height // Coordenada Y del bottom del item
+
+        val screenHeight = Resources.getSystem().displayMetrics.heightPixels
+        val percentageThreshold = 0.75f
+
+        val threshold = screenHeight * percentageThreshold
+
+        // Verificar si el borde inferior del item ha superado el umbral (80%)
+        return if (itemBottom > threshold) {
+            true
+        } else {
+            false
+        }
+    }
 
     private fun changeName(
         training: TrainingModel,
-        menuActions: TrainingMenuActions
+        menuActions: TrainingMenuActions,
+        trainingItemResponse: TrainingsWithWeekAndRoutineCounts,
+        onItemSelected: (Long) -> Unit
     ) {
         activateLayoutChangeName()
 
-        binding.ivTrainingSave.setupTouchAction {
+        binding.editTextTitleItemTraining.requestFocus()
+        ViewCompat.getWindowInsetsController(binding.editTextTitleItemTraining)
+            ?.show(WindowInsetsCompat.Type.ime())
+
+        binding.ivTrainingSave.setOnClickListener {
             val name = binding.editTextTitleItemTraining.text.toString()
 
             if (name.isNotBlank()) {
                 training.name = name
                 menuActions.onChangeName(training)
+                binding.tvTitle.text = name
             }
             disableLayoutChangeName()
+            binding.root.setupTouchAction() {
+                onItemSelected(trainingItemResponse.training.trainingId!!)
+            }
         }
     }
 
@@ -137,14 +173,14 @@ class TrainingViewHolder(
         binding.root.setOnTouchListener(null)
 
         binding.root.setOnClickListener {
-            binding.editTextTitleItemTraining.requestFocus()
-            val imm =
-                editText.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showSoftInput(binding.editTextTitleItemTraining, InputMethodManager.SHOW_IMPLICIT)
+            editText.post {
+                if (!editText.hasFocus()) {
+                    editText.requestFocus() // make sure it's focused
+                    ViewCompat.getWindowInsetsController(editText)
+                        ?.show(WindowInsetsCompat.Type.ime())
+                }
+            }
         }
-
-
-        this.isChangeName = true
 
         binding.ivTrainingOptions.visibility = View.GONE
         binding.ivTrainingSave.visibility = View.VISIBLE
@@ -160,16 +196,16 @@ class TrainingViewHolder(
 
     private fun disableLayoutChangeName() {
 
-        this.isChangeName = false
-
         binding.ivTrainingOptions.visibility = View.VISIBLE
         binding.ivTrainingSave.visibility = View.GONE
 
         binding.editTextTitleItemTraining.text.clear()
         binding.editTextTitleItemTraining.clearFocus()
+        ViewCompat.getWindowInsetsController(editText)
+            ?.hide(WindowInsetsCompat.Type.ime())
 
         binding.tvTitle.visibility = View.VISIBLE
-        binding.editTextTitleItemTraining.visibility = View.GONE
+        binding.editTextTitleItemTraining.visibility = View.INVISIBLE
 
         changeLayout()
     }
@@ -187,8 +223,6 @@ class TrainingViewHolder(
                 R.id.editTextTitleItemTraining,
                 ConstraintSet.BOTTOM,
             )
-
-
         } else {
             constraintSet.connect(
                 R.id.lyDays,
@@ -198,7 +232,6 @@ class TrainingViewHolder(
             )
         }
         constraintSet.applyTo(binding.clItemTraining)
-
     }
 }
 

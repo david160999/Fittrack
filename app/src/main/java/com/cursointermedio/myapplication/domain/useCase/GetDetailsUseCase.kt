@@ -62,4 +62,8 @@ class GetDetailsUseCase @Inject constructor(
         }
 
     }
+
+    fun getDetailOfRoutineAndExercise(routineId: Long, exerciseID: Long): List<DetailsEntity>{
+        return repository.getDetailOfRoutineAndExercise(routineId, exerciseID)
+    }
 }

@@ -72,8 +72,7 @@
                 app:destination="@id/routineFragment" />
             <argument
                 android:name="id"
-                app:argType="integer"
-                android:defaultValue="0" />
+                app:argType="long" />
         </fragment>
         <fragment
             android:id="@+id/routineFragment"

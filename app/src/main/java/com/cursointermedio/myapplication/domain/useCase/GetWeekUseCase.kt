@@ -1,15 +1,10 @@
 package com.cursointermedio.myapplication.domain.useCase
 
 import android.util.Log
-import com.cursointermedio.myapplication.data.database.entities.TrainingWithWeeksAndRoutines
-import com.cursointermedio.myapplication.data.database.entities.WeekWithRoutines
 import com.cursointermedio.myapplication.data.database.entities.toDatabase
-import com.cursointermedio.myapplication.data.repository.TrainingRepository
 import com.cursointermedio.myapplication.data.repository.WeekRepository
-import com.cursointermedio.myapplication.domain.model.TrainingModel
 import com.cursointermedio.myapplication.domain.model.WeekModel
 import com.cursointermedio.myapplication.domain.model.WeekWithRoutinesModel
-import com.cursointermedio.myapplication.domain.model.toDomain
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext

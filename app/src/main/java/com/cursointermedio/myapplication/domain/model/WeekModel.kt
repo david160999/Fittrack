@@ -5,7 +5,7 @@ import com.cursointermedio.myapplication.data.database.entities.WeekEntity
 data class WeekModel
     (
     val weekId: Long?,
-    val trainingWeekId: Long,
+    val trainingWeekId: Long?,
     val name: String?,
     val description: String?
 )

@@ -24,4 +24,7 @@ private val detailDao: DetailsDao
         detailDao.insertDetailToRoutineExercise(detail)
     }
 
+    fun getDetailOfRoutineAndExercise(routineId: Long, exerciseID: Long): List<DetailsEntity>{
+        return detailDao.getDetailOfRoutineAndExercise(routineId, exerciseID)
+    }
 }

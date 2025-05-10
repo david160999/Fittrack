@@ -2,42 +2,27 @@ package com.cursointermedio.myapplication.ui.week
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ImageView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.common.ktx.R
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.cursointermedio.myapplication.data.database.entities.RoutineEntity
-import com.cursointermedio.myapplication.data.database.entities.TrainingWithWeeksAndRoutines
-import com.cursointermedio.myapplication.data.database.entities.WeekEntity
 import com.cursointermedio.myapplication.data.database.entities.WeekWithRoutines
 import com.cursointermedio.myapplication.databinding.FragmentWeekBinding
 import com.cursointermedio.myapplication.domain.model.RoutineModel
-import com.cursointermedio.myapplication.domain.model.TrainingModel
-import com.cursointermedio.myapplication.domain.model.WeekModel
 import com.cursointermedio.myapplication.domain.model.WeekWithRoutinesModel
-import com.cursointermedio.myapplication.domain.useCase.CopyOption
 import com.cursointermedio.myapplication.ui.routine.adapter.RoutineAdapter
 import com.cursointermedio.myapplication.ui.routine.dialog.RoutineDialog
 import com.cursointermedio.myapplication.ui.training.CurrentFeature.*
 import com.cursointermedio.myapplication.ui.training.CurrentFeature.TypeFeature.*
-import com.cursointermedio.myapplication.ui.training.dialog.TrainingDialog
-import com.cursointermedio.myapplication.ui.week.adapter.WeekAdapter
 import com.cursointermedio.myapplication.ui.week.dialog.WeekDialog
-import com.google.android.material.color.MaterialColors
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
@@ -64,7 +49,7 @@ class WeekFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         currentFeature.setFeature(WeekFeature)
-        trainingId = args.id.toLong()
+        trainingId = args.id
         initUI()
         initListener()
 

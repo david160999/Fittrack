@@ -13,6 +13,7 @@ import com.cursointermedio.myapplication.R
 import com.cursointermedio.myapplication.databinding.ActivityMainBinding
 import com.cursointermedio.myapplication.databinding.FragmentTrainingBinding
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.FirebaseApp
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
+        FirebaseApp.initializeApp(this)
         setContentView(binding.root)
         initUI()
     }

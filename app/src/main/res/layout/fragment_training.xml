@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/lyTrainingFragment"
     android:layout_width="match_parent"
@@ -34,7 +35,6 @@
             android:backgroundTint="@color/icons" />
     </LinearLayout>
 
-
     <TextView
         style="@style/title_text"
         android:layout_width="wrap_content"
@@ -47,12 +47,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvTraining"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingBottom="?attr/actionBarSize"
-        android:clipToPadding="false"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         />
-
-
-
 </LinearLayout>

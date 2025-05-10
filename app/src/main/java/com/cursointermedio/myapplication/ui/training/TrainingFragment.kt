@@ -5,14 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.cursointermedio.myapplication.R
-import com.cursointermedio.myapplication.data.database.entities.TrainingWithWeeksAndRoutines
 import com.cursointermedio.myapplication.databinding.FragmentTrainingBinding
 import com.cursointermedio.myapplication.domain.model.TrainingModel
 import com.cursointermedio.myapplication.domain.model.WeekModel
@@ -20,16 +18,10 @@ import com.cursointermedio.myapplication.ui.training.adapter.TrainingAdapter
 import com.cursointermedio.myapplication.ui.training.adapter.TrainingMenuActions
 import com.cursointermedio.myapplication.ui.training.dialog.TrainingDialog
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.cursointermedio.myapplication.utils.extensions.setupTouchAction
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.withContext
 
 
 @AndroidEntryPoint
@@ -46,6 +38,7 @@ class TrainingFragment @Inject constructor() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         initUI()
 
     }
@@ -62,16 +55,18 @@ class TrainingFragment @Inject constructor() : Fragment() {
                 navigateToWeek(trainingId)
             }, menuActions = TrainingMenuActions(
                 onChangeName = { id->
-                    lifecycleScope.launch { trainingViewModel.changeNameTraining(id) }
+                    trainingViewModel.changeNameTraining(id)
                 },
                 onCopy = { id ->
-                    lifecycleScope.launch { trainingViewModel.copyTraining(id) }
+                    trainingViewModel.copyTraining(id)
+                    binding.rvTraining.smoothScrollToPosition(0)
+
                 },
                 onShare = { id ->
-                    lifecycleScope.launch { trainingViewModel.shareTraining(id) }
+                    trainingViewModel.uploadTrainingData(id)
                 },
                 onEliminate = { id ->
-                    lifecycleScope.launch { trainingViewModel.deleteTraining(id) }
+                    trainingViewModel.deleteTraining(id)
                 }
             )
         )
@@ -92,49 +87,56 @@ class TrainingFragment @Inject constructor() : Fragment() {
             createDialog()
         }
         binding.ivDownload.setupTouchAction {
-
         }
+
+        trainingViewModel.trainingId.observe(viewLifecycleOwner, Observer { trainingId ->
+            trainingId?.let {
+                navigateToWeek(trainingId)
+            }?: run {
+                Toast.makeText(context, "Error al insertar el entrenamiento", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        trainingViewModel.trainingHashCode.observe(viewLifecycleOwner, Observer { trainingHashCode ->
+            trainingHashCode?.let {
+            }?: run {
+                Toast.makeText(context, "Error al intentar compartir el entramiento", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun navigateToWeek(trainingId: Long) {
         findNavController().navigate(
             TrainingFragmentDirections.actionTrainingFragmentToWeekFragment(
-                id = trainingId.toInt()
+                id = trainingId
             )
         )
     }
 
     private fun createDialog() {
-
         val dialog = TrainingDialog(
             onSaveClickListener = { name ->
-                lifecycleScope.launch {
-                    val training = TrainingModel(null, name, null)
-                    val trainingId = trainingViewModel.insertTraining(training)
-
-                    val week = WeekModel(null, trainingId, null, null)
-                    val weekId = trainingViewModel.insertWeek(week)
-
-                    navigateToWeek(weekId)
-                }
+                    trainingViewModel.insertTrainingAndWeek(name)
             }, sizeListTraining
         )
         dialog.show(parentFragmentManager, "dialog")
-
     }
-
 
     override fun onCreateView(
 
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentTrainingBinding.inflate(
             inflater, container, false
         )
-
         val navController = findNavController()
         return binding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Limpiar el binding cuando la vista se destruya
+        _binding = null
+    }
 
 }

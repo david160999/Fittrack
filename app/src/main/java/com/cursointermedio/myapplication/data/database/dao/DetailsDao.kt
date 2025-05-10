@@ -29,4 +29,6 @@ interface DetailsDao {
     @Update
     suspend fun updateDetail(detail: DetailsEntity)
 
+    @Query("SELECT * FROM details_table WHERE :routineId = routineDetailsId AND :exerciseId = exerciseDetailsId ")
+    fun getDetailOfRoutineAndExercise(routineId: Long, exerciseId: Long): List<DetailsEntity>
 }

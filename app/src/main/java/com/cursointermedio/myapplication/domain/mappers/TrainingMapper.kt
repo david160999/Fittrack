@@ -14,6 +14,7 @@ import com.cursointermedio.myapplication.data.repository.DetailsRepository
 import com.cursointermedio.myapplication.data.repository.ExerciseRepository
 import com.cursointermedio.myapplication.data.repository.RoutineRepository
 import com.cursointermedio.myapplication.data.repository.TrainingRepository
+import com.cursointermedio.myapplication.data.repository.UserRepositoryImpl
 import com.cursointermedio.myapplication.data.repository.WeekRepository
 import com.cursointermedio.myapplication.domain.model.TrainingFirebaseModel
 import com.cursointermedio.myapplication.domain.useCase.GetDetailsUseCase
@@ -28,7 +29,8 @@ class TrainingMapper @Inject constructor(
     private val routineRepository: RoutineRepository,
     private val detailsRepository: DetailsRepository,
     private val weekRepository: WeekRepository,
-    private val exerciseRepository: ExerciseRepository
+    private val exerciseRepository: ExerciseRepository,
+    private val userRepositoryImpl: UserRepositoryImpl
 ) {
 
     suspend operator fun invoke(trainingId: Long): Map<String, Any?> {
@@ -40,12 +42,14 @@ class TrainingMapper @Inject constructor(
     private suspend fun buildFirebaseMap(trainingFull: TrainingWithWeeksAndRoutines): Map<String, Any?> {
         val training = trainingFull.training
         val weeks = trainingFull.weekWithRoutinesList
+        val user = userRepositoryImpl.getUserData()
 
 //      Entrenamiento
         return mapOf(
             "trainingId" to training.trainingId,
             "name" to training.name,
             "description" to training.description,
+            "author_uid" to user.id,
             "weeks" to listOfNotNull(weeks.lastOrNull()).map { week ->
 //                      Semanas
                 hashMapOf(

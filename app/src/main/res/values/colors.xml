@@ -29,8 +29,7 @@
 
     <!--    BoxStrokeColor-->
     <color name="mtrl_textinput_default_box_stroke_color">#407B8D</color>
-
-
+    <color name="shimmer_placeholder">#FFFFFF</color>
 
 
 </resources>

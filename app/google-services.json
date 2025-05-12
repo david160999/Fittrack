@@ -12,7 +12,28 @@
           "package_name": "com.cursointermedio.myapplication"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "110700243776-6f9gr0u7hp8jhltcjlkg3umeph0usrn2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cursointermedio.myapplication",
+            "certificate_hash": "2d55540ab101fe6fd23bb60655000caa9f6bee7b"
+          }
+        },
+        {
+          "client_id": "110700243776-p48lmpc9j4n8ao3f512qqu7ec7tm6b8i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cursointermedio.myapplication",
+            "certificate_hash": "79d94170bbfc7e8d3fcef5156600e8328e708539"
+          }
+        },
+        {
+          "client_id": "110700243776-9lf0mudn95a9b402c4bghmnf662kgfai.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCSnTPzNXUf_oFauQszhYkFIZzqAJ9Ystc"
@@ -20,7 +41,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "110700243776-9lf0mudn95a9b402c4bghmnf662kgfai.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

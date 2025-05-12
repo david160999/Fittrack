@@ -7,6 +7,7 @@ data class TrainingFirebaseModel(
     val trainingId: Long? = null,
     val name: String = "",
     val description: String? = null,
+    val authorId: String? = null,
     val weeks: List<WeekFirebaseModel> = emptyList()
 )
 

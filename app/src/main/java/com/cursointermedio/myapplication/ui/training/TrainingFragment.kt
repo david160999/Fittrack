@@ -7,13 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cursointermedio.myapplication.databinding.FragmentTrainingBinding
-import com.cursointermedio.myapplication.domain.model.TrainingModel
-import com.cursointermedio.myapplication.domain.model.WeekModel
 import com.cursointermedio.myapplication.ui.training.adapter.TrainingAdapter
 import com.cursointermedio.myapplication.ui.training.adapter.TrainingMenuActions
 import com.cursointermedio.myapplication.ui.training.dialog.TrainingDialog
@@ -21,7 +20,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.cursointermedio.myapplication.utils.extensions.setupTouchAction
-import kotlinx.coroutines.flow.collectLatest
 
 
 @AndroidEntryPoint
@@ -54,7 +52,7 @@ class TrainingFragment @Inject constructor() : Fragment() {
             onItemSelected = { trainingId ->
                 navigateToWeek(trainingId)
             }, menuActions = TrainingMenuActions(
-                onChangeName = { id->
+                onChangeName = { id ->
                     trainingViewModel.changeNameTraining(id)
                 },
                 onCopy = { id ->
@@ -73,36 +71,74 @@ class TrainingFragment @Inject constructor() : Fragment() {
         val layoutManager = LinearLayoutManager(context)
         binding.rvTraining.layoutManager = layoutManager
         binding.rvTraining.adapter = adapter
-
-        lifecycleScope.launch{
-            trainingViewModel.trainings.collectLatest { list ->
-                adapter.submitList(list)
-                sizeListTraining = list.size.toString()
-            }
-        }
     }
 
     private fun initListener() {
         binding.ivPlus.setupTouchAction {
-            createDialog()
+            createTrainingDialog()
         }
         binding.ivDownload.setupTouchAction {
         }
 
-        trainingViewModel.trainingId.observe(viewLifecycleOwner, Observer { trainingId ->
-            trainingId?.let {
-                navigateToWeek(trainingId)
-            }?: run {
-                Toast.makeText(context, "Error al insertar el entrenamiento", Toast.LENGTH_SHORT).show()
-            }
-        })
+        observeTrainingId()
+        observeTrainingHashCode()
+        observeTrainingUiState()
+    }
 
-        trainingViewModel.trainingHashCode.observe(viewLifecycleOwner, Observer { trainingHashCode ->
-            trainingHashCode?.let {
-            }?: run {
-                Toast.makeText(context, "Error al intentar compartir el entramiento", Toast.LENGTH_SHORT).show()
+    private fun showLoading() {
+        binding.shimmerLayout.startShimmer()
+        binding.shimmerLayout.visibility = View.VISIBLE
+        binding.rvTraining.visibility = View.GONE
+    }
+
+    private fun hideLoading() {
+        binding.shimmerLayout.stopShimmer()
+        binding.shimmerLayout.visibility = View.GONE
+        binding.rvTraining.visibility = View.VISIBLE
+    }
+
+    private fun observeTrainingUiState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                trainingViewModel.uiState.collect { state ->
+                    handleUiState(state)
+                }
             }
-        })
+        }
+    }
+
+    private fun observeTrainingId() {
+        trainingViewModel.trainingId.observe(viewLifecycleOwner) { trainingId ->
+            trainingId?.let { navigateToWeek(it) } ?: run {
+                showToast("Error al insertar el entrenamiento")
+            }
+        }
+    }
+
+    private fun observeTrainingHashCode() {
+        trainingViewModel.trainingHashCode.observe(viewLifecycleOwner) { hash ->
+            hash ?: showToast("Error al intentar compartir el entramiento")
+        }
+    }
+
+    private fun showToast(msg: String) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun handleUiState(state: TrainingsUiState) {
+        when (state) {
+            is TrainingsUiState.Loading -> showLoading()
+            is TrainingsUiState.Success -> {
+                hideLoading()
+                adapter.submitList(state.trainings)
+                sizeListTraining = state.trainings.size.toString()
+            }
+
+            is TrainingsUiState.Error -> {
+                hideLoading()
+                Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun navigateToWeek(trainingId: Long) {
@@ -113,14 +149,15 @@ class TrainingFragment @Inject constructor() : Fragment() {
         )
     }
 
-    private fun createDialog() {
+    private fun createTrainingDialog() {
         val dialog = TrainingDialog(
             onSaveClickListener = { name ->
-                    trainingViewModel.insertTrainingAndWeek(name)
+                trainingViewModel.insertTrainingAndWeek(name)
             }, sizeListTraining
         )
         dialog.show(parentFragmentManager, "dialog")
     }
+
 
     override fun onCreateView(
 
@@ -139,4 +176,13 @@ class TrainingFragment @Inject constructor() : Fragment() {
         _binding = null
     }
 
+    override fun onStart() {
+        super.onStart()
+        binding.shimmerLayout.startShimmer() // Inicia la animación al iniciar el fragmento
+    }
+
+    override fun onStop() {
+        super.onStop()
+        binding.shimmerLayout.stopShimmer() // Detiene la animación al detener el fragmento
+    }
 }

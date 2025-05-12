@@ -122,4 +122,11 @@ dependencies {
 //    Gson
     implementation ("com.google.code.gson:gson:2.10.1")
 
+//    Shimmer
+    implementation ("com.facebook.shimmer:shimmer:0.5.0")
+
+//    Glide
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.16.0")
+
 }

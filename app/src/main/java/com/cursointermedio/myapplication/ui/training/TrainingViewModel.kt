@@ -6,23 +6,22 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cursointermedio.myapplication.R
-import com.cursointermedio.myapplication.data.database.entities.TrainingWithWeeksAndRoutines
 import com.cursointermedio.myapplication.data.database.entities.TrainingsWithWeekAndRoutineCounts
-import com.cursointermedio.myapplication.domain.mappers.TrainingMapper
 import com.cursointermedio.myapplication.domain.model.TrainingModel
 import com.cursointermedio.myapplication.domain.model.WeekModel
 import com.cursointermedio.myapplication.domain.useCase.CopyOption
-import com.cursointermedio.myapplication.domain.useCase.GetDetailsUseCase
-import com.cursointermedio.myapplication.domain.useCase.GetRoutineUseCase
 import com.cursointermedio.myapplication.domain.useCase.GetTrainingUseCase
 import com.cursointermedio.myapplication.domain.useCase.GetWeekUseCase
 import com.cursointermedio.myapplication.ui.training.CurrentFeature.*
 import com.cursointermedio.myapplication.ui.training.CurrentFeature.TypeFeature.*
+import com.google.firebase.FirebaseException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
@@ -43,12 +42,16 @@ class TrainingViewModel @Inject constructor(
     private val _trainingHashCode = MutableLiveData<String?>()
     val trainingHashCode: LiveData<String?> get() = _trainingHashCode
 
+    private val _uiState = MutableStateFlow<TrainingsUiState>(TrainingsUiState.Loading)
+    val uiState: StateFlow<TrainingsUiState> = _uiState
+
     init {
         viewModelScope.launch {
             getTrainingUseCase.getTrainingsWithWeekAndRoutineCounts()
                 .flowOn(Dispatchers.IO)
-                .collectLatest {
-                    _trainings.value = it
+                .catch { e -> _uiState.value = TrainingsUiState.Error(e.message ?: "Error") }
+                .collectLatest { trainings ->
+                    _uiState.value = TrainingsUiState.Success(trainings)
                 }
         }
     }
@@ -121,6 +124,7 @@ class TrainingViewModel @Inject constructor(
     }
 
     fun uploadTrainingData(training: TrainingModel) {
+
         viewModelScope.launch {
             try {
                 val uniqueCode = getTrainingUseCase.uploadTrainingData(training)
@@ -132,11 +136,9 @@ class TrainingViewModel @Inject constructor(
                     )
                     _trainingHashCode.value = uniqueCode
                 } else {
-                    Log.w("Export", "Error al exportar datos")
                     _trainingHashCode.value = null
                 }
-
-            } catch (e: Exception) {
+            } catch (e: FirebaseException) {
                 _trainingHashCode.value = null
             }
         }

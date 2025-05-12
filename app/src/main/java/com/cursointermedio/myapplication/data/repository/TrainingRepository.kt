@@ -7,6 +7,8 @@ import com.cursointermedio.myapplication.data.database.entities.TrainingsWithWee
 import com.cursointermedio.myapplication.domain.model.TrainingModel
 import com.cursointermedio.myapplication.domain.model.toDomain
 import com.google.firebase.FirebaseException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
@@ -16,9 +18,11 @@ import javax.inject.Inject
 
 class TrainingRepository @Inject constructor(
     private val trainingDao: TrainingDao,
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
+    private val auth: FirebaseAuth,
 
-) {
+
+    ) {
     fun getAllTrainingsFromDatabase(): Flow<List<TrainingModel>> {
         val response = trainingDao.getAllTraining()
         return response.map { it -> it.map { it.toDomain() } }
@@ -52,16 +56,19 @@ class TrainingRepository @Inject constructor(
     //    FIREBASE
     suspend fun uploadTrainingData(trainingMapper: Map<String, Any?>, code: String) {
         try {
+            val user = auth.currentUser!!
             firestore.collection("trainingData")
-                .document(code)
+                .document("$code${user.uid}")
                 .set(trainingMapper)
                 .await()
+
+
         } catch (e: Exception) {
             throw FirebaseException("Error al subir datos a Firebase: ${e.message}")
         }
     }
 
-    suspend fun downLoadTrainingData(code: String): DocumentSnapshot?{
+    suspend fun downLoadTrainingData(code: String): DocumentSnapshot? {
         return try {
             val snapshot = firestore.collection("trainingData")
                 .document(code)

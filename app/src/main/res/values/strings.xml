@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="default_web_client_id">110700243776-9lf0mudn95a9b402c4bghmnf662kgfai.apps.googleusercontent.com</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 
     <string name="btn_back">Atrás</string>
@@ -24,6 +26,8 @@
     <string name="home_sub_weight">Peso corporal</string>
     <string name="home_trac">Trac</string>
     <string name="home_sub_trac">¡Comienza a hacer autoevaluaciones!</string>
+    <string name="home_user_name">Hola, %1$s</string>
+
 
 
     <!--    SettingsFragment-->

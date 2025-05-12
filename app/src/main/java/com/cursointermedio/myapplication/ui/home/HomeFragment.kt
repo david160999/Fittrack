@@ -13,6 +13,7 @@ import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.cursointermedio.myapplication.R
 import com.cursointermedio.myapplication.databinding.FragmentHomeBinding
 import com.cursointermedio.myapplication.databinding.FragmentSettingsBinding
@@ -21,7 +22,7 @@ import com.cursointermedio.myapplication.ui.training.TrainingViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.zip.Inflater
 
-
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private val homeViewModel by viewModels<HomeViewModel>()
@@ -38,33 +39,29 @@ class HomeFragment : Fragment() {
 
         binding.lyToSettings.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_settingsFragment)
-
         }
 
         binding.cvTraining.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_navigation)
-
         }
-
+        observeDataUser()
 
     }
-//    override  fun onResume(){
-//        super.onResume()
-//        Log.i("aaa", "RESUMNE")
-//    }
-//    override  fun onPause(){
-//        super.onPause()
-//        Log.i("aaa", "PAUSE")
-//    }
-//    override  fun onStart(){
-//        super.onStart()
-//        Log.i("aaa", "START")
-//    }
-//
-//    override  fun onDestroy(){
-//        super.onDestroy()
-//        Log.i("aaa", "DESTROY")
-//    }
+
+    private fun observeDataUser() {
+        homeViewModel.userData.observe(viewLifecycleOwner){user ->
+            user?.let {
+                binding.userName.text = getString(R.string.home_user_name, user.name)
+
+                Glide.with(this)
+                    .load(user.photoUrl)
+                    .circleCrop()
+                    .placeholder(R.drawable.ic_circle) // Imagen temporal mientras carga
+                    .error(R.drawable.ic_circle)       // Imagen por si falla
+                    .into(binding.ivProfileImage)  // tu ImageView
+            }
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -88,9 +85,6 @@ class HomeFragment : Fragment() {
 
 }
 
-private fun NavController.removeOnDestinationChangedListener() {
-
-}
 
 
 

@@ -83,6 +83,15 @@
     <string name="training_menuOption3">Compartir</string>
     <string name="training_menuOption4">Eliminar</string>
     <string name="training_newBlock">Nuevo Bloque %1$s</string>
+    <string name="training_dialog_code">Introduce un código</string>
+    <string name="training_dialog_import">Importar Bloque</string>
+    <string name="training_dialog_share">Comparte "'%1$s'" con este código</string>
+    <string name="training_dialog_copied">¡Copiado!</string>
+    <string name="training_dialog_delete_title">Eliminar entrenamiento</string>
+    <string name="training_dialog_delete_text">¿Estás seguro de que deseas eliminar "'%1$s'"?</string>
+
+
+
 
 
     <!--AddExerciseFragment-->

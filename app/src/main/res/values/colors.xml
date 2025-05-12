@@ -3,6 +3,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="Grey">#ACA5A5</color>
+    <color name="GreyLight">#D6D6D6</color>
+
 
     <!--    Text color-->
     <color name="primary_text">#FF000000</color>
@@ -25,6 +27,7 @@
     <color name="red">#FF0000</color>
     <color name="greyPressed">#DADADA</color>
     <color name="backgroundMenu">#FBFBFB</color>
+    <color name="redDark">#B00020</color>
 
 
     <!--    BoxStrokeColor-->

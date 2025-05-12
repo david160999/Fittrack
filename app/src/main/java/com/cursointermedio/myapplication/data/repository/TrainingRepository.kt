@@ -4,6 +4,10 @@ import com.cursointermedio.myapplication.data.database.dao.TrainingDao
 import com.cursointermedio.myapplication.data.database.entities.TrainingEntity
 import com.cursointermedio.myapplication.data.database.entities.TrainingWithWeeksAndRoutines
 import com.cursointermedio.myapplication.data.database.entities.TrainingsWithWeekAndRoutineCounts
+import com.cursointermedio.myapplication.domain.exception.NetworkException
+import com.cursointermedio.myapplication.domain.exception.TrainingNotFoundException
+import com.cursointermedio.myapplication.domain.exception.TrainingUploadException
+import com.cursointermedio.myapplication.domain.exception.UserNotFoundException
 import com.cursointermedio.myapplication.domain.model.TrainingModel
 import com.cursointermedio.myapplication.domain.model.toDomain
 import com.google.firebase.FirebaseException
@@ -54,17 +58,21 @@ class TrainingRepository @Inject constructor(
     }
 
     //    FIREBASE
-    suspend fun uploadTrainingData(trainingMapper: Map<String, Any?>, code: String) {
-        try {
-            val user = auth.currentUser!!
+    suspend fun uploadTrainingData(trainingMapper: Map<String, Any?>, code: String): String? {
+        return try {
+            val user = auth.currentUser ?: throw UserNotFoundException("Usuario no autenticado")
+            val uniqueCode = code + user.uid
+
+            // Subir datos a Firebase
             firestore.collection("trainingData")
-                .document("$code${user.uid}")
+                .document(uniqueCode)  // Usamos el uniqueCode directamente
                 .set(trainingMapper)
                 .await()
 
-
+            // Retornar el código único
+            uniqueCode
         } catch (e: Exception) {
-            throw FirebaseException("Error al subir datos a Firebase: ${e.message}")
+            throw TrainingUploadException("Error al subir datos a Firebase: ${e.message}")
         }
     }
 
@@ -75,9 +83,15 @@ class TrainingRepository @Inject constructor(
                 .get()
                 .await()
 
-            if (snapshot.exists()) snapshot else null
+            if (snapshot.exists()) {
+                snapshot
+            } else {
+                throw TrainingNotFoundException("No se encontró ningún entrenamiento con el código '$code'")
+            }
+        } catch (e: FirebaseException) {
+            throw NetworkException("Problema al acceder a Firebase", e)
         } catch (e: Exception) {
-            throw FirebaseException("Error al descargar los datos a Firebase: ${e.message}")
+            throw Exception("Error inesperado al descargar datos", e)
         }
     }
 }

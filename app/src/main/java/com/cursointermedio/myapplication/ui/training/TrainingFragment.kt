@@ -1,25 +1,33 @@
 package com.cursointermedio.myapplication.ui.training
 
+import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.cursointermedio.myapplication.R
 import com.cursointermedio.myapplication.databinding.FragmentTrainingBinding
+import com.cursointermedio.myapplication.domain.model.TrainingModel
 import com.cursointermedio.myapplication.ui.training.adapter.TrainingAdapter
 import com.cursointermedio.myapplication.ui.training.adapter.TrainingMenuActions
+import com.cursointermedio.myapplication.ui.training.dialog.DownloadTrainingDialog
+import com.cursointermedio.myapplication.ui.training.dialog.ShareTrainingDialog
 import com.cursointermedio.myapplication.ui.training.dialog.TrainingDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.cursointermedio.myapplication.utils.extensions.setupTouchAction
+import com.google.android.material.snackbar.Snackbar
 
 
 @AndroidEntryPoint
@@ -57,14 +65,12 @@ class TrainingFragment @Inject constructor() : Fragment() {
                 },
                 onCopy = { id ->
                     trainingViewModel.copyTraining(id)
-                    binding.rvTraining.smoothScrollToPosition(0)
-
                 },
                 onShare = { id ->
                     trainingViewModel.uploadTrainingData(id)
                 },
                 onEliminate = { id ->
-                    trainingViewModel.deleteTraining(id)
+                    saveDeleteTraining(id)
                 }
             )
         )
@@ -78,11 +84,27 @@ class TrainingFragment @Inject constructor() : Fragment() {
             createTrainingDialog()
         }
         binding.ivDownload.setupTouchAction {
+            downloadTrainingDialog()
         }
 
+        observeDownloadTraining()
         observeTrainingId()
         observeTrainingHashCode()
         observeTrainingUiState()
+    }
+
+    private fun observeDownloadTraining() {
+        trainingViewModel.downloadState.observe(viewLifecycleOwner) { result ->
+            result?.let {
+                it.onSuccess {
+
+                }
+                it.onFailure { error ->
+                    val message = error.message ?: "Ha ocurrido un error inesperado 😥"
+                    showSnackbar(message)
+                }
+            }
+        }
     }
 
     private fun showLoading() {
@@ -110,19 +132,27 @@ class TrainingFragment @Inject constructor() : Fragment() {
     private fun observeTrainingId() {
         trainingViewModel.trainingId.observe(viewLifecycleOwner) { trainingId ->
             trainingId?.let { navigateToWeek(it) } ?: run {
-                showToast("Error al insertar el entrenamiento")
+                showSnackbar("Error al insertar el entrenamiento")
             }
         }
     }
 
     private fun observeTrainingHashCode() {
         trainingViewModel.trainingHashCode.observe(viewLifecycleOwner) { hash ->
-            hash ?: showToast("Error al intentar compartir el entramiento")
+            hash?.let {
+                val trainingName = hash.first
+                val code = hash.second
+
+                shareTrainingDialog(trainingName = trainingName, code = code)
+            } ?: showSnackbar("Error al intentar compartir el entramiento")
         }
     }
 
-    private fun showToast(msg: String) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    private fun showSnackbar(msg: String) {
+        Snackbar.make(binding.root, msg, Snackbar.LENGTH_LONG)
+            .setBackgroundTint(ContextCompat.getColor(binding.root.context, R.color.redDark))
+            .setTextColor(ContextCompat.getColor(binding.root.context, R.color.white))
+            .show()
     }
 
     private fun handleUiState(state: TrainingsUiState) {
@@ -132,6 +162,8 @@ class TrainingFragment @Inject constructor() : Fragment() {
                 hideLoading()
                 adapter.submitList(state.trainings)
                 sizeListTraining = state.trainings.size.toString()
+                binding.rvTraining.scrollToPosition(0)
+                binding.rvTraining.smoothScrollToPosition(0)
             }
 
             is TrainingsUiState.Error -> {
@@ -158,6 +190,33 @@ class TrainingFragment @Inject constructor() : Fragment() {
         dialog.show(parentFragmentManager, "dialog")
     }
 
+    private fun downloadTrainingDialog() {
+        val dialog = DownloadTrainingDialog(
+            onSaveClickListener = { code ->
+                trainingViewModel.downLoadTraining(code)
+            }
+        )
+        dialog.show(parentFragmentManager, "dialog")
+    }
+
+    private fun shareTrainingDialog(trainingName: String, code: String) {
+        val dialog = ShareTrainingDialog(trainingName = trainingName, code = code)
+        dialog.show(parentFragmentManager, "dialog")
+    }
+
+    private fun saveDeleteTraining(training: TrainingModel) {
+        val dialog = AlertDialog.Builder(context, R.style.AlertDialogTheme)
+            .setTitle(getString(R.string.training_dialog_delete_title))
+            .setMessage(getString(R.string.training_dialog_delete_text, training.name))
+            .setPositiveButton(getString(R.string.btn_cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setNegativeButton(getString(R.string.btn_eliminate)) { dialog, _ ->
+                trainingViewModel.deleteTraining(training)
+                dialog.dismiss()
+            }
+            .show()
+    }
 
     override fun onCreateView(
 

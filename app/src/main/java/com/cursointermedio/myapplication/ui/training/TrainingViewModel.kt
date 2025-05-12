@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cursointermedio.myapplication.R
 import com.cursointermedio.myapplication.data.database.entities.TrainingsWithWeekAndRoutineCounts
+import com.cursointermedio.myapplication.domain.exception.NetworkException
+import com.cursointermedio.myapplication.domain.exception.TrainingNotFoundException
 import com.cursointermedio.myapplication.domain.model.TrainingModel
 import com.cursointermedio.myapplication.domain.model.WeekModel
 import com.cursointermedio.myapplication.domain.useCase.CopyOption
@@ -31,7 +33,7 @@ import javax.inject.Inject
 class TrainingViewModel @Inject constructor(
     private val getTrainingUseCase: GetTrainingUseCase,
     private val getWeekUseCase: GetWeekUseCase
-    ) : ViewModel() {
+) : ViewModel() {
 
     private val _trainings = MutableStateFlow<List<TrainingsWithWeekAndRoutineCounts>>(emptyList())
     val trainings: StateFlow<List<TrainingsWithWeekAndRoutineCounts>> = _trainings
@@ -39,11 +41,14 @@ class TrainingViewModel @Inject constructor(
     private val _trainingId = MutableLiveData<Long?>()
     val trainingId: LiveData<Long?> get() = _trainingId
 
-    private val _trainingHashCode = MutableLiveData<String?>()
-    val trainingHashCode: LiveData<String?> get() = _trainingHashCode
+    private val _trainingHashCode = MutableLiveData<Pair<String, String>?>()
+    val trainingHashCode: LiveData<Pair<String, String>?> get() = _trainingHashCode
 
     private val _uiState = MutableStateFlow<TrainingsUiState>(TrainingsUiState.Loading)
     val uiState: StateFlow<TrainingsUiState> = _uiState
+
+    private val _downloadState = MutableLiveData<Result<Unit>>() // Puede ser Result<Unit> si no necesitas retornar un dato
+    val downloadState: LiveData<Result<Unit>> = _downloadState
 
     init {
         viewModelScope.launch {
@@ -71,13 +76,19 @@ class TrainingViewModel @Inject constructor(
 
     fun getTrainingsFromDataBase(): Flow<List<TrainingModel>> = getTrainingUseCase.invoke()
 
-    fun insertTrainingAndWeek(trainingName:String) {
+    fun insertTrainingAndWeek(trainingName: String) {
         viewModelScope.launch {
             try {
-                val training = TrainingModel(trainingId = null , name = trainingName, description= null)
+                val training =
+                    TrainingModel(trainingId = null, name = trainingName, description = null)
                 val trainingId = getTrainingUseCase.insertTraining(training)
 
-                val weekWithTraining = WeekModel(weekId = null, trainingWeekId = trainingId, name = null, description = null )
+                val weekWithTraining = WeekModel(
+                    weekId = null,
+                    trainingWeekId = trainingId,
+                    name = null,
+                    description = null
+                )
 
                 getWeekUseCase.insertWeekToTraining(weekWithTraining)
 
@@ -124,17 +135,14 @@ class TrainingViewModel @Inject constructor(
     }
 
     fun uploadTrainingData(training: TrainingModel) {
+        val name = training.name
 
         viewModelScope.launch {
             try {
                 val uniqueCode = getTrainingUseCase.uploadTrainingData(training)
 
                 if (uniqueCode != null) {
-                    Log.d(
-                        "Export",
-                        "Datos exportados exitosamente con el código único: $uniqueCode"
-                    )
-                    _trainingHashCode.value = uniqueCode
+                    _trainingHashCode.value = Pair(name, uniqueCode)
                 } else {
                     _trainingHashCode.value = null
                 }
@@ -146,7 +154,19 @@ class TrainingViewModel @Inject constructor(
 
     fun downLoadTraining(code: String) {
         viewModelScope.launch {
-            getTrainingUseCase.downLoadTrainingData(code)
+            try {
+                getTrainingUseCase.downLoadTrainingData(code)
+                _downloadState.value = Result.success(Unit)
+            } catch (e: TrainingNotFoundException) {
+                _downloadState.value = Result.failure(e)
+            } catch (e: NetworkException) {
+                _downloadState.value = Result.failure(e)
+            } catch (e: Exception){
+                _downloadState.value = if (e.cause != null) {
+                    Result.failure(e.cause!!)
+                } else {
+                    Result.failure(e)
+                }            }
         }
     }
 }

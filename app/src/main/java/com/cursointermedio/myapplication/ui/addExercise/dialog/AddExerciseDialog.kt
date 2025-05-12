@@ -42,7 +42,7 @@ class AddExerciseDialog(
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = DialogAddexerciseBinding.inflate(layoutInflater)
 
-        val builder = AlertDialog.Builder(context, R.style.dialog)
+        val builder = AlertDialog.Builder(context, R.style.DialogAnimationStyle)
         builder.setView(binding.root)
         val dialog = builder.create()
 

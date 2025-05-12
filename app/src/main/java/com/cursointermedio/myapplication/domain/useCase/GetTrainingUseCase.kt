@@ -63,10 +63,8 @@ class GetTrainingUseCase @Inject constructor(
             val gson = com.google.gson.Gson()
             val json = gson.toJson(training) // Convierte los datos en un String JSON
 
-            val uniqueJson = json + UUID.randomUUID().toString()
-
             val md = MessageDigest.getInstance("SHA-256")  // Algoritmo de hash
-            val hash = md.digest(uniqueJson.toByteArray())  // Genera el hash
+            val hash = md.digest(json.toByteArray())  // Genera el hash
 
             // Convierte el hash a un string hexadecimal
             hash.joinToString("") { "%02x".format(it) }
@@ -86,18 +84,22 @@ class GetTrainingUseCase @Inject constructor(
     suspend fun uploadTrainingData(training: TrainingModel): String? {
 
         val mapper = trainingMapper.invoke(training.trainingId!!)
-
         val code = generateUniqueCode(training)
+        var uniqueCode: String? = null
+
         if (code != null) {
-            repository.uploadTrainingData(mapper, code)
+            val result = repository.uploadTrainingData(mapper, code)
+                uniqueCode = result
         }
-        return code
+
+        return uniqueCode
     }
 
-    suspend fun downLoadTrainingData(code: String){
+    suspend fun downLoadTrainingData(code: String) {
         val trainingData = repository.downLoadTrainingData(code)
-        trainingMapper.fromFirebaseToLocalDatabase(trainingData)
-
+        if (trainingData != null) {
+            trainingMapper.fromFirebaseToLocalDatabase(trainingData)
+        }
     }
 
 }

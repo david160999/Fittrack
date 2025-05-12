@@ -42,16 +42,29 @@
     </style>
 
 
-    <!--    DialogsStyle-->
-    <style name="dialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <!--    DialogsStyle Fragment Animation-->
+    <style name="DialogAnimationStyle" parent="Theme.MaterialComponents.Dialog">
         <item name="windowMinWidthMinor">85%</item>
-        <item name="android:windowIsFloating">false</item>
         <item name="android:windowAnimationStyle">@style/anim1</item>
     </style>
 
     <style name="anim1">
         <item name="android:windowEnterAnimation">@anim/slide_in_up</item>
         <item name="android:windowExitAnimation">@anim/slide_out_down</item>
+    </style>
+
+    <!--    AlertDialogsStyle -->
+    <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="android:buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+    </style>
+
+    <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">#f00</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">#00f</item>
     </style>
 
 <!--Animación del menu de 4 opciones en el fragment de Training-->
@@ -73,7 +86,6 @@
     </style>
 
     <!--    Sign Button-->
-
     <style name="sign_btn" parent="Widget.AppCompat.Button">
         <item name="android:backgroundTint">@color/icons</item>
         <item name="android:background">@drawable/google_button_background</item>

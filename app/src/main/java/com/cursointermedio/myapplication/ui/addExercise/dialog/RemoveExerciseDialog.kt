@@ -33,7 +33,7 @@ class RemoveExerciseDialog(
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = DialogRemoveExerciseBinding.inflate(layoutInflater)
 
-        val builder = AlertDialog.Builder(context, R.style.dialog).setView(binding.root)
+        val builder = AlertDialog.Builder(context, R.style.DialogAnimationStyle).setView(binding.root)
 
         val dialog = builder.create()
 

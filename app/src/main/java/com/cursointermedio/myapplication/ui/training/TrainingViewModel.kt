@@ -35,9 +35,6 @@ class TrainingViewModel @Inject constructor(
     private val getWeekUseCase: GetWeekUseCase
 ) : ViewModel() {
 
-    private val _trainings = MutableStateFlow<List<TrainingsWithWeekAndRoutineCounts>>(emptyList())
-    val trainings: StateFlow<List<TrainingsWithWeekAndRoutineCounts>> = _trainings
-
     private val _trainingId = MutableLiveData<Long?>()
     val trainingId: LiveData<Long?> get() = _trainingId
 

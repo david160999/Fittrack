@@ -18,10 +18,10 @@ import com.cursointermedio.myapplication.R
 import com.cursointermedio.myapplication.databinding.DialogRoutingBinding
 import com.cursointermedio.myapplication.databinding.DialogTrainingBinding
 import com.cursointermedio.myapplication.databinding.FragmentWeekBinding
+import com.cursointermedio.myapplication.utils.extensions.setupTouchAction
 
 class RoutineDialog(
     private val onSaveClickListener: (String) -> Unit,
-    private val weekId: Long,
     private val numRoutines: Int
 ) : DialogFragment() {
     private var _binding: DialogRoutingBinding? = null
@@ -47,7 +47,8 @@ class RoutineDialog(
         dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
 
         initUI()
-        setOnTouchListener(binding, dialog)
+        initListeners()
+
 
 
         return dialog
@@ -58,34 +59,14 @@ class RoutineDialog(
         binding.textInputLayout.hint = hint
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    private fun setOnTouchListener(binding: DialogRoutingBinding, dialog: Dialog) {
-        binding.cvSave.setOnTouchListener { v, event ->
-            when (event.action) {
-                android.view.MotionEvent.ACTION_DOWN -> {
-                    binding.cvSave.alpha = 0.2F
-                }
-
-                android.view.MotionEvent.ACTION_MOVE -> {}
-                android.view.MotionEvent.ACTION_UP -> {
-                    binding.cvSave.alpha = 1F
-                    val x = event.x
-                    val y = event.y
-                    if (x >= 0 && x <= v.width && y >= 0 && y <= v.height) {
-
-                        val name = binding.editTextRoutineName.text.toString().ifBlank {
-                            binding.textInputLayout.hint.toString()
-                        }
-                        onSaveClickListener(name)
-                        dialog.dismiss()
-                    }
-                }
-
-                android.view.MotionEvent.ACTION_CANCEL -> {
-                    binding.cvSave.alpha = 1F
-                }
+    private fun initListeners() {
+        binding.cvSave.setupTouchAction {
+            val name = binding.editTextRoutineName.text.toString().ifBlank {
+                binding.textInputLayout.hint.toString()
             }
-            true
+            onSaveClickListener(name)
+            dialog?.dismiss()
         }
     }
+
 }

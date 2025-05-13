@@ -1,7 +1,11 @@
 package com.cursointermedio.myapplication.ui.week
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.fragment.navArgs
+import com.cursointermedio.myapplication.data.database.entities.TrainingsWithWeekAndRoutineCounts
+import com.cursointermedio.myapplication.data.database.entities.WeekWithRoutines
 import com.cursointermedio.myapplication.domain.model.RoutineModel
 import com.cursointermedio.myapplication.domain.model.WeekModel
 import com.cursointermedio.myapplication.domain.model.WeekWithRoutinesModel
@@ -10,27 +14,51 @@ import com.cursointermedio.myapplication.domain.useCase.GetDetailsUseCase
 import com.cursointermedio.myapplication.domain.useCase.GetExercisesUseCase
 import com.cursointermedio.myapplication.domain.useCase.GetRoutineUseCase
 import com.cursointermedio.myapplication.domain.useCase.GetWeekUseCase
+import com.cursointermedio.myapplication.ui.training.TrainingsUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class WeekViewModel @Inject constructor(
     private val getWeekUseCase: GetWeekUseCase,
     private val getRoutineUseCase: GetRoutineUseCase,
-    private val getDetailUseCase: GetDetailsUseCase,
-    private val getExercisesUseCase: GetExercisesUseCase
+    private val savedStateHandle: SavedStateHandle
+
 ) : ViewModel() {
 
+    val trainingId: Long = savedStateHandle.get<Long>("id") ?: -1L
 
-    fun getAllWeeksWithRoutines(trainingId: Long): StateFlow<List<WeekWithRoutinesModel>> =
-        getWeekUseCase.getAllWeeksWithRoutines(trainingId).stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Eagerly,
-            initialValue = emptyList()
-        )
+    private val _weeksWithRoutines = MutableStateFlow<WeekUiState>(WeekUiState.Loading)
+    val weeksWithRoutines: StateFlow<WeekUiState> = _weeksWithRoutines
+
+    private val _weeks = MutableStateFlow<List<WeekWithRoutinesModel>>(emptyList())
+    val weeks: StateFlow<List<WeekWithRoutinesModel>> = _weeks
+
+    private val _spinnerList = MutableStateFlow<List<String>>(emptyList())
+    val spinnerList: StateFlow<List<String>> = _spinnerList
+
+    init {
+        viewModelScope.launch {
+            getWeekUseCase.getAllWeeksWithRoutines(trainingId)
+                .flowOn(Dispatchers.IO)
+                .catch { e -> _weeksWithRoutines.value = WeekUiState.Error(e.message ?: "Error") }
+                .collectLatest { weeks ->
+                    _spinnerList.value = List(weeks.size) { index -> "Semana ${index + 1}" }
+                    _weeks.value = weeks
+                    _weeksWithRoutines.value = WeekUiState.Success(weeks)
+
+                }
+        }
+    }
 
     suspend fun insertWeek(week: WeekModel) {
         getWeekUseCase.insertWeekToTraining(week)
@@ -40,7 +68,11 @@ class WeekViewModel @Inject constructor(
         getRoutineUseCase.insertRoutineToWeek(routine)
     }
 
-    suspend fun createCopyOfWeek(weekIdOriginal: Long?, trainingWeekId: Long, optionSelected: CopyOption?) {
+    suspend fun createCopyOfWeek(
+        weekIdOriginal: Long?,
+        trainingWeekId: Long,
+        optionSelected: CopyOption?
+    ) {
         getWeekUseCase.createCopyOfWeek(weekIdOriginal, trainingWeekId, optionSelected)
     }
 

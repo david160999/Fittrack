@@ -147,7 +147,6 @@ class TrainingFragment @Inject constructor() : Fragment() {
             } ?: showSnackbar("Error al intentar compartir el entramiento")
         }
     }
-
     private fun showSnackbar(msg: String) {
         Snackbar.make(binding.root, msg, Snackbar.LENGTH_LONG)
             .setBackgroundTint(ContextCompat.getColor(binding.root.context, R.color.redDark))
@@ -168,7 +167,7 @@ class TrainingFragment @Inject constructor() : Fragment() {
 
             is TrainingsUiState.Error -> {
                 hideLoading()
-                Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
+                showSnackbar(state.message)
             }
         }
     }

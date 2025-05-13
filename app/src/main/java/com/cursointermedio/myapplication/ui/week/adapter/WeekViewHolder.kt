@@ -40,7 +40,7 @@ class WeekViewHolder(
         adapter = RoutineAdapter(
             onItemSelected = { trainingId ->
                 onItemSelected(trainingId)
-            }, this.currentRoutines
+            }
         )
 
         binding.rvRoutines.layoutManager = LinearLayoutManager(context)
@@ -64,7 +64,7 @@ class WeekViewHolder(
                 currentRoutines = selectedWeek.routineList
                 binding.rvRoutines.adapter = RoutineAdapter(onItemSelected = { trainingId ->
                     onItemSelected(trainingId)
-                }, currentRoutines)
+                })
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {}

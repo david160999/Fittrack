@@ -9,21 +9,23 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cursointermedio.myapplication.data.database.entities.WeekWithRoutines
 import com.cursointermedio.myapplication.databinding.FragmentWeekBinding
 import com.cursointermedio.myapplication.domain.model.RoutineModel
-import com.cursointermedio.myapplication.domain.model.WeekWithRoutinesModel
 import com.cursointermedio.myapplication.ui.routine.adapter.RoutineAdapter
 import com.cursointermedio.myapplication.ui.routine.dialog.RoutineDialog
 import com.cursointermedio.myapplication.ui.training.CurrentFeature.*
 import com.cursointermedio.myapplication.ui.training.CurrentFeature.TypeFeature.*
 import com.cursointermedio.myapplication.ui.week.dialog.WeekDialog
+import com.cursointermedio.myapplication.utils.extensions.setupTouchAction
+import com.cursointermedio.myapplication.utils.extensions.showSnackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 
@@ -38,13 +40,16 @@ class WeekFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var adapter: RoutineAdapter
-    private lateinit var listWeekWithRoutines: StateFlow<List<WeekWithRoutinesModel>>
     private lateinit var sizeListWeek: String
 
     private lateinit var adapterWeeks: ArrayAdapter<WeekWithRoutines>
 
     private val args: WeekFragmentArgs by navArgs()
     private var trainingId: Long = 0
+
+    private var spinnerInitialized = false
+    private lateinit var spinnerAdapter: ArrayAdapter<String>
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,158 +61,143 @@ class WeekFragment : Fragment() {
     }
 
     private fun initListener() {
-        binding.ivPlusWeek.setOnTouchListener(binding)
+        binding.ivPlusWeek.setupTouchAction {
+            createDialog()
+        }
+
+        binding.ivPlus.setupTouchAction {
+            createRoutineDialog()
+        }
+
+        binding.dropMenu.setOnItemClickListener { parent, view, position, id ->
+            val selectedWeek = weekViewModel.weeks.value[position]
+            adapter.submitList(selectedWeek.routineList)
+        }
+
+        observeWeekUiState()
+        observeSpinnerList()
     }
 
-    private fun initUI() {
-        var spinnerInitialized = false
+    private fun observeSpinnerList() {
+        lifecycleScope.launchWhenStarted {
+            weekViewModel.spinnerList.collect { list ->
+                // Solo actualizar los datos del Adapter, sin recrearlo
+                spinnerAdapter.clear()
+                spinnerAdapter.addAll(list)
+                setupWeekSpinnerLastItem()
+                spinnerAdapter.notifyDataSetChanged()
+            }
+        }
+    }
 
-        listWeekWithRoutines = weekViewModel.getAllWeeksWithRoutines(trainingId)
-        lifecycleScope.launch {
-            listWeekWithRoutines.collect { weeks ->
-                // Solo hacemos esto si hay datos
-                if (weeks.isNotEmpty()) {
-                    if (!spinnerInitialized) {
-                        setupWeekSpinner(weeks)
-                        spinnerInitialized = true
-                    }
-
-                    val selected = getSelectedItemFromDropMenu()
-                    val updatedRoutine = weeks.getOrNull(selected)?.routineList.orEmpty()
-
-                    if (!::adapter.isInitialized) {
-                        adapter = RoutineAdapter(
-                            onItemSelected = { routineId ->
-                                navigateToRoutine(routineId)
-                            }, routines = updatedRoutine
-                        )
-                        binding.rvRoutine.layoutManager = LinearLayoutManager(context)
-                        binding.rvRoutine.adapter = adapter
-
-                    } else {
-                        adapter.updateList(updatedRoutine)
-                    }
+    private fun observeWeekUiState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                weekViewModel.weeksWithRoutines.collect { state ->
+                    handleUiState(state)
                 }
             }
         }
+    }
 
+    private fun showLoading() {
+    }
+
+    private fun hideLoading() {
+    }
+
+    private fun handleUiState(state: WeekUiState) {
+        when (state) {
+            is WeekUiState.Loading -> showLoading()
+            is WeekUiState.Success -> {
+                hideLoading()
+
+                val selectedItem = getSelectedItemFromDropMenu()
+                val updatedRoutine = state.weeksWithRoutines.getOrNull(selectedItem)?.routineList.orEmpty()
+
+                adapter.submitList(updatedRoutine)
+                binding.rvRoutine.scrollToPosition(0)
+                binding.rvRoutine.smoothScrollToPosition(0)
+            }
+
+            is WeekUiState.Error -> {
+                hideLoading()
+                showSnackbar(binding.root, state.message, binding.root.context)
+            }
+        }
+    }
+
+    private fun initUI() {
+        adapter = RoutineAdapter(
+            onItemSelected = { routineId ->
+                navigateToRoutine(routineId)
+            }
+        )
+        val layoutManager = LinearLayoutManager(context)
+        binding.rvRoutine.layoutManager = layoutManager
+        binding.rvRoutine.adapter = adapter
+
+        spinnerAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            mutableListOf<String>()
+        )
+        val dropMenu = binding.dropMenu
+        dropMenu.setAdapter(spinnerAdapter)
     }
 
     private fun getSelectedItemFromDropMenu(): Int {
-        val weeks = this.listWeekWithRoutines.value
+        val weekTitles = weekViewModel.spinnerList.value
+        val selectedText = binding.dropMenu.text.toString()
 
-        val weekTitles = List(weeks.size) { index -> "Semana ${index + 1}" }
-
-        val textoSeleccionado = binding.dropMenu.text.toString()
-        val selectedPosition = weekTitles.indexOf(textoSeleccionado)
-
-        return selectedPosition
+        return weekTitles.indexOf(selectedText)
     }
 
-    private fun setupWeekSpinner(weeks: List<WeekWithRoutinesModel>) {
-        val weekTitles = List(weeks.size) { index -> "Semana ${index + 1}" }
-
-        val spinnerAdapter = ArrayAdapter(
-            requireContext(), android.R.layout.simple_spinner_dropdown_item, weekTitles
-        )
-
+    private fun setupWeekSpinnerLastItem() {
         val dropMenu = binding.dropMenu
-        dropMenu.setAdapter(spinnerAdapter)
 
-        val itemCount = dropMenu.adapter?.count ?: 0
+        val itemCount = binding.dropMenu.adapter?.count ?: 0
         if (itemCount > 0) {
             val item = dropMenu.adapter.getItem(itemCount - 1)
             dropMenu.setText(item.toString(), false)
         }
-        binding.dropMenu.setOnItemClickListener { parent, view, position, id ->
-            val selectedWeek = weeks[position]
-            adapter.updateList(selectedWeek.routineList)
-        }
-
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    private fun ImageView.setOnTouchListener(binding: FragmentWeekBinding) {
-        binding.ivPlusWeek.setOnTouchListener { v, event ->
-            when (event.action) {
-                android.view.MotionEvent.ACTION_DOWN -> {
-                    binding.ivPlusWeek.alpha = 0.2F
-                }
-
-                android.view.MotionEvent.ACTION_MOVE -> {}
-                android.view.MotionEvent.ACTION_UP -> {
-                    binding.ivPlusWeek.alpha = 1F
-                    val x = event.x
-                    val y = event.y
-                    if (x >= 0 && x <= v.width && y >= 0 && y <= v.height) {
-                        createDialog()
-                    }
-
-                }
-
-                android.view.MotionEvent.ACTION_CANCEL -> {
-                    binding.ivPlusWeek.alpha = 1F
-                }
-            }
-            true
-        }
-        binding.ivPlus.setOnTouchListener { v, event ->
-            when (event.action) {
-                android.view.MotionEvent.ACTION_DOWN -> {
-                    binding.ivPlus.alpha = 0.2F
-                }
-
-                android.view.MotionEvent.ACTION_MOVE -> {}
-                android.view.MotionEvent.ACTION_UP -> {
-                    binding.ivPlus.alpha = 1F
-                    val x = event.x
-                    val y = event.y
-                    if (x >= 0 && x <= v.width && y >= 0 && y <= v.height) {
-                        createRoutineDialog()
-                    }
-
-                }
-
-                android.view.MotionEvent.ACTION_CANCEL -> {
-                    binding.ivPlus.alpha = 1F
-                }
-            }
-            true
-        }
-    }
 
     private fun createDialog() {
-
-        val selected = getSelectedItemFromDropMenu()
-        val weekId = listWeekWithRoutines.value.getOrNull(selected)?.week?.weekId
-
+        val weekId = getSelectedWeekId()
 
         val dialog = WeekDialog(onSaveClickListener = { option ->
             lifecycleScope.launch {
-                    weekViewModel.createCopyOfWeek(
-                        weekId, trainingId, option)
+                weekViewModel.createCopyOfWeek(
+                    weekId, trainingId, option
+                )
             }
-        })
+        }
+        )
 
         dialog.show(parentFragmentManager, "dialog")
     }
 
     private fun createRoutineDialog() {
-        val selected = getSelectedItemFromDropMenu()
-        val weekId = listWeekWithRoutines.value.getOrNull(selected)?.week?.weekId
-
+        val weekId = getSelectedWeekId()
 
         if (weekId != null) {
-            val numRoutines = listWeekWithRoutines.value[selected].routineList.size
+            val numRoutines = weekViewModel.weeks.value[weekId.toInt()].routineList.size
 
-            val dialog = RoutineDialog(onSaveClickListener = {name->
+            val dialog = RoutineDialog(onSaveClickListener = { name ->
                 lifecycleScope.launch {
                     val routine = RoutineModel(null, weekId, name, null)
                     weekViewModel.insertRoutine(routine)
                 }
-            }, weekId, numRoutines)
+            }, numRoutines)
             dialog.show(parentFragmentManager, "dialog")
         }
+    }
+
+    private fun getSelectedWeekId(): Long? {
+        val selected = getSelectedItemFromDropMenu()
+        return weekViewModel.weeks.value.getOrNull(selected)?.week?.weekId
     }
 
     private fun navigateToRoutine(routineId: Long) {

@@ -4,6 +4,10 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.view.MotionEvent
 import android.view.View
+import androidx.core.content.ContextCompat
+import com.cursointermedio.myapplication.R
+import com.google.android.material.snackbar.Snackbar
+import io.grpc.Context
 
 @SuppressLint("ClickableViewAccessibility")
 fun View.setupTouchAction(onClickAction: () -> Unit) {
@@ -54,4 +58,11 @@ fun View.setupTouchActionRecyclerView(onClickAction: () -> Unit) {
         }
         true
     }
+}
+
+fun showSnackbar(view: View, msg: String, context: android.content.Context) {
+    Snackbar.make(view, msg, Snackbar.LENGTH_LONG)
+        .setBackgroundTint(ContextCompat.getColor(context, R.color.redDark))
+        .setTextColor(ContextCompat.getColor(context, R.color.white))
+        .show()
 }

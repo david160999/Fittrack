@@ -6,12 +6,14 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Junction
 import androidx.room.PrimaryKey
+import androidx.room.R
 import androidx.room.Relation
 import com.cursointermedio.myapplication.domain.model.DetailModel
 import com.cursointermedio.myapplication.domain.model.ExerciseModel
 import com.cursointermedio.myapplication.domain.model.RoutineModel
 import com.cursointermedio.myapplication.domain.model.TrainingModel
 import com.cursointermedio.myapplication.domain.model.WeekModel
+import java.util.Date
 
 @Entity(tableName = "training_table")
 data class TrainingEntity(
@@ -76,6 +78,10 @@ data class WeekWithRoutines(
     val routineList: List<RoutineEntity>
 )
 
+data class ExerciseAndDatesCountFromRoutine(
+    val numExercise: Int,
+    val date: Date
+)
 
 @Entity(
     tableName = "routine_table", foreignKeys = [ForeignKey(
@@ -93,7 +99,7 @@ data class RoutineEntity(
     @ColumnInfo(name = "description") val description: String?
 )
 
-fun RoutineModel.toDatabase() = RoutineEntity(null, weekRoutineId, name, description)
+fun RoutineModel.toDatabase() = RoutineEntity(routineId, weekRoutineId, name, description)
 
 
 @Entity(

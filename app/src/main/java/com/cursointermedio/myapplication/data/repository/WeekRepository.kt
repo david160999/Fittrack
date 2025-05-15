@@ -36,6 +36,9 @@ class WeekRepository @Inject constructor(
         return response.toDomain()
     }
 
+    suspend fun getTrainingName(trainingId: Long): String {
+        return weekDao.getTrainingName(trainingId)
+    }
 
 //    suspend fun deleteAll(){
 //        return trainingDao.deleteAllTraining()

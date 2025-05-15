@@ -34,41 +34,7 @@ class WeekViewHolder(
         bindWeek: FragmentWeekBinding
     ) {
         // Set routines for the selected week
-        currentRoutines = week.routineList
 
-
-        adapter = RoutineAdapter(
-            onItemSelected = { trainingId ->
-                onItemSelected(trainingId)
-            }
-        )
-
-        binding.rvRoutines.layoutManager = LinearLayoutManager(context)
-        binding.rvRoutines.adapter = adapter
-
-
-        // Set up the spinner with week names
-        val spinnerAdapter = ArrayAdapter(context,
-            R.layout.simple_spinner_dropdown_item,
-            List(weeks.size) { index -> "Semana ${index + 1}" })
-
-        //bindWeek.dropMenu.adapter = spinnerAdapter
-        //binding.spinnerWeeks.adapter = spinnerAdapter
-        // Update routines when a different week is selected
-        binding.spinnerWeeks.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>, view: View?, position: Int, id: Long
-            ) {
-                val selectedWeek = weeks[position]
-                // Update the routines based on the selected week
-                currentRoutines = selectedWeek.routineList
-                binding.rvRoutines.adapter = RoutineAdapter(onItemSelected = { trainingId ->
-                    onItemSelected(trainingId)
-                })
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {}
-        }
     }
 }
 

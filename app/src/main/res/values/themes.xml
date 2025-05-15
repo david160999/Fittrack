@@ -67,7 +67,7 @@
         <item name="android:textColor">#00f</item>
     </style>
 
-<!--Animación del menu de 4 opciones en el fragment de Training-->
+    <!--Animación del menu de 4 opciones en el fragment de Training-->
     <style name="MenuTRainingPopupFadeAnimation">
         <item name="android:windowEnterAnimation">@anim/menu_training_fade_in</item>
         <item name="android:windowExitAnimation">@anim/menu_training_fade_out</item>
@@ -92,7 +92,22 @@
         <item name="android:textSize">14sp</item>
         <item name="android:layout_width">25dp</item>
         <item name="android:layout_height">25dp</item>
-
     </style>
 
+
+    <!--Spinner Week-->
+    <style name="MyTextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">#FF6200EE</item> <!-- Borde cuando está enfocado -->
+        <item name="boxBackgroundColor">#FFF5F5F5</item> <!-- Fondo -->
+        <item name="hintTextAppearance">@style/MyHintText</item>
+        <item name="helperTextTextAppearance">@style/MyHelperText</item>
+    </style>
+
+    <style name="MyHintText" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textColor">#FF0000</item>
+    </style>
+
+    <style name="MyHelperText" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textColor">#888888</item>
+    </style>
 </resources>

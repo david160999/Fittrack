@@ -25,10 +25,10 @@ import com.cursointermedio.myapplication.utils.extensions.setupTouchActionRecycl
 
 
 class TrainingViewHolder(
-    private val binding: ItemTrainingBinding, private val context: Context
-) : RecyclerView.ViewHolder(binding.root) {
+    private val binding: ItemTrainingBinding
+)  : RecyclerView.ViewHolder(binding.root) {
 
-    val editText: EditText = binding.root.findViewById(R.id.editTextTitleItemTraining)
+    private val editText: EditText = binding.root.findViewById(R.id.editTextTitleItemTraining)
 
     @SuppressLint("ClickableViewAccessibility")
     fun bind(

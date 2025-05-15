@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Ítem sin submenú -->
+    <item
+        android:id="@+id/menu_item_1"
+        android:title="Item 1" />
+
+    <!-- Ítem con submenú -->
+    <item
+        android:id="@+id/menu_item_expandable_1"
+        android:title="Expandable Item 1">
+        <menu>
+            <item
+                android:id="@+id/submenu_item_1"
+                android:title="Submenu Item 1.1" />
+            <item
+                android:id="@+id/submenu_item_2"
+                android:title="Submenu Item 1.2" />
+        </menu>
+    </item>
+
+    <!-- Ítem sin submenú -->
+    <item
+        android:id="@+id/menu_item_2"
+        android:title="Item 2" />
+
+    <!-- Otro ítem con submenú -->
+    <item
+        android:id="@+id/menu_item_expandable_2"
+        android:title="Expandable Item 2">
+        <menu>
+            <item
+                android:id="@+id/submenu_item_3"
+                android:title="Submenu Item 2.1" />
+            <item
+                android:id="@+id/submenu_item_4"
+                android:title="Submenu Item 2.2" />
+        </menu>
+    </item>
+
+    <!-- Otro ítem sin submenú -->
+    <item
+        android:id="@+id/menu_item_3"
+        android:title="Item 3" />
+</menu>

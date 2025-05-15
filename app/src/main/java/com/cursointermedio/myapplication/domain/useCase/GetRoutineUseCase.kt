@@ -22,7 +22,7 @@ class GetRoutineUseCase @Inject constructor(
         return repository.getRoutineWithExercises(routineId)
     }
 
-    suspend fun copyRoutine(rutinaOriginal: RoutineEntity, nuevoWeekId: Long): Long {
+    suspend fun copyRoutine(rutinaOriginal: RoutineModel, nuevoWeekId: Long): Long {
         val nuevaRutina = RoutineModel(
             routineId = null,
             weekRoutineId = nuevoWeekId,
@@ -32,4 +32,11 @@ class GetRoutineUseCase @Inject constructor(
         return insertRoutineToWeek(nuevaRutina)
     }
 
+    suspend fun changeNameRoutine(routine: RoutineModel) {
+        repository.changeNameRoutine(routine.toDatabase())
+    }
+
+    suspend fun deleteRoutine(routine: RoutineModel){
+        repository.deleteRoutine(routine.toDatabase())
+    }
 }

@@ -17,4 +17,12 @@ class RoutineRepository @Inject constructor(
     suspend fun getRoutineWithExercises(routineId: Long): RoutineWithExercises {
         return routineDao.getRoutineWithExercises(routineId)
     }
+
+    suspend fun changeNameRoutine(routine: RoutineEntity) {
+        routineDao.changeNameRoutine(routine)
+    }
+
+    suspend fun deleteRoutine(routine: RoutineEntity){
+        routineDao.deleteRoutine(routine)
+    }
 }

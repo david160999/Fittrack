@@ -1,5 +1,6 @@
 package com.cursointermedio.myapplication.ui.week
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -46,34 +47,72 @@ class WeekViewModel @Inject constructor(
     private val _spinnerList = MutableStateFlow<List<String>>(emptyList())
     val spinnerList: StateFlow<List<String>> = _spinnerList
 
+    private val _trainingName = MutableStateFlow<String>("")
+    val trainingName: StateFlow<String> = _trainingName
+
     init {
+        viewModelScope.launch {
+            getTrainingName()
+        }
+
         viewModelScope.launch {
             getWeekUseCase.getAllWeeksWithRoutines(trainingId)
                 .flowOn(Dispatchers.IO)
                 .catch { e -> _weeksWithRoutines.value = WeekUiState.Error(e.message ?: "Error") }
                 .collectLatest { weeks ->
-                    _spinnerList.value = List(weeks.size) { index -> "Semana ${index + 1}" }
-                    _weeks.value = weeks
-                    _weeksWithRoutines.value = WeekUiState.Success(weeks)
-
+                    _weeksWithRoutines.value = WeekUiState.Success(weeks).apply {
+                        Log.e("AAAA", "AAAAAAAAAAAA")
+                        _spinnerList.value = List(weeks.size) { index -> "Semana ${index + 1}" }
+                        _weeks.value = weeks
+                    }
                 }
         }
     }
 
-    suspend fun insertWeek(week: WeekModel) {
-        getWeekUseCase.insertWeekToTraining(week)
+    private fun getTrainingName() {
+        viewModelScope.launch {
+            _trainingName.value = getWeekUseCase.getTrainingName(trainingId) + " <>"
+        }
     }
 
-    suspend fun insertRoutine(routine: RoutineModel) {
-        getRoutineUseCase.insertRoutineToWeek(routine)
+    fun insertWeek(week: WeekModel) {
+        viewModelScope.launch {
+            getWeekUseCase.insertWeekToTraining(week)
+        }
     }
 
-    suspend fun createCopyOfWeek(
+    fun insertRoutine(routine: RoutineModel) {
+        viewModelScope.launch {
+            getRoutineUseCase.insertRoutineToWeek(routine)
+        }
+    }
+
+    fun createCopyOfWeek(
         weekIdOriginal: Long?,
         trainingWeekId: Long,
         optionSelected: CopyOption?
     ) {
-        getWeekUseCase.createCopyOfWeek(weekIdOriginal, trainingWeekId, optionSelected)
+        viewModelScope.launch {
+            getWeekUseCase.createCopyOfWeek(weekIdOriginal, trainingWeekId, optionSelected)
+        }
+    }
+
+    fun deleteRoutine(routine: RoutineModel) {
+        viewModelScope.launch {
+            getRoutineUseCase.deleteRoutine(routine)
+        }
+    }
+
+    fun changeNameRoutine(routine: RoutineModel) {
+        viewModelScope.launch {
+            getRoutineUseCase.changeNameRoutine(routine)
+        }
+    }
+
+    fun copyRoutine(routine: RoutineModel) {
+        viewModelScope.launch {
+            getRoutineUseCase.copyRoutine(routine, routine.weekRoutineId)
+        }
     }
 
 

@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 interface WeekDao {
 
     @Query("SELECT * FROM week_table WHERE :trainingId = trainingWeekId")
-    fun getWeeksTraining(trainingId:Long): Flow<List<WeekEntity>>
+    fun getWeeksTraining(trainingId: Long): Flow<List<WeekEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWeekToTraining(week: WeekEntity): Long
@@ -21,9 +21,12 @@ interface WeekDao {
     @Delete
     suspend fun deleteWeek(week: WeekEntity)
 
-    @Query("SELECT * FROM week_table WHERE trainingWeekId = :trainingId")
-    fun getAllWeeksWithRoutines(trainingId:Long): Flow<List<WeekWithRoutines>>
+    @Query("SELECT * FROM week_table WHERE trainingWeekId = :trainingId" )
+    fun getAllWeeksWithRoutines(trainingId: Long): Flow<List<WeekWithRoutines>>
 
     @Query("SELECT * FROM week_table WHERE weekId = :weekId")
-    fun getWeekWithRoutines(weekId:Long): WeekWithRoutines
+    fun getWeekWithRoutines(weekId: Long): WeekWithRoutines
+
+    @Query("SELECT name FROM training_table WHERE trainingId = :trainingId")
+    suspend fun getTrainingName(trainingId: Long): String
 }

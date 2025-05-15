@@ -1,6 +1,7 @@
 package com.cursointermedio.myapplication.ui.week
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,13 +16,19 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.cursointermedio.myapplication.R
 import com.cursointermedio.myapplication.data.database.entities.WeekWithRoutines
 import com.cursointermedio.myapplication.databinding.FragmentWeekBinding
 import com.cursointermedio.myapplication.domain.model.RoutineModel
+import com.cursointermedio.myapplication.domain.model.TrainingModel
+import com.cursointermedio.myapplication.ui.routine.adapter.MarginItemDecoration
 import com.cursointermedio.myapplication.ui.routine.adapter.RoutineAdapter
+import com.cursointermedio.myapplication.ui.routine.adapter.RoutineMenuActions
 import com.cursointermedio.myapplication.ui.routine.dialog.RoutineDialog
 import com.cursointermedio.myapplication.ui.training.CurrentFeature.*
 import com.cursointermedio.myapplication.ui.training.CurrentFeature.TypeFeature.*
+import com.cursointermedio.myapplication.ui.training.adapter.TrainingMenuActions
 import com.cursointermedio.myapplication.ui.week.dialog.WeekDialog
 import com.cursointermedio.myapplication.utils.extensions.setupTouchAction
 import com.cursointermedio.myapplication.utils.extensions.showSnackbar
@@ -40,15 +47,14 @@ class WeekFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var adapter: RoutineAdapter
-    private lateinit var sizeListWeek: String
-
-    private lateinit var adapterWeeks: ArrayAdapter<WeekWithRoutines>
 
     private val args: WeekFragmentArgs by navArgs()
     private var trainingId: Long = 0
 
-    private var spinnerInitialized = false
     private lateinit var spinnerAdapter: ArrayAdapter<String>
+
+    private var existingItemDecoration: RecyclerView.ItemDecoration? = null
+    private var notRoutineLayout = true
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,17 +71,36 @@ class WeekFragment : Fragment() {
             createDialog()
         }
 
-        binding.ivPlus.setupTouchAction {
+        binding.ivWeekAddRoutine.setupTouchAction {
             createRoutineDialog()
+        }
+        binding.btnWeekEdit.setupTouchAction {
+
+        }
+
+        binding.btnWeekCalendar.setupTouchAction {
+
         }
 
         binding.dropMenu.setOnItemClickListener { parent, view, position, id ->
-            val selectedWeek = weekViewModel.weeks.value[position]
-            adapter.submitList(selectedWeek.routineList)
+            updateRoutineAdapter()
+        }
+
+        binding.tvTitle.setupTouchAction {
+            findNavController().popBackStack()
         }
 
         observeWeekUiState()
         observeSpinnerList()
+        observeTrainingName()
+    }
+
+    private fun observeTrainingName() {
+        lifecycleScope.launch {
+            weekViewModel.trainingName.collect { name ->
+                binding.tvTitle.text = name
+            }
+        }
     }
 
     private fun observeSpinnerList() {
@@ -111,13 +136,8 @@ class WeekFragment : Fragment() {
             is WeekUiState.Loading -> showLoading()
             is WeekUiState.Success -> {
                 hideLoading()
+                updateRoutineAdapter()
 
-                val selectedItem = getSelectedItemFromDropMenu()
-                val updatedRoutine = state.weeksWithRoutines.getOrNull(selectedItem)?.routineList.orEmpty()
-
-                adapter.submitList(updatedRoutine)
-                binding.rvRoutine.scrollToPosition(0)
-                binding.rvRoutine.smoothScrollToPosition(0)
             }
 
             is WeekUiState.Error -> {
@@ -127,11 +147,56 @@ class WeekFragment : Fragment() {
         }
     }
 
+    private fun disableLayoutNotRoutines() {
+        binding.flWeekRoutineShimmer.visibility = View.GONE
+        binding.ivPlusWeek.visibility = View.VISIBLE
+        binding.btnWeekCalendar.visibility = View.VISIBLE
+        binding.btnWeekEdit.visibility = View.VISIBLE
+        binding.rvRoutine.visibility = View.VISIBLE
+    }
+
+    private fun setLayoutNotRoutines() {
+        binding.flWeekRoutineShimmer.visibility = View.VISIBLE
+        binding.ivPlusWeek.visibility = View.GONE
+        binding.btnWeekCalendar.visibility = View.GONE
+        binding.btnWeekEdit.visibility = View.GONE
+    }
+
+    private fun updateRoutineAdapter() {
+        val selectedItem = getSelectedItemFromDropMenu()
+        val updatedRoutine =
+            weekViewModel.weeks.value.getOrNull(selectedItem)?.routineList.orEmpty()
+
+        if (updatedRoutine.isEmpty()) {
+            notRoutineLayout = true
+            setLayoutNotRoutines()
+        } else if (notRoutineLayout) {
+            disableLayoutNotRoutines()
+            notRoutineLayout = false
+
+        }
+        adapter.submitList(updatedRoutine)
+
+    }
+
     private fun initUI() {
         adapter = RoutineAdapter(
             onItemSelected = { routineId ->
                 navigateToRoutine(routineId)
-            }
+            },
+            menuActions = RoutineMenuActions(
+                onChangeName = { id ->
+                    weekViewModel.changeNameRoutine(id)
+                },
+                onCopy = { id ->
+                    lifecycleScope.launch {
+                        weekViewModel.copyRoutine(id)
+                    }
+                },
+                onEliminate = { id ->
+                    saveDeleteTraining(id)
+                }
+            ),
         )
         val layoutManager = LinearLayoutManager(context)
         binding.rvRoutine.layoutManager = layoutManager
@@ -165,7 +230,8 @@ class WeekFragment : Fragment() {
 
 
     private fun createDialog() {
-        val weekId = getSelectedWeekId()
+        val selected = getSelectedItemFromDropMenu()
+        val weekId = weekViewModel.weeks.value.getOrNull(selected)?.week?.weekId
 
         val dialog = WeekDialog(onSaveClickListener = { option ->
             lifecycleScope.launch {
@@ -180,10 +246,11 @@ class WeekFragment : Fragment() {
     }
 
     private fun createRoutineDialog() {
-        val weekId = getSelectedWeekId()
+        val selected = getSelectedItemFromDropMenu()
+        val weekId = weekViewModel.weeks.value.getOrNull(selected)?.week?.weekId
 
         if (weekId != null) {
-            val numRoutines = weekViewModel.weeks.value[weekId.toInt()].routineList.size
+            val numRoutines = weekViewModel.weeks.value[selected].routineList.size
 
             val dialog = RoutineDialog(onSaveClickListener = { name ->
                 lifecycleScope.launch {
@@ -195,9 +262,18 @@ class WeekFragment : Fragment() {
         }
     }
 
-    private fun getSelectedWeekId(): Long? {
-        val selected = getSelectedItemFromDropMenu()
-        return weekViewModel.weeks.value.getOrNull(selected)?.week?.weekId
+    private fun saveDeleteTraining(routine: RoutineModel) {
+        val dialog = AlertDialog.Builder(context, R.style.AlertDialogTheme)
+            .setTitle(getString(R.string.week_dialog_delete_title))
+            .setMessage(getString(R.string.week_dialog_delete_text, routine.name))
+            .setPositiveButton(getString(R.string.btn_cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setNegativeButton(getString(R.string.btn_eliminate)) { dialog, _ ->
+                weekViewModel.deleteRoutine(routine)
+                dialog.dismiss()
+            }
+            .show()
     }
 
     private fun navigateToRoutine(routineId: Long) {

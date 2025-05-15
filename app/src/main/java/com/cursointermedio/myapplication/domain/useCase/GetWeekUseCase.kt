@@ -33,6 +33,10 @@ class GetWeekUseCase @Inject constructor(
         return repository.deleteWeek(week)
     }
 
+    suspend fun getTrainingName(trainingId: Long): String {
+        return repository.getTrainingName(trainingId)
+    }
+
     suspend fun getWeekWithRoutines(weekId:Long): WeekWithRoutinesModel{
        return repository.getWeekWithRoutines(weekId)
     }

@@ -34,7 +34,7 @@ class TrainingAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrainingViewHolder {
         val binding =
             ItemTrainingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return TrainingViewHolder(binding, parent.context)
+        return TrainingViewHolder(binding)
     }
 
 

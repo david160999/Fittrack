@@ -28,7 +28,8 @@
     <color name="greyPressed">#DADADA</color>
     <color name="backgroundMenu">#FBFBFB</color>
     <color name="redDark">#B00020</color>
-
+    <color name="iconSearchBackground1">#CDE8E5</color>
+    <color name="iconSearchBackground2">#A1CCD1</color>
 
     <!--    BoxStrokeColor-->
     <color name="mtrl_textinput_default_box_stroke_color">#407B8D</color>

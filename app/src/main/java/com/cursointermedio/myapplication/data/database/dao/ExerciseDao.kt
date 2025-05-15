@@ -44,4 +44,7 @@ interface ExerciseDao {
         ORDER BY e.exerciseId
     """)
     suspend fun getExerciseDetailsCount(routineId: Long): List<ExerciseDetailsCount>
+
+    @Query("SELECT COUNT(*)  FROM RoutineExerciseCrossRef WHERE routineId = :routineId")
+    suspend fun getExerciseFromRoutineCount(routineId: Long): Int
 }

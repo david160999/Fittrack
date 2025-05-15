@@ -34,10 +34,20 @@ class RoutineViewHolder(
     private val editText: EditText = binding.root.findViewById(R.id.editTextTitleItemTraining)
 
 
-    fun bind(routine: RoutineModel, onItemSelected: (Long) -> Unit,  menuActions: RoutineMenuActions) {
+    fun bind(
+        routine: RoutineModel,
+        onItemSelected: (Long) -> Unit,
+        menuActions: RoutineMenuActions
+    ) {
         val context = binding.root.context
 
-        binding.tvTitle.setText(routine.name)
+        binding.tvTitle.text = routine.name
+        binding.tvNumTrainings.text = routine.exerciseCount.toString()
+        if (routine.date.isNullOrBlank()) {
+            binding.tvNumCurrentsWeeks.text = ContextCompat.getString(context, R.string.week_date_routine)
+        } else {
+            binding.tvNumCurrentsWeeks.text = routine.date
+        }
 
         binding.root.setupTouchActionRecyclerView {
             onItemSelected(routine.routineId!!)
@@ -87,6 +97,7 @@ class RoutineViewHolder(
                     menuActions,
                     onItemSelected
                 )
+
                 1 -> menuActions.onCopy(routine)
                 2 -> menuActions.onEliminate(routine)
             }
@@ -104,9 +115,9 @@ class RoutineViewHolder(
             animationStyle = R.style.MenuTRainingPopupFadeAnimation
         }
 
-        if (isItemBelowThreshold()){
+        if (isItemBelowThreshold()) {
             popupWindow.showAsDropDown(view, 450, -630)
-        }else{
+        } else {
             popupWindow.showAsDropDown(view, 450, -30)
         }
 

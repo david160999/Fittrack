@@ -19,7 +19,8 @@ object RoomModule {
     @Singleton
     @Provides
     fun provideRoom(@ApplicationContext context: Context) =
-        Room.databaseBuilder(context, TrainingDatabase::class.java, QUOTE_DATABASE_NAME).createFromAsset("database/training.db").build()
+        Room.databaseBuilder(context, TrainingDatabase::class.java, QUOTE_DATABASE_NAME)
+            .createFromAsset("database/training.db").build()
 //            .createFromAsset("database/training.db").build()
     //fallbackToDestructiveMigration().build()
 
@@ -46,4 +47,8 @@ object RoomModule {
     @Singleton
     @Provides
     fun provideDetailsDao(db: TrainingDatabase) = db.getDetailsDao()
+
+    @Singleton
+    @Provides
+    fun provideDateDao(db: TrainingDatabase) = db.getDateDao()
 }

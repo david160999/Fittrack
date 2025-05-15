@@ -52,6 +52,8 @@
     <string name="week_all_exercise">Copiar ejercicios</string>
     <string name="week_dialog_delete_title">Eliminar rutina</string>
     <string name="week_dialog_delete_text">¿Estás seguro de que deseas eliminar "'%1$s'"?</string>
+    <string name="week_date_routine">Sin fecha</string>
+
 
     <!--    ExerciseFragment-->
     <string name="exercise_name">NOMBRE EJERCICIO</string>

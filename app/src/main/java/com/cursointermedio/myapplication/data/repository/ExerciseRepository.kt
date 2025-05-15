@@ -47,8 +47,13 @@ class ExerciseRepository @Inject constructor(
         }
     }
 
-    suspend fun getExerciseDetailsCount(routineId: Long): List<ExerciseDetailsCount>{
+    suspend fun getExerciseDetailsCount(routineId: Long): List<ExerciseDetailsCount> {
         return exerciseDao.getExerciseDetailsCount(routineId)
     }
+
+    suspend fun getExerciseFromRoutineCount(routineId: Long): Int {
+        return exerciseDao.getExerciseFromRoutineCount(routineId)
+    }
+
 
 }

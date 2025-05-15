@@ -81,7 +81,8 @@ class GetWeekUseCase @Inject constructor(
                             rutinaOriginal.routineId,
                             newRoutineId
                         )
-                        null -> TODO()
+
+                        else -> {}
                     }
 
                 }
@@ -94,6 +95,6 @@ class GetWeekUseCase @Inject constructor(
 }
 
 sealed class CopyOption {
-    object CopyOnlyObjective : CopyOption()
-    object CopyAllDetails : CopyOption()
+    data object CopyOnlyObjective : CopyOption()
+    data object CopyAllDetails : CopyOption()
 }

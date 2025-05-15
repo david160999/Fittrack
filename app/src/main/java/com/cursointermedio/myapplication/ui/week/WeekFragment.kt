@@ -1,43 +1,43 @@
 package com.cursointermedio.myapplication.ui.week
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cursointermedio.myapplication.R
-import com.cursointermedio.myapplication.data.database.entities.WeekWithRoutines
 import com.cursointermedio.myapplication.databinding.FragmentWeekBinding
 import com.cursointermedio.myapplication.domain.model.RoutineModel
-import com.cursointermedio.myapplication.domain.model.TrainingModel
-import com.cursointermedio.myapplication.ui.routine.adapter.MarginItemDecoration
 import com.cursointermedio.myapplication.ui.routine.adapter.RoutineAdapter
 import com.cursointermedio.myapplication.ui.routine.adapter.RoutineMenuActions
 import com.cursointermedio.myapplication.ui.routine.dialog.RoutineDialog
 import com.cursointermedio.myapplication.ui.training.CurrentFeature.*
 import com.cursointermedio.myapplication.ui.training.CurrentFeature.TypeFeature.*
-import com.cursointermedio.myapplication.ui.training.adapter.TrainingMenuActions
+import com.cursointermedio.myapplication.ui.week.adapter.DragRoutineAdapter
 import com.cursointermedio.myapplication.ui.week.dialog.WeekDialog
 import com.cursointermedio.myapplication.utils.extensions.setupTouchAction
 import com.cursointermedio.myapplication.utils.extensions.showSnackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class WeekFragment : Fragment() {
+class WeekFragment @Inject constructor() : Fragment() {
 
     private val currentFeature = Feature
 
@@ -47,11 +47,15 @@ class WeekFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var adapter: RoutineAdapter
+    private lateinit var dragAdapter: DragRoutineAdapter
+    private lateinit var itemTouchHelper: ItemTouchHelper
 
     private val args: WeekFragmentArgs by navArgs()
     private var trainingId: Long = 0
 
     private lateinit var spinnerAdapter: ArrayAdapter<String>
+    private var numWeekSpinnerSelected: Int = 0
+
 
     private var existingItemDecoration: RecyclerView.ItemDecoration? = null
     private var notRoutineLayout = true
@@ -75,7 +79,7 @@ class WeekFragment : Fragment() {
             createRoutineDialog()
         }
         binding.btnWeekEdit.setupTouchAction {
-
+            setUpItemTouchHelper()
         }
 
         binding.btnWeekCalendar.setupTouchAction {
@@ -83,6 +87,7 @@ class WeekFragment : Fragment() {
         }
 
         binding.dropMenu.setOnItemClickListener { parent, view, position, id ->
+            numWeekSpinnerSelected = position
             updateRoutineAdapter()
         }
 
@@ -157,24 +162,28 @@ class WeekFragment : Fragment() {
 
     private fun setLayoutNotRoutines() {
         binding.flWeekRoutineShimmer.visibility = View.VISIBLE
+        binding.rvRoutine.visibility = View.GONE
         binding.ivPlusWeek.visibility = View.GONE
         binding.btnWeekCalendar.visibility = View.GONE
         binding.btnWeekEdit.visibility = View.GONE
     }
 
     private fun updateRoutineAdapter() {
-        val selectedItem = getSelectedItemFromDropMenu()
+
         val updatedRoutine =
-            weekViewModel.weeks.value.getOrNull(selectedItem)?.routineList.orEmpty()
+            weekViewModel.weeks.value.getOrNull(numWeekSpinnerSelected)?.routineList.orEmpty()
 
         if (updatedRoutine.isEmpty()) {
             notRoutineLayout = true
             setLayoutNotRoutines()
         } else if (notRoutineLayout) {
+            Log.d("COLLECT", "collecting flow again$updatedRoutine")
+
             disableLayoutNotRoutines()
             notRoutineLayout = false
 
         }
+
         adapter.submitList(updatedRoutine)
 
     }
@@ -211,12 +220,44 @@ class WeekFragment : Fragment() {
         dropMenu.setAdapter(spinnerAdapter)
     }
 
-    private fun getSelectedItemFromDropMenu(): Int {
-        val weekTitles = weekViewModel.spinnerList.value
-        val selectedText = binding.dropMenu.text.toString()
+    private fun setUpItemTouchHelper() {
+        dragAdapter =
+            DragRoutineAdapter(weekViewModel.weeks.value[numWeekSpinnerSelected].routineList)
 
-        return weekTitles.indexOf(selectedText)
+        val layoutManager = LinearLayoutManager(context)
+        binding.rvRoutine.layoutManager = layoutManager
+        binding.rvRoutine.adapter = dragAdapter
+
+        // Setup ItemTouchHelper
+        val callback = object : ItemTouchHelper.SimpleCallback(
+            ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                val from = viewHolder.adapterPosition
+                val to = target.adapterPosition
+                dragAdapter.moveItem(from, to)
+                return true
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                // No swipe action
+            }
+        }
+
+        itemTouchHelper = ItemTouchHelper(callback)
+        itemTouchHelper.attachToRecyclerView(binding.rvRoutine)
     }
+
+//    private fun getSelectedItemFromDropMenu(): Int {
+//        val weekTitles = weekViewModel.spinnerList.value
+//        val selectedText = binding.dropMenu.text.toString()
+//
+//        return weekTitles.indexOf(selectedText)
+//    }
 
     private fun setupWeekSpinnerLastItem() {
         val dropMenu = binding.dropMenu
@@ -225,13 +266,13 @@ class WeekFragment : Fragment() {
         if (itemCount > 0) {
             val item = dropMenu.adapter.getItem(itemCount - 1)
             dropMenu.setText(item.toString(), false)
+            numWeekSpinnerSelected = itemCount - 1
         }
     }
 
 
     private fun createDialog() {
-        val selected = getSelectedItemFromDropMenu()
-        val weekId = weekViewModel.weeks.value.getOrNull(selected)?.week?.weekId
+        val weekId = weekViewModel.weeks.value.getOrNull(numWeekSpinnerSelected)?.week?.weekId
 
         val dialog = WeekDialog(onSaveClickListener = { option ->
             lifecycleScope.launch {
@@ -246,11 +287,10 @@ class WeekFragment : Fragment() {
     }
 
     private fun createRoutineDialog() {
-        val selected = getSelectedItemFromDropMenu()
-        val weekId = weekViewModel.weeks.value.getOrNull(selected)?.week?.weekId
+        val weekId = weekViewModel.weeks.value.getOrNull(numWeekSpinnerSelected)?.week?.weekId
 
         if (weekId != null) {
-            val numRoutines = weekViewModel.weeks.value[selected].routineList.size
+            val numRoutines = weekViewModel.weeks.value[numWeekSpinnerSelected].routineList.size
 
             val dialog = RoutineDialog(onSaveClickListener = { name ->
                 lifecycleScope.launch {
@@ -294,6 +334,15 @@ class WeekFragment : Fragment() {
         return binding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+//        weekViewModel.loadItems()
+    }
 }
 
 

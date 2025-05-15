@@ -12,13 +12,14 @@ import javax.inject.Inject
 
 class GetExercisesUseCase @Inject constructor(
     private val repository: ExerciseRepository,
-    private val getRoutineUseCase:GetRoutineUseCase
+    private val getRoutineUseCase: GetRoutineUseCase
 ) {
     fun invoke(): Flow<List<ExerciseModel>> {
         return repository.getAllExercisesFromDatabase()
     }
 
-    suspend fun insertExerciseToRoutine(exercise: RoutineExerciseCrossRef) = repository.insertExerciseToRoutine(exercise)
+    suspend fun insertExerciseToRoutine(exercise: RoutineExerciseCrossRef) =
+        repository.insertExerciseToRoutine(exercise)
 
     suspend fun getExercisesFromCategory(categoryId: Long): List<ExerciseModel> {
         return repository.getExercisesFromCategory(categoryId)
@@ -30,7 +31,7 @@ class GetExercisesUseCase @Inject constructor(
         repository.insertExercise(exercise.toDatabase())
     }
 
-    suspend fun getExerciseDetailsCount(routineId: Long): List<ExerciseDetailsCount>{
+    suspend fun getExerciseDetailsCount(routineId: Long): List<ExerciseDetailsCount> {
         return repository.getExerciseDetailsCount(routineId)
     }
 
@@ -43,5 +44,9 @@ class GetExercisesUseCase @Inject constructor(
             )
             insertExerciseToRoutine(relation)
         }
+    }
+
+    suspend fun getExerciseFromRoutineCount(routineId: Long): Int {
+        return repository.getExerciseFromRoutineCount(routineId)
     }
 }

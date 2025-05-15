@@ -22,7 +22,7 @@ import com.cursointermedio.myapplication.utils.extensions.setupTouchAction
 
 class RoutineDialog(
     private val onSaveClickListener: (String) -> Unit,
-    private val numRoutines: Int
+    private var numRoutines: Int
 ) : DialogFragment() {
     private var _binding: DialogRoutingBinding? = null
     private val binding get() = _binding!!
@@ -51,7 +51,7 @@ class RoutineDialog(
     }
 
     private fun initUI() {
-        val hint = getString(R.string.week_addRoutine_name, numRoutines)
+        val hint = getString(R.string.week_addRoutine_name, numRoutines + 1)
         binding.textInputLayout.hint = hint
     }
 

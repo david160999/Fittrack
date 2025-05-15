@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.Junction
 import androidx.room.PrimaryKey
 import androidx.room.R
@@ -221,5 +222,54 @@ fun DetailModel.toDatabase() = DetailsEntity(
     objRpe
 )
 
+@Entity(
+    tableName = "date_table",
+    foreignKeys = [
+        ForeignKey(
+            entity = RoutineEntity::class,
+            parentColumns = ["routineId"],
+            childColumns = ["routineId"],
+            onDelete = ForeignKey.SET_NULL
+        )
+    ],
+    indices = [Index("routineId")]
+)
+data class DateEntity(
+    @PrimaryKey val dateId: String,
+    val note: String?,
+    val bodyWeight: Float?,
+    val routineId: Int?
+)
 
-
+@Entity(
+    tableName = "trac_table",
+    foreignKeys = [
+        ForeignKey(
+            entity = DateEntity::class,
+            parentColumns = ["dateId"],
+            childColumns = ["dateId"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ],
+    indices = [Index(value = ["dateId"], unique = true)]
+)
+data class TracEntity(
+    @PrimaryKey(autoGenerate = true)
+    val tracId: Int = 0,
+    val dateId: String,
+    val leg: Int?,
+    val push: Int?,
+    val pull: Int?,
+    val rest: Int?,
+    val recuperation: Int?,
+    val motivation: Int?,
+    val technique: Int?
+)
+data class DateWithTrac(
+    @Embedded val dateEntity: DateEntity,
+    @Relation(
+        parentColumn = "dateId",
+        entityColumn = "dateId"
+    )
+    val tracEntity: TracEntity?
+)

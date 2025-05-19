@@ -1,5 +1,6 @@
 package com.cursointermedio.myapplication.domain.useCase
 
+import androidx.lifecycle.viewModelScope
 import com.cursointermedio.myapplication.data.database.entities.DateEntity
 import com.cursointermedio.myapplication.data.database.entities.DateWithTrac
 import com.cursointermedio.myapplication.data.database.entities.ExerciseDetailsCount
@@ -11,7 +12,9 @@ import com.cursointermedio.myapplication.data.repository.DateRepositoryImpl
 import com.cursointermedio.myapplication.data.repository.ExerciseRepository
 import com.cursointermedio.myapplication.domain.model.CategoryInfo
 import com.cursointermedio.myapplication.domain.model.ExerciseModel
+import com.cursointermedio.myapplication.domain.model.RoutineModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class GetDateUseCase @Inject constructor(
@@ -46,8 +49,12 @@ class GetDateUseCase @Inject constructor(
         repository.updateNoteForDate(dateId, note)
     }
 
-    suspend fun getDatesFromRoutine(routineId: Long): String {
+    fun getDatesFromRoutine(routineId: Long): Flow<String> {
         return repository.getDatesFromRoutine(routineId)
 
+    }
+
+    suspend fun insertDateList(dateList: List<DateEntity>) {
+        repository.insertDateList(dateList)
     }
 }

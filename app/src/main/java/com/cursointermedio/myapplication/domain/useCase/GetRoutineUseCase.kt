@@ -39,4 +39,5 @@ class GetRoutineUseCase @Inject constructor(
     suspend fun deleteRoutine(routine: RoutineModel){
         repository.deleteRoutine(routine.toDatabase())
     }
+
 }

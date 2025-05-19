@@ -232,13 +232,13 @@ fun DetailModel.toDatabase() = DetailsEntity(
             onDelete = ForeignKey.SET_NULL
         )
     ],
-    indices = [Index("routineId")]
+    indices = [Index(value = ["routineId"], unique = true)]
 )
 data class DateEntity(
     @PrimaryKey val dateId: String,
     val note: String?,
     val bodyWeight: Float?,
-    val routineId: Int?
+    val routineId: Long?
 )
 
 @Entity(

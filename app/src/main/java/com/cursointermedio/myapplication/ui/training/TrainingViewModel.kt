@@ -21,7 +21,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
@@ -35,8 +37,8 @@ class TrainingViewModel @Inject constructor(
     private val getWeekUseCase: GetWeekUseCase
 ) : ViewModel() {
 
-    private val _trainingId = MutableLiveData<Long?>()
-    val trainingId: LiveData<Long?> get() = _trainingId
+    private val _trainingId = MutableSharedFlow<Long?>()
+    val trainingId: SharedFlow<Long?> get() = _trainingId
 
     private val _trainingHashCode = MutableLiveData<Pair<String, String>?>()
     val trainingHashCode: LiveData<Pair<String, String>?> get() = _trainingHashCode
@@ -89,10 +91,10 @@ class TrainingViewModel @Inject constructor(
 
                 getWeekUseCase.insertWeekToTraining(weekWithTraining)
 
-                _trainingId.value = trainingId
+                _trainingId.emit(trainingId)
 
             } catch (e: Exception) {
-                _trainingId.value = null
+                _trainingId.emit(null)
             }
         }
     }

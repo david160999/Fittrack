@@ -10,6 +10,7 @@ import androidx.room.Update
 import com.cursointermedio.myapplication.data.database.entities.CategoryEntity
 import com.cursointermedio.myapplication.data.database.entities.DateEntity
 import com.cursointermedio.myapplication.data.database.entities.DateWithTrac
+import com.cursointermedio.myapplication.data.database.entities.RoutineEntity
 import com.cursointermedio.myapplication.data.database.entities.TracEntity
 import com.cursointermedio.myapplication.data.database.entities.TrainingEntity
 import kotlinx.coroutines.flow.Flow
@@ -46,5 +47,8 @@ interface DateDao {
     suspend fun updateTrac(tracEntity: TracEntity)
 
     @Query("SELECT dateId FROM date_table WHERE routineId = :routineId")
-    suspend fun getDatesFromRoutine(routineId:Long): String
+    fun getDatesFromRoutine(routineId:Long): Flow<String>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertDateList(dateList:List<DateEntity>)
 }

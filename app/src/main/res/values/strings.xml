@@ -95,15 +95,21 @@
     <string name="training_dialog_delete_text">¿Estás seguro de que deseas eliminar "'%1$s'"?</string>
 
 
-
-
-
     <!--AddExerciseFragment-->
     <string name="addExercise_create_name">Nombre del ejercicio nuevo</string>
     <string name="addExercise_create_title">Crea un nuevo ejercicio</string>
     <string name="load_menu">Desplegar menú</string>
     <string name="addExercise_dialogRemove_title">ELIMINAR EJERCICIO</string>
     <string name="addExercise_dialogRemove_text">¿Estás seguro/a de que deseas eliminar "%1$s?"</string>
+
+<!--    Days of Week-->
+    <string name="weekDay_Mon">Lun</string>
+    <string name="weekDay_Tue">Mar</string>
+    <string name="weekDay_Wed">Mié</string>
+    <string name="weekDay_Thu">Jue</string>
+    <string name="weekDay_Fri">Vie</string>
+    <string name="weekDay_Sat">Sáb</string>
+    <string name="weekDay_Sun">Dom</string>
 
 
 </resources>

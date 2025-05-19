@@ -4,7 +4,10 @@ import com.cursointermedio.myapplication.data.database.dao.DateDao
 import com.cursointermedio.myapplication.data.database.entities.DateEntity
 import com.cursointermedio.myapplication.data.database.entities.DateWithTrac
 import com.cursointermedio.myapplication.data.database.entities.TracEntity
+import com.cursointermedio.myapplication.domain.model.RoutineModel
 import com.cursointermedio.myapplication.domain.repository.DateRepository
+import kotlinx.coroutines.flow.Flow
+import java.util.Date
 import javax.inject.Inject
 
 class DateRepositoryImpl @Inject constructor(
@@ -42,10 +45,13 @@ class DateRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getDatesFromRoutine(routineId: Long): String {
+    override fun getDatesFromRoutine(routineId: Long): Flow<String> {
         return dateDao.getDatesFromRoutine(routineId)
 
     }
 
+    override suspend fun insertDateList(dateList: List<DateEntity>) {
+        dateDao.insertDateList(dateList)
+    }
 
 }

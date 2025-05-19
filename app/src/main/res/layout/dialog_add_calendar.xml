@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/CustomCardCorners"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardBackgroundColor="@color/background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/btnCalendarCancel"
+                style="@style/btn_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical"
+                android:text="@string/btn_cancel"
+                android:textColor="@color/red"/>
+
+            <TextView
+                android:id="@+id/btnCalendarSave"
+                style="@style/btn_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:layout_gravity="end|center_vertical"
+                android:text="@string/btn_save"
+                android:textColor="@color/icons"/>
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/prevMonth"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@drawable/ic_arrow_left"
+                android:backgroundTint="@color/icons"
+                android:contentDescription="Mes anterior" />
+
+            <TextView
+                android:id="@+id/monthYearText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Mayo 2025"
+                android:textAlignment="center"
+                android:textColor="@color/icons"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/nextMonth"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@drawable/ic_arrow_right"
+                android:backgroundTint="@color/icons"
+                android:contentDescription="Mes siguiente" />
+        </LinearLayout>
+
+        <GridView
+            android:id="@+id/daysGrid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:horizontalSpacing="8dp"
+            android:numColumns="7"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="8dp" />
+
+        <GridView
+            android:id="@+id/calendarGrid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:horizontalSpacing="8dp"
+            android:numColumns="7"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="12dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvAddCalendarRoutines"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:clipToPadding="false"
+            android:paddingBottom="200dp" />
+    </LinearLayout>
+
+
+</com.google.android.material.card.MaterialCardView>

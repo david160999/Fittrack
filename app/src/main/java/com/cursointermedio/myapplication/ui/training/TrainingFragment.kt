@@ -28,6 +28,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.cursointermedio.myapplication.utils.extensions.setupTouchAction
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 
 @AndroidEntryPoint
@@ -130,9 +131,16 @@ class TrainingFragment @Inject constructor() : Fragment() {
     }
 
     private fun observeTrainingId() {
-        trainingViewModel.trainingId.observe(viewLifecycleOwner) { trainingId ->
-            trainingId?.let { navigateToWeek(it) } ?: run {
-                showSnackbar("Error al insertar el entrenamiento")
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                trainingViewModel.trainingId.collect { trainingId ->
+                    trainingId?.let {
+                        navigateToWeek(trainingId)
+                    }
+                        ?: run {
+                            showSnackbar("Error al insertar el entrenamiento")
+                        }
+                }
             }
         }
     }
@@ -147,6 +155,7 @@ class TrainingFragment @Inject constructor() : Fragment() {
             } ?: showSnackbar("Error al intentar compartir el entramiento")
         }
     }
+
     private fun showSnackbar(msg: String) {
         Snackbar.make(binding.root, msg, Snackbar.LENGTH_LONG)
             .setBackgroundTint(ContextCompat.getColor(binding.root.context, R.color.redDark))
@@ -168,6 +177,7 @@ class TrainingFragment @Inject constructor() : Fragment() {
             is TrainingsUiState.Error -> {
                 hideLoading()
                 showSnackbar(state.message)
+                Log.e("ERROR", state.message)
             }
         }
     }

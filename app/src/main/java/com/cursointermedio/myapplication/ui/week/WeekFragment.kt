@@ -2,16 +2,13 @@ package com.cursointermedio.myapplication.ui.week
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
@@ -28,6 +25,7 @@ import com.cursointermedio.myapplication.ui.routine.dialog.RoutineDialog
 import com.cursointermedio.myapplication.ui.training.CurrentFeature.*
 import com.cursointermedio.myapplication.ui.training.CurrentFeature.TypeFeature.*
 import com.cursointermedio.myapplication.ui.week.adapter.DragRoutineAdapter
+import com.cursointermedio.myapplication.ui.week.dialog.calendar.AddCalendarDialog
 import com.cursointermedio.myapplication.ui.week.dialog.WeekDialog
 import com.cursointermedio.myapplication.utils.extensions.setupTouchAction
 import com.cursointermedio.myapplication.utils.extensions.showSnackbar
@@ -56,8 +54,6 @@ class WeekFragment @Inject constructor() : Fragment() {
     private lateinit var spinnerAdapter: ArrayAdapter<String>
     private var numWeekSpinnerSelected: Int = 0
 
-
-    private var existingItemDecoration: RecyclerView.ItemDecoration? = null
     private var notRoutineLayout = true
 
 
@@ -83,7 +79,7 @@ class WeekFragment @Inject constructor() : Fragment() {
         }
 
         binding.btnWeekCalendar.setupTouchAction {
-
+            addToCalendarDialog()
         }
 
         binding.dropMenu.setOnItemClickListener { parent, view, position, id ->
@@ -94,9 +90,8 @@ class WeekFragment @Inject constructor() : Fragment() {
         binding.tvTitle.setupTouchAction {
             findNavController().popBackStack()
         }
-
-        observeWeekUiState()
         observeSpinnerList()
+        observeWeekUiState()
         observeTrainingName()
     }
 
@@ -177,8 +172,6 @@ class WeekFragment @Inject constructor() : Fragment() {
             notRoutineLayout = true
             setLayoutNotRoutines()
         } else if (notRoutineLayout) {
-            Log.d("COLLECT", "collecting flow again$updatedRoutine")
-
             disableLayoutNotRoutines()
             notRoutineLayout = false
 
@@ -281,6 +274,21 @@ class WeekFragment @Inject constructor() : Fragment() {
                 )
             }
         }
+        )
+
+        dialog.show(parentFragmentManager, "dialog")
+    }
+
+    private fun addToCalendarDialog() {
+
+        val dialog = AddCalendarDialog(
+            onSaveClickListener = { routineList, removeDateList ->
+                weekViewModel.insertDatesToRoutines(
+                    routineList = routineList,
+                    removeDateList = removeDateList
+                )
+            },
+            weekViewModel.weeks.value[numWeekSpinnerSelected].routineList
         )
 
         dialog.show(parentFragmentManager, "dialog")

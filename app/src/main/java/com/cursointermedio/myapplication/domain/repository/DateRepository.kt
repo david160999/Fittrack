@@ -3,12 +3,13 @@ package com.cursointermedio.myapplication.domain.repository
 import com.cursointermedio.myapplication.data.database.entities.DateEntity
 import com.cursointermedio.myapplication.data.database.entities.DateWithTrac
 import com.cursointermedio.myapplication.data.database.entities.TracEntity
+import com.cursointermedio.myapplication.domain.model.RoutineModel
 import com.cursointermedio.myapplication.domain.model.UserData
+import kotlinx.coroutines.flow.Flow
 
 interface DateRepository {
     suspend fun insertOrUpdateDate(date: DateEntity)
 
-    // Obtener una fecha con su Trac (relación 1:1)
     suspend fun getDateWithTrac(dateId: String): DateWithTrac?
 
     suspend fun insertOrUpdateTrac(trac: TracEntity)
@@ -21,6 +22,8 @@ interface DateRepository {
 
     suspend fun updateNoteForDate(dateId: String, note: String)
 
-    suspend fun getDatesFromRoutine(routineId:Long): String
+    fun getDatesFromRoutine(routineId:Long): Flow<String>
+
+    suspend fun insertDateList(dateList: List<DateEntity>)
 
 }

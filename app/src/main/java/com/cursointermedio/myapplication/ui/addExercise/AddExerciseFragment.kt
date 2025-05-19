@@ -78,7 +78,6 @@ class AddExerciseFragment : Fragment() {
 
 
     private fun initUI() {
-
         exercises = addExerciseViewModel.getAllExercise()
 
         setUpSelectedAdapter()

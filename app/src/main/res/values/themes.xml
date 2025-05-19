@@ -48,6 +48,11 @@
         <item name="android:windowAnimationStyle">@style/anim1</item>
     </style>
 
+    <style name="BottomSheetDialogAnimationStyle" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="windowMinWidthMinor">85%</item>
+        <item name="android:windowAnimationStyle">@style/anim1</item>
+    </style>
+
     <style name="anim1">
         <item name="android:windowEnterAnimation">@anim/slide_in_up</item>
         <item name="android:windowExitAnimation">@anim/slide_out_down</item>

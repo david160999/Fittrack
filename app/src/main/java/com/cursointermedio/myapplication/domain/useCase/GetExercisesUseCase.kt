@@ -46,7 +46,7 @@ class GetExercisesUseCase @Inject constructor(
         }
     }
 
-    suspend fun getExerciseFromRoutineCount(routineId: Long): Int {
+    fun getExerciseFromRoutineCount(routineId: Long): Flow<Int> {
         return repository.getExerciseFromRoutineCount(routineId)
     }
 }

@@ -2,6 +2,7 @@ package com.cursointermedio.myapplication.domain.useCase
 
 import com.cursointermedio.myapplication.data.database.entities.RoutineEntity
 import com.cursointermedio.myapplication.data.database.entities.RoutineWithExercises
+import com.cursointermedio.myapplication.data.database.entities.RoutineWithOrderedExercises
 import com.cursointermedio.myapplication.data.database.entities.toDatabase
 import com.cursointermedio.myapplication.data.repository.ExerciseRepository
 import com.cursointermedio.myapplication.data.repository.RoutineRepository
@@ -14,7 +15,7 @@ import javax.inject.Inject
 class GetRoutineUseCase @Inject constructor(
     private val repository: RoutineRepository
 ) {
-    suspend fun insertRoutineToWeek(routine : RoutineModel): Long {
+    suspend fun insertRoutineToWeek(routine: RoutineModel): Long {
         return repository.insertRoutineToWeek(routine.toDatabase())
     }
 
@@ -27,7 +28,8 @@ class GetRoutineUseCase @Inject constructor(
             routineId = null,
             weekRoutineId = nuevoWeekId,
             name = rutinaOriginal.name,
-            description = rutinaOriginal.description
+            description = rutinaOriginal.description,
+            order = rutinaOriginal.order
         )
         return insertRoutineToWeek(nuevaRutina)
     }
@@ -36,8 +38,15 @@ class GetRoutineUseCase @Inject constructor(
         repository.changeNameRoutine(routine.toDatabase())
     }
 
-    suspend fun deleteRoutine(routine: RoutineModel){
+    suspend fun deleteRoutine(routine: RoutineModel) {
         repository.deleteRoutine(routine.toDatabase())
     }
 
+    suspend fun changeOrderRoutines(routines: List<RoutineModel>) {
+        repository.changeOrderRoutines(routines.map { it.toDatabase() })
+    }
+
+    suspend fun getRoutineWithOrderedExercises(routineId: Long): RoutineWithOrderedExercises {
+        return repository.getRoutineWithOrderedExercises(routineId)
+    }
 }

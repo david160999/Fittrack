@@ -106,6 +106,8 @@
         <item name="boxBackgroundColor">#FFF5F5F5</item> <!-- Fondo -->
         <item name="hintTextAppearance">@style/MyHintText</item>
         <item name="helperTextTextAppearance">@style/MyHelperText</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
     </style>
 
     <style name="MyHintText" parent="TextAppearance.MaterialComponents.Caption">
@@ -114,5 +116,12 @@
 
     <style name="MyHelperText" parent="TextAppearance.MaterialComponents.Caption">
         <item name="android:textColor">#888888</item>
+    </style>
+
+<!--    Btn calendar week Fragment-->
+    <style name="calendarBtnStyle" parent="ThemeOverlay.Material3.Button">
+        <item name="android:paddingVertical">8dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
     </style>
 </resources>

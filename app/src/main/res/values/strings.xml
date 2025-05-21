@@ -12,12 +12,11 @@
     <string name="btn_cancel">Cancelar</string>
     <string name="btn_save">Guardar</string>
     <string name="btn_edit">Editar</string>
-    <string name="btn_OK">Editar</string>
     <string name="tv_search">Buscar</string>
     <string name="tv_next">Siguiente</string>
     <string name="btn_eliminate">Eliminar</string>
     <string name="tv_description">Descripción</string>
-
+    <string name="btn_ok">OK</string>
 
     <!--    HomeFragment-->
     <string name="home_training">Entrenamiento</string>
@@ -42,7 +41,7 @@
     <!--    WeekFragment-->
     <string name="week_prueba">EStoy en WEEK</string>
     <string name="week_title">Título</string>
-    <string name="week_calendar"></string>
+    <string name="week_calendar">Añadir al calendario</string>
     <string name="week_edit">Editar</string>
     <string name="week_addRoutine_title">Crea un nuevo entrenamiento</string>
     <string name="week_addRoutine_name">Día %1$d </string>

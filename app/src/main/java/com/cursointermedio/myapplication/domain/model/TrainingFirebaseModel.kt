@@ -23,7 +23,8 @@ data class RoutineFirebaseModel(
     val routineId: Long? = null,
     val name: String? = null,
     val description: String? = null,
-    val exercises: List<ExerciseFirebaseModel> = emptyList()
+    val exercises: List<ExerciseFirebaseModel> = emptyList(),
+    val order: Int? = 0
 )
 
 data class ExerciseFirebaseModel(

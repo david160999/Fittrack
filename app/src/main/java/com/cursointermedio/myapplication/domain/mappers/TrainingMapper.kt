@@ -58,12 +58,12 @@ class TrainingMapper @Inject constructor(
                     "description" to week.week.description,
                     "routines" to week.routineList.map { routine ->
 //                              Rutinas
-                        val routineWithExercise =
-                            routineRepository.getRoutineWithExercises(routine.routineId!!)
+                        val routineWithExercise = routineRepository.getRoutineWithOrderedExercises(routine.routineId!!)
                         hashMapOf(
                             "routineId" to routine.routineId,
                             "name" to routine.name,
                             "description" to routine.description,
+                            "order" to routine.order,
                             "exercises" to routineWithExercise.exercises.map { exercise ->
 //                                      Ejercicios
                                 val details = detailsRepository.getDetailOfRoutineAndExercise(
@@ -116,10 +116,10 @@ class TrainingMapper @Inject constructor(
 
                     week.routines.map { routine ->
                         val newRoutine =
-                            RoutineEntity(null, newWeekId, routine.name, routine.description)
+                            RoutineEntity(null, newWeekId, routine.name, routine.description, routine.order)
                         val newRoutineId = routineRepository.insertRoutineToWeek(newRoutine)
 
-                        routine.exercises.map { exercise ->
+                        routine.exercises.mapIndexed { index, exercise ->
                             val newExercise = ExerciseEntity(
                                 exercise.exerciseId,
                                 exercise.key,
@@ -130,7 +130,8 @@ class TrainingMapper @Inject constructor(
 
                             val crossReference = RoutineExerciseCrossRef(
                                 routineId = routine.routineId!!,
-                                exerciseId = exercise.exerciseId!!
+                                exerciseId = exercise.exerciseId!!,
+                                order = index
                             )
                             exerciseRepository.insertExerciseToRoutine(crossReference)
 

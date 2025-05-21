@@ -2,6 +2,7 @@ package com.cursointermedio.myapplication.ui.week
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -75,7 +76,22 @@ class WeekFragment @Inject constructor() : Fragment() {
             createRoutineDialog()
         }
         binding.btnWeekEdit.setupTouchAction {
-            setUpItemTouchHelper()
+            binding.btnWeekEdit.visibility = View.GONE
+            binding.btnWeekOK.visibility = View.VISIBLE
+
+            val layoutManager = LinearLayoutManager(context)
+            binding.rvRoutine.layoutManager = layoutManager
+            binding.rvRoutine.adapter = dragAdapter
+        }
+        binding.btnWeekOK.setupTouchAction {
+            binding.btnWeekEdit.visibility = View.VISIBLE
+            binding.btnWeekOK.visibility = View.GONE
+
+            weekViewModel.changeOrderRoutines(weekViewModel.weeks.value[numWeekSpinnerSelected].routineList)
+
+            val layoutManager = LinearLayoutManager(context)
+            binding.rvRoutine.layoutManager = layoutManager
+            binding.rvRoutine.adapter = adapter
         }
 
         binding.btnWeekCalendar.setupTouchAction {
@@ -165,8 +181,7 @@ class WeekFragment @Inject constructor() : Fragment() {
 
     private fun updateRoutineAdapter() {
 
-        val updatedRoutine =
-            weekViewModel.weeks.value.getOrNull(numWeekSpinnerSelected)?.routineList.orEmpty()
+        val updatedRoutine = weekViewModel.weeks.value.getOrNull(numWeekSpinnerSelected)?.routineList.orEmpty()
 
         if (updatedRoutine.isEmpty()) {
             notRoutineLayout = true
@@ -174,9 +189,9 @@ class WeekFragment @Inject constructor() : Fragment() {
         } else if (notRoutineLayout) {
             disableLayoutNotRoutines()
             notRoutineLayout = false
-
         }
 
+        dragAdapter.updateList(updatedRoutine)
         adapter.submitList(updatedRoutine)
 
     }
@@ -211,15 +226,15 @@ class WeekFragment @Inject constructor() : Fragment() {
         )
         val dropMenu = binding.dropMenu
         dropMenu.setAdapter(spinnerAdapter)
+
+        dragAdapter = DragRoutineAdapter()
+        setUpItemTouchHelper()
+
     }
 
     private fun setUpItemTouchHelper() {
-        dragAdapter =
-            DragRoutineAdapter(weekViewModel.weeks.value[numWeekSpinnerSelected].routineList)
-
-        val layoutManager = LinearLayoutManager(context)
-        binding.rvRoutine.layoutManager = layoutManager
-        binding.rvRoutine.adapter = dragAdapter
+        val updatedRoutine = weekViewModel.weeks.value.getOrNull(numWeekSpinnerSelected)?.routineList.orEmpty()
+        dragAdapter.updateList(updatedRoutine)
 
         // Setup ItemTouchHelper
         val callback = object : ItemTouchHelper.SimpleCallback(
@@ -238,6 +253,26 @@ class WeekFragment @Inject constructor() : Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 // No swipe action
+            }
+
+            override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
+                super.onSelectedChanged(viewHolder, actionState)
+                if (actionState == ItemTouchHelper.ACTION_STATE_DRAG && viewHolder != null) {
+                    viewHolder.itemView.elevation = 24f  // Puedes ajustar la elevación a tu gusto
+                    viewHolder.itemView.translationZ = 24f
+                    viewHolder.itemView.alpha = 0.7f // más bajo = más translúcido
+                    viewHolder.itemView.scaleX = 1.05f
+                    viewHolder.itemView.scaleY = 1.05f
+                }
+            }
+
+            override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+                super.clearView(recyclerView, viewHolder)
+                viewHolder.itemView.elevation = 0f // Restaurar a su valor original
+                viewHolder.itemView.translationZ = 0f
+                viewHolder.itemView.alpha = 1f // más bajo = más translúcido
+                viewHolder.itemView.scaleX = 1f
+                viewHolder.itemView.scaleY = 1f
             }
         }
 
@@ -302,7 +337,7 @@ class WeekFragment @Inject constructor() : Fragment() {
 
             val dialog = RoutineDialog(onSaveClickListener = { name ->
                 lifecycleScope.launch {
-                    val routine = RoutineModel(null, weekId, name, null)
+                    val routine = RoutineModel(null, weekId, name, null, numRoutines)
                     weekViewModel.insertRoutine(routine)
                 }
             }, numRoutines)
@@ -349,7 +384,9 @@ class WeekFragment @Inject constructor() : Fragment() {
 
     override fun onResume() {
         super.onResume()
-//        weekViewModel.loadItems()
+        initUI()
+        updateRoutineAdapter()
+        notRoutineLayout = true
     }
 }
 

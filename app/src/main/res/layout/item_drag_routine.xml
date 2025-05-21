@@ -1,37 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:orientation="vertical"
-    android:paddingStart="10dp"
-    tools:ignore="RtlSymmetry">
+    app:cardCornerRadius="0dp"
+    android:clipToPadding="false"
+    android:clipChildren="false">
 
-    <TextView
-        android:id="@+id/tvNameDragAdapter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:gravity="start|center_vertical"
-        android:padding="6dp"
-        android:textSize="16dp"
-        android:text="AaaAA" />
-
-    <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_gravity="end|center_vertical"
-        android:background="@drawable/ic_dehaze"
-        android:backgroundTint="@color/Grey"
-        android:importantForAccessibility="no"
-        android:layout_marginEnd="8dp"/>
-
-    <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/dvDragRoutine"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_gravity="bottom" />
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="6dp">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/tvNameDragAdapter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:gravity="start|center_vertical"
+            android:padding="5dp"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/ic_dehaze"
+            android:backgroundTint="@color/Grey"
+            android:importantForAccessibility="no" />
+    </FrameLayout>
+</com.google.android.material.card.MaterialCardView>

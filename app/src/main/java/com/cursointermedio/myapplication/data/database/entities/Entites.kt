@@ -97,10 +97,12 @@ data class RoutineEntity(
     @ColumnInfo(name = "routineId") val routineId: Long?,
     @ColumnInfo(name = "weekRoutineId") val weekRoutineId: Long,
     @ColumnInfo(name = "name") val name: String?,
-    @ColumnInfo(name = "description") val description: String?
+    @ColumnInfo(name = "description") val description: String?,
+    @ColumnInfo(defaultValue = "0", name = "order") val order: Int?
+
 )
 
-fun RoutineModel.toDatabase() = RoutineEntity(routineId, weekRoutineId, name, description)
+fun RoutineModel.toDatabase() = RoutineEntity(routineId, weekRoutineId, name, description, order)
 
 
 @Entity(
@@ -123,7 +125,8 @@ fun RoutineModel.toDatabase() = RoutineEntity(routineId, weekRoutineId, name, de
 )
 data class RoutineExerciseCrossRef(
     val routineId: Long,
-    val exerciseId: Long
+    val exerciseId: Long,
+    @ColumnInfo(defaultValue = "0", name = "order")val order:Int?
 )
 
 data class RoutineWithExercises(
@@ -132,11 +135,15 @@ data class RoutineWithExercises(
     @Relation(
         parentColumn = "routineId",
         entityColumn = "exerciseId",
-        associateBy = Junction(RoutineExerciseCrossRef::class)
+        associateBy = Junction(RoutineExerciseCrossRef::class),
     )
     val exercises: List<ExerciseEntity>
 )
 
+data class RoutineWithOrderedExercises(
+    val routine: RoutineEntity,
+    val exercises: List<ExerciseEntity>
+)
 
 @Entity(
     tableName = "exercise_table", foreignKeys = [androidx.room.ForeignKey(

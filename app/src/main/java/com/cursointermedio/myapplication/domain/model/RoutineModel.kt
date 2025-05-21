@@ -10,8 +10,9 @@ data class RoutineModel(
     val weekRoutineId: Long,
     var name: String?,
     val description: String?,
+    var order: Int?,
     val exerciseCount: Int? = 0,
-    val date: String? = null
+    val date: String? = null,
 )
 
-fun RoutineEntity.toDomain() = RoutineModel(routineId, weekRoutineId, name, description)
+fun RoutineEntity.toDomain() = RoutineModel(routineId, weekRoutineId, name, description, order)

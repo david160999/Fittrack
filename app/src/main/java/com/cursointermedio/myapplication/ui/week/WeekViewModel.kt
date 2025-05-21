@@ -79,10 +79,10 @@ class WeekViewModel @Inject constructor(
                                 routine.copy(exerciseCount = numExercise, date = date)
                             }
                         }
-
                         if (routineFlows.isNotEmpty()) {
                             combine(routineFlows) { updatedRoutines ->
-                                week.copy(routineList = updatedRoutines.toList())
+                                val orderedRoutines = updatedRoutines.sortedBy { it.order }
+                                week.copy(routineList = orderedRoutines)
                             }
                         } else {
                             // Si no hay rutinas, devolvemos un flow con la semana sin cambios
@@ -179,6 +179,19 @@ class WeekViewModel @Inject constructor(
             }
         }
 
+    }
+
+    fun changeOrderRoutines(routines: List<RoutineModel>) {
+        viewModelScope.launch {
+            val newRoutinesList = routines.mapIndexed { index, routineModel ->
+                routineModel.copy(order = index)
+            }
+            try {
+                getRoutineUseCase.changeOrderRoutines(newRoutinesList)
+            } catch (e: Exception) {
+                 throw e
+            }
+        }
     }
 
 //    fun loadItems() {

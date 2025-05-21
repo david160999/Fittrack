@@ -35,10 +35,11 @@ class AddExerciseViewModel @Inject constructor(
         routineId: Long,
         selectedExercises: List<ExerciseModel>
     ) {
-        selectedExercises.forEach { exercise ->
+        selectedExercises.forEachIndexed { index, exercise ->
             val crossRef = RoutineExerciseCrossRef(
                 routineId = routineId,
-                exerciseId = exercise.id ?: return@forEach
+                exerciseId = exercise.id!!,
+                order = index
             )
             getExercisesUseCase.insertExerciseToRoutine(crossRef)
         }

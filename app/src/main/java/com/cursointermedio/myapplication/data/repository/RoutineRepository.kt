@@ -4,7 +4,9 @@ import com.cursointermedio.myapplication.data.database.dao.RoutineDao
 import com.cursointermedio.myapplication.data.database.dao.WeekDao
 import com.cursointermedio.myapplication.data.database.entities.RoutineEntity
 import com.cursointermedio.myapplication.data.database.entities.RoutineWithExercises
+import com.cursointermedio.myapplication.data.database.entities.RoutineWithOrderedExercises
 import com.cursointermedio.myapplication.data.database.entities.WeekEntity
+import com.cursointermedio.myapplication.domain.model.RoutineModel
 import javax.inject.Inject
 
 class RoutineRepository @Inject constructor(
@@ -25,4 +27,14 @@ class RoutineRepository @Inject constructor(
     suspend fun deleteRoutine(routine: RoutineEntity){
         routineDao.deleteRoutine(routine)
     }
+
+    suspend fun changeOrderRoutines(routines: List<RoutineEntity>) {
+        routineDao.changeOrderRoutines(routines)
+    }
+
+    suspend fun getRoutineWithOrderedExercises(routineId: Long): RoutineWithOrderedExercises {
+       return routineDao.getRoutineWithOrderedExercises(routineId)
+    }
+
+
 }

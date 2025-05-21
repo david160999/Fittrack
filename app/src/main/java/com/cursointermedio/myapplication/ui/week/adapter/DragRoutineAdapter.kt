@@ -11,13 +11,12 @@ import com.google.android.material.divider.MaterialDivider
 import java.util.Collections
 
 class DragRoutineAdapter(
-    private val routines: List<RoutineModel> // o tu modelo
+    private val routines: MutableList<RoutineModel> = mutableListOf<RoutineModel>()
+
 ) : RecyclerView.Adapter<DragRoutineAdapter.RoutineViewHolder>() {
 
     inner class RoutineViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textView: TextView = itemView.findViewById(R.id.tvNameDragAdapter)
-        val divider: MaterialDivider = itemView.findViewById(R.id.dvDragRoutine)
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoutineViewHolder {
@@ -29,10 +28,6 @@ class DragRoutineAdapter(
     override fun onBindViewHolder(holder: RoutineViewHolder, position: Int) {
         holder.textView.text = routines[position].name
 
-//        if (position == routines.size - 1) {
-//            holder.divider.visibility = View.GONE
-//        }
-
     }
 
     override fun getItemCount(): Int = routines.size
@@ -42,5 +37,10 @@ class DragRoutineAdapter(
         notifyItemMoved(fromPosition, toPosition)
     }
 
+    fun updateList(newList: List<RoutineModel>) {
+        routines.clear()
+        routines.addAll(newList)
+        notifyDataSetChanged()
+    }
 
 }

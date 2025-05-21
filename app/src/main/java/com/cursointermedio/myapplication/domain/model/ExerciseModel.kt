@@ -8,7 +8,7 @@ data class ExerciseModel(
     val id: Long?,
     val key: String?,
     val categoryExerciseId:Long?,
-    val name: String?,
+    val name: String?
 )
 @SuppressLint("DiscouragedApi")
 fun ExerciseModel.getExerciseNameFromKey(context: Context): String? {

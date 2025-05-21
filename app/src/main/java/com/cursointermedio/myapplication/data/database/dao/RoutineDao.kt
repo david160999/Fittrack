@@ -11,6 +11,7 @@ import com.cursointermedio.myapplication.data.database.entities.ExerciseEntity
 import com.cursointermedio.myapplication.data.database.entities.RoutineEntity
 import com.cursointermedio.myapplication.data.database.entities.RoutineExerciseCrossRef
 import com.cursointermedio.myapplication.data.database.entities.RoutineWithExercises
+import com.cursointermedio.myapplication.data.database.entities.RoutineWithOrderedExercises
 import com.cursointermedio.myapplication.data.database.entities.TrainingEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -36,4 +37,25 @@ interface RoutineDao {
 
     @Delete
     suspend fun deleteRoutine(routine: RoutineEntity)
+
+    @Update
+    suspend fun changeOrderRoutines(routines: List<RoutineEntity>)
+
+    @Query("SELECT * FROM routine_table WHERE routineId = :routineId")
+    suspend fun getRoutineById(routineId: Long): RoutineEntity
+
+    @Query("""
+    SELECT e.* FROM exercise_table e
+    INNER JOIN RoutineExerciseCrossRef re ON e.exerciseId = re.exerciseId
+    WHERE re.routineId = :routineId
+    ORDER BY re.`order` ASC
+""")
+    suspend fun getOrderedExercisesForRoutine(routineId: Long): List<ExerciseEntity>
+
+    @Transaction
+    suspend fun getRoutineWithOrderedExercises(routineId: Long): RoutineWithOrderedExercises {
+        val routine = getRoutineById(routineId)
+        val exercises = getOrderedExercisesForRoutine(routineId)
+        return RoutineWithOrderedExercises(routine, exercises)
+    }
 }

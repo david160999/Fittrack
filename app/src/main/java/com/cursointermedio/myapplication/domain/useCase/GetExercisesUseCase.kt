@@ -36,11 +36,12 @@ class GetExercisesUseCase @Inject constructor(
     }
 
     suspend fun copyExercise(routineId: Long, newRoutineId: Long) {
-        val exercises = getRoutineUseCase.getRoutineWithExercises(routineId)
-        exercises.exercises.forEach() { exercise ->
+        val exercises = getRoutineUseCase.getRoutineWithOrderedExercises(routineId)
+        exercises.exercises.forEachIndexed { index, exercise ->
             val relation = RoutineExerciseCrossRef(
                 routineId = newRoutineId,  // ID de la rutina
-                exerciseId = exercise.exerciseId!!  // ID del ejercicio
+                exerciseId = exercise.exerciseId!!,  // ID del ejercici
+                order = index
             )
             insertExerciseToRoutine(relation)
         }

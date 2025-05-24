@@ -362,7 +362,7 @@ class WeekFragment @Inject constructor() : Fragment() {
     private fun navigateToRoutine(routineId: Long) {
         findNavController().navigate(
             WeekFragmentDirections.actionWeekFragmentToRoutineFragment(
-                routineId.toInt()
+                routineId
             )
         )
     }

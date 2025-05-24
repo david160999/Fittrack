@@ -2,6 +2,7 @@ package com.cursointermedio.myapplication.utils.extensions
 
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
+import android.content.res.Resources
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -65,4 +66,24 @@ fun showSnackbar(view: View, msg: String, context: android.content.Context) {
         .setBackgroundTint(ContextCompat.getColor(context, R.color.redDark))
         .setTextColor(ContextCompat.getColor(context, R.color.white))
         .show()
+}
+
+fun isItemBelowThreshold(view: View): Boolean {
+    val location = IntArray(2)
+    view.getLocationOnScreen(location)
+
+    val itemTop = location[1] // Coordenada Y del top del item
+    val itemBottom = itemTop + view.height // Coordenada Y del bottom del item
+
+    val screenHeight = Resources.getSystem().displayMetrics.heightPixels
+    val percentageThreshold = 0.75f
+
+    val threshold = screenHeight * percentageThreshold
+
+    // Verificar si el borde inferior del item ha superado el umbral (80%)
+    return if (itemBottom > threshold) {
+        true
+    } else {
+        false
+    }
 }

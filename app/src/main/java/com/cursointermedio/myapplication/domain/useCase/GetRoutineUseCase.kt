@@ -1,6 +1,8 @@
 package com.cursointermedio.myapplication.domain.useCase
 
+import androidx.room.Index
 import com.cursointermedio.myapplication.data.database.entities.RoutineEntity
+import com.cursointermedio.myapplication.data.database.entities.RoutineExerciseCrossRef
 import com.cursointermedio.myapplication.data.database.entities.RoutineWithExercises
 import com.cursointermedio.myapplication.data.database.entities.RoutineWithOrderedExercises
 import com.cursointermedio.myapplication.data.database.entities.toDatabase
@@ -8,6 +10,7 @@ import com.cursointermedio.myapplication.data.repository.ExerciseRepository
 import com.cursointermedio.myapplication.data.repository.RoutineRepository
 import com.cursointermedio.myapplication.domain.model.ExerciseModel
 import com.cursointermedio.myapplication.domain.model.RoutineModel
+import com.cursointermedio.myapplication.domain.model.RoutineWithOrderedExercisesModel
 import com.cursointermedio.myapplication.domain.model.WeekModel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -46,7 +49,20 @@ class GetRoutineUseCase @Inject constructor(
         repository.changeOrderRoutines(routines.map { it.toDatabase() })
     }
 
-    suspend fun getRoutineWithOrderedExercises(routineId: Long): RoutineWithOrderedExercises {
+    suspend fun getRoutineWithOrderedExercises(routineId: Long): RoutineWithOrderedExercisesModel {
         return repository.getRoutineWithOrderedExercises(routineId)
     }
-}
+
+    suspend fun removeExerciseFromRoutine(crossRef: RoutineExerciseCrossRef) {
+        repository.removeExerciseFromRoutine(crossRef)
+    }
+
+    fun getRoutineWithOrderedExercisesFlow(routineId: Long): Flow<RoutineWithOrderedExercisesModel> {
+        return repository.getRoutineWithOrderedExercisesFlow(routineId)
+    }
+
+    suspend fun updateOrderCrossRefRoutineExercise(exerciseId:Long, routineId: Long, order: Int){
+         repository.updateOrderCrossRefRoutineExercise(exerciseId = exerciseId, routineId = routineId, order = order)
+    }
+
+    }

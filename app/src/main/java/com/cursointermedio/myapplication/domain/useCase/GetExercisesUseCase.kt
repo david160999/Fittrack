@@ -40,7 +40,7 @@ class GetExercisesUseCase @Inject constructor(
         exercises.exercises.forEachIndexed { index, exercise ->
             val relation = RoutineExerciseCrossRef(
                 routineId = newRoutineId,  // ID de la rutina
-                exerciseId = exercise.exerciseId!!,  // ID del ejercici
+                exerciseId = exercise.id!!,  // ID del ejercici
                 order = index
             )
             insertExerciseToRoutine(relation)
@@ -49,5 +49,14 @@ class GetExercisesUseCase @Inject constructor(
 
     fun getExerciseFromRoutineCount(routineId: Long): Flow<Int> {
         return repository.getExerciseFromRoutineCount(routineId)
+    }
+
+    suspend fun getDetailCountFromExercise(exerciseId: Long, routineId: Long):Int {
+        return repository.getDetailCountFromExercise(exerciseId, routineId)
+
+    }
+
+    fun changeOrderRoutines(newCrossRefList: List<RoutineExerciseCrossRef>) {
+
     }
 }

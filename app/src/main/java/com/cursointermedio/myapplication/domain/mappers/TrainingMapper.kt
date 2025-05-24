@@ -68,10 +68,10 @@ class TrainingMapper @Inject constructor(
 //                                      Ejercicios
                                 val details = detailsRepository.getDetailOfRoutineAndExercise(
                                     routineId = routine.routineId,
-                                    exerciseID = exercise.exerciseId!!
+                                    exerciseID = exercise.id!!
                                 )
                                 hashMapOf(
-                                    "exerciseId" to exercise.exerciseId,
+                                    "exerciseId" to exercise.id,
                                     "key" to exercise.key,
                                     "categoryExerciseId" to exercise.categoryExerciseId,
                                     "name" to exercise.name,

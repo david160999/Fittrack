@@ -47,4 +47,12 @@ interface ExerciseDao {
 
     @Query("SELECT COUNT(*)  FROM RoutineExerciseCrossRef WHERE routineId = :routineId")
     fun getExerciseFromRoutineCount(routineId: Long): Flow<Int>
+
+    @Query("""
+    SELECT COUNT(*) 
+    FROM details_table 
+    WHERE exerciseDetailsId = :exerciseId 
+    AND routineDetailsId = :routineId
+""")
+    suspend fun getDetailCountFromExercise(exerciseId: Long, routineId: Long):Int
 }

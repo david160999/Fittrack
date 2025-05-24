@@ -1,189 +1,197 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string name="description_not_available">Descripción no disponible</string>
+    <string name="description">Descripción</string>
+
     <!-- Ejercicios -->
     <string name="exercise_squat">Sentadilla</string>
-    <string name="exercise_squat_description">1. Coloca los pies a la altura de los hombros. 2. Baja las caderas hacia atrás como si te fueras a sentar. 3. Mantén la espalda recta y vuelve a la posición inicial.</string>
+    <string name="exercise_squat_description">1. Colócate con los pies a la anchura de los hombros y la espalda recta.\n\n2. Flexiona las rodillas y caderas bajando el cuerpo como si te fueras a sentar, manteniendo el pecho erguido.\n\n3. Desciende hasta que los muslos estén paralelos al suelo y vuelve a la posición inicial empujando con los talones.</string>
 
     <string name="exercise_hack_squat">Sentadilla Hack</string>
-    <string name="exercise_hack_squat_description">1. Coloca los pies en la plataforma. 2. Flexiona las piernas hacia abajo manteniendo la espalda apoyada. 3. Empuja hacia arriba para regresar a la posición inicial.</string>
+    <string name="exercise_hack_squat_description">1. Colócate con la espalda apoyada en la máquina y los pies en la plataforma a la anchura de los hombros.\n\n2. Flexiona las rodillas bajando el peso controladamente sin despegar la espalda.\n\n3. Empuja la plataforma hacia arriba hasta extender completamente las piernas manteniendo el control.</string>
 
-    <string name="exercise_bulgarian_squat">Sentadilla Bulgara</string>
-    <string name="exercise_bulgarian_squat_description">1. Coloca un pie en un banco detrás de ti. 2. Flexiona la pierna delantera bajando la cadera. 3. Empuja hacia arriba usando la pierna delantera.</string>
+    <string name="exercise_bulgarian_squat">Sentadilla Búlgara</string>
+    <string name="exercise_bulgarian_squat_description">1. Coloca un pie atrás apoyado en un banco y el otro adelantado firmemente en el suelo.\n\n2. Flexiona la rodilla delantera bajando el cuerpo manteniendo el torso recto.\n\n3. Empuja con la pierna delantera para regresar a la posición inicial sin que la rodilla trasera toque el suelo.</string>
 
-    <string name="exercise_static_lunge">Lunge Estático</string>
-    <string name="exercise_static_lunge_description">1. Da un paso hacia adelante con una pierna. 2. Baja la cadera hasta que ambas rodillas estén a 90 grados. 3. Regresa a la posición inicial empujando con la pierna delantera.</string>
+    <string name="exercise_static_lunge">Zancada Estática</string>
+    <string name="exercise_static_lunge_description">1. Da un paso adelante y baja el cuerpo flexionando ambas rodillas hasta que la rodilla trasera casi toque el suelo.\n\n2. Mantén el torso erguido y la rodilla delantera alineada con el pie.\n\n3. Empuja con la pierna adelantada para volver a la posición inicial y repite con la otra pierna.</string>
 
     <string name="exercise_front_squat">Sentadilla Frontal</string>
-    <string name="exercise_front_squat_description">1. Coloca la barra en el frente de los hombros. 2. Baja las caderas hacia abajo manteniendo la espalda recta. 3. Empuja hacia arriba para volver a la posición inicial.</string>
+    <string name="exercise_front_squat_description">1. Sostén una barra sobre la parte frontal de los hombros con los codos elevados.\n\n2. Flexiona las rodillas y caderas bajando el cuerpo manteniendo el torso recto y la mirada al frente.\n\n3. Empuja hacia arriba a través de los talones para regresar a la posición inicial.</string>
 
     <string name="exercise_platz_squat">Sentadilla Platz</string>
-    <string name="exercise_platz_squat_description">1. Coloca los pies en una posición más ancha. 2. Baja las caderas manteniendo la espalda recta. 3. Regresa a la posición inicial empujando con los talones.</string>
+    <string name="exercise_platz_squat_description">1. Colócate con los pies más separados que en la sentadilla tradicional y con los dedos ligeramente hacia afuera.\n\n2. Baja flexionando las rodillas hasta que los muslos estén paralelos o un poco más bajos.\n\n3. Mantén la espalda recta y empuja hacia arriba con fuerza para volver a la posición inicial.</string>
 
     <string name="exercise_zercher_squat">Sentadilla Zercher</string>
-    <string name="exercise_zercher_squat_description">1. Coloca la barra en los pliegues de los codos. 2. Flexiona las rodillas y baja las caderas. 3. Empuja hacia arriba manteniendo el torso recto.</string>
+    <string name="exercise_zercher_squat_description">1. Coloca la barra en el pliegue de los codos frente al pecho, con las manos sujetándola.\n\n2. Flexiona las rodillas y caderas bajando el cuerpo como en una sentadilla clásica.\n\n3. Empuja con las piernas hacia arriba para volver a la posición inicial manteniendo el torso recto.</string>
 
     <string name="exercise_leg_curl">Curl de Piernas</string>
-    <string name="exercise_leg_curl_description">1. Siéntate en la máquina de curl de piernas. 2. Flexiona las piernas hacia atrás, apretando los talones hacia los glúteos. 3. Regresa lentamente a la posición inicial.</string>
+    <string name="exercise_leg_curl_description">1. Acuéstate boca abajo en la máquina con los tobillos debajo del rodillo acolchado.\n\n2. Flexiona las rodillas para levantar el rodillo hacia los glúteos contrayendo los isquiotibiales.\n\n3. Baja controladamente hasta la posición inicial sin perder tensión en los músculos.</string>
 
     <string name="exercise_leg_extension">Extensión de Piernas</string>
-    <string name="exercise_leg_extension_description">1. Siéntate en la máquina de extensión de piernas. 2. Extiende las piernas hacia adelante. 3. Vuelve lentamente a la posición inicial.</string>
+    <string name="exercise_leg_extension_description">1. Siéntate en la máquina con la espalda recta y los pies debajo del rodillo acolchado.\n\n2. Extiende las piernas hacia adelante hasta estirarlas completamente, contrayendo los cuádriceps.\n\n3. Baja lentamente controlando el peso para evitar lesiones y vuelve a la posición inicial.</string>
 
     <string name="exercise_leg_press">Prensa de Piernas</string>
-    <string name="exercise_leg_press_description">1. Coloca los pies en la plataforma de la prensa. 2. Flexiona las rodillas bajando el peso. 3. Empuja hacia arriba para regresar a la posición inicial.</string>
+    <string name="exercise_leg_press_description">1. Siéntate en la máquina con la espalda apoyada y coloca los pies en la plataforma a la anchura de los hombros.\n\n2. Empuja la plataforma extendiendo las piernas sin bloquear las rodillas.\n\n3. Flexiona lentamente las rodillas para regresar a la posición inicial controlando el movimiento.</string>
 
     <string name="exercise_lunges">Zancadas</string>
-    <string name="exercise_lunges_description">1. Da un paso largo hacia adelante. 2. Baja las caderas hasta que ambas rodillas estén en ángulos de 90 grados. 3. Empuja hacia atrás para regresar a la posición inicial.</string>
+    <string name="exercise_lunges_description">1. Da un paso largo hacia adelante con una pierna y baja el cuerpo flexionando ambas rodillas hasta casi tocar el suelo.\n\n2. Mantén el torso erguido y la rodilla delantera alineada con el pie.\n\n3. Empuja con la pierna adelantada para volver a la posición inicial y repite con la otra pierna.</string>
 
     <string name="exercise_deadlift_conventional">Peso Muerto Convencional</string>
-    <string name="exercise_deadlift_conventional_description">1. Coloca los pies a la altura de los hombros. 2. Baja las caderas, agarra la barra y levántala manteniendo la espalda recta. 3. Empuja con los talones para regresar a la posición inicial.</string>
+    <string name="exercise_deadlift_conventional_description">1. Coloca los pies a la anchura de los hombros y agarra la barra con las manos justo fuera de las piernas.\n\n2. Mantén la espalda recta y eleva la barra empujando con las piernas y extendiendo el torso.\n\n3. Baja la barra controladamente manteniendo la postura hasta tocar el suelo.</string>
 
     <string name="exercise_deadlift_sumo">Peso Muerto Sumo</string>
-    <string name="exercise_deadlift_sumo_description">1. Coloca los pies más anchos que los hombros, con las puntas hacia afuera. 2. Baja la cadera y agarra la barra. 3. Empuja hacia arriba usando los talones.</string>
+    <string name="exercise_deadlift_sumo_description">1. Coloca los pies muy abiertos con los dedos hacia afuera y agarra la barra con las manos dentro de las piernas.\n\n2. Mantén la espalda recta y eleva la barra empujando con las piernas y extendiendo el torso.\n\n3. Baja controladamente manteniendo la técnica correcta hasta que la barra toque el suelo.</string>
 
     <string name="exercise_deadlift_romanian">Peso Muerto Rumano</string>
-    <string name="exercise_deadlift_romanian_description">1. Coloca los pies a la altura de los hombros y la barra frente a ti. 2. Baja la barra manteniendo las piernas semi-flexionadas. 3. Regresa a la posición inicial empujando las caderas hacia adelante.</string>
+    <string name="exercise_deadlift_romanian_description">1. Sostén la barra con las manos al frente, pies a la anchura de los hombros.\n\n2. Flexiona ligeramente las rodillas y baja la barra deslizando por las piernas, manteniendo la espalda recta.\n\n3. Sube contrayendo glúteos y femorales hasta la posición inicial sin bloquear las rodillas.</string>
 
-    <string name="exercise_deadlift_one_leg">Peso Muerto a Una Pierna</string>
-    <string name="exercise_deadlift_one_leg_description">1. Coloca una pierna en el suelo y la otra ligeramente elevada. 2. Baja la barra mientras mantienes la pierna recta. 3. Regresa a la posición inicial usando la pierna de apoyo.</string>
+    <string name="exercise_deadlift_one_leg">Peso Muerto a una Pierna</string>
+    <string name="exercise_deadlift_one_leg_description">1. Sostén una mancuerna o barra con una mano y eleva una pierna hacia atrás.\n\n2. Flexiona la cadera bajando el torso y manteniendo la espalda recta mientras la pierna se extiende.\n\n3. Regresa a la posición inicial controlando el movimiento y repite con la otra pierna.</string>
 
     <string name="exercise_deadlift_straight_legs">Peso Muerto Piernas Rectas</string>
-    <string name="exercise_deadlift_straight_legs_description">1. Coloca los pies a la altura de los hombros y mantén las piernas rectas. 2. Baja la barra hacia el suelo sin doblar las rodillas. 3. Levanta la barra empujando con las caderas.</string>
+    <string name="exercise_deadlift_straight_legs_description">1. Coloca la barra frente a ti con los pies a la anchura de las caderas.\n\n2. Mantén las piernas casi rectas y baja la barra deslizando por los muslos, sintiendo el estiramiento en isquiotibiales.\n\n3. Sube lentamente contrayendo glúteos y femorales para volver a la posición inicial.</string>
 
-    <string name="exercise_good_morning">Buenos Días</string>
-    <string name="exercise_good_morning_description">1. Coloca la barra sobre los hombros y mantén las piernas ligeramente flexionadas. 2. Baja el torso hacia adelante, manteniendo la espalda recta. 3. Regresa a la posición inicial empujando con las caderas.</string>
+    <string name="exercise_good_morning">Good Morning</string>
+    <string name="exercise_good_morning_description">1. Coloca una barra sobre la parte superior de la espalda y mantén los pies a la anchura de los hombros.\n\n2. Flexiona las caderas bajando el torso hacia adelante manteniendo la espalda recta.\n\n3. Sube contrayendo glúteos y femorales hasta la posición inicial sin arquear la espalda.</string>
 
     <string name="exercise_hip_thrust">Hip Thrust</string>
-    <string name="exercise_hip_thrust_description">1. Coloca los omóplatos en el banco y los pies en el suelo. 2. Levanta las caderas hacia el techo apretando los glúteos. 3. Baja las caderas y repite el movimiento.</string>
+    <string name="exercise_hip_thrust_description">1. Apoya la parte superior de la espalda en un banco y coloca una barra sobre las caderas.\n\n2. Eleva las caderas empujando con los talones hasta que el cuerpo forme una línea recta.\n\n3. Baja controladamente hasta la posición inicial manteniendo la tensión en los glúteos.</string>
 
     <string name="exercise_glute_femoral_raise">Elevación Glúteo Femoral</string>
-    <string name="exercise_glute_femoral_raise_description">1. Colócate en la máquina de elevación glútea. 2. Coloca los pies y empuja hacia atrás con las caderas. 3. Sube las caderas hasta contraer los glúteos y baja lentamente.</string>
+    <string name="exercise_glute_femoral_raise_description">1. Acuéstate boca arriba con las piernas flexionadas y los pies apoyados en el suelo.\n\n2. Eleva las caderas contrayendo los glúteos hasta formar una línea recta desde las rodillas hasta los hombros.\n\n3. Baja controladamente sin apoyar completamente la espalda en el suelo para mantener tensión.</string>
 
-    <string name="exercise_abductor_machine">Máquina Abductor</string>
-    <string name="exercise_abductor_machine_description">1. Siéntate en la máquina abducción. 2. Abre las piernas empujando las almohadillas hacia afuera. 3. Vuelve lentamente a la posición inicial.</string>
+    <string name="exercise_abductor_machine">Máquina de Abdutores</string>
+    <string name="exercise_abductor_machine_description">1. Siéntate en la máquina y coloca las piernas contra los almohadones externos.\n\n2. Abre las piernas empujando contra los almohadones contrayendo los músculos abductores.\n\n3. Regresa lentamente a la posición inicial controlando el movimiento para mantener la tensión.</string>
 
-    <string name="exercise_bench_press">Press Banca</string>
-    <string name="exercise_bench_press_description">1. Coloca las manos sobre la barra a la altura del pecho. 2. Baja la barra hasta el pecho. 3. Empuja la barra hacia arriba hasta extender los brazos.</string>
+    <string name="exercise_bench_press">Press de Banca</string>
+    <string name="exercise_bench_press_description">1. Acuéstate en un banco plano y agarra la barra con las manos un poco más abiertas que los hombros.\n\n2. Baja la barra controladamente hasta tocar el pecho.\n\n3. Empuja la barra hacia arriba extendiendo los brazos sin bloquear los codos.</string>
 
-    <string name="exercise_incline_bench_press">Press Banca Inclinado</string>
-    <string name="exercise_incline_bench_press_description">1. Coloca los pies firmemente sobre el banco inclinado. 2. Baja la barra hacia la parte superior del pecho. 3. Empuja la barra hacia arriba y repite.</string>
+    <string name="exercise_incline_bench_press">Press de Banca Inclinado</string>
+    <string name="exercise_incline_bench_press_description">1. Acuéstate en un banco inclinado y sujeta la barra con un agarre ligeramente más ancho que los hombros.\n\n2. Baja la barra hacia la parte superior del pecho controlando el movimiento.\n\n3. Empuja la barra hacia arriba hasta extender los brazos manteniendo la postura correcta.</string>
 
-    <string name="exercise_decline_bench_press">Press Banca Declinado</string>
-    <string name="exercise_decline_bench_press_description">1. Colócate en un banco declinado con los pies firmemente sujetos. 2. Baja la barra hacia el pecho. 3. Empuja la barra hacia arriba hasta extender completamente los brazos.</string>
+    <string name="exercise_decline_bench_press">Press de Banca Declinado</string>
+    <string name="exercise_decline_bench_press_description">1. Acuéstate en un banco declinado y agarra la barra con un agarre cómodo y firme.\n\n2. Baja la barra controladamente hasta el pecho inferior.\n\n3. Empuja la barra hacia arriba extendiendo los brazos sin perder el control.</string>
 
-    <string name="exercise_machine_press">Press Máquina</string>
-    <string name="exercise_machine_press_description">1. Ajusta el asiento y las palancas de la máquina. 2. Empuja las palancas hacia adelante. 3. Regresa lentamente a la posición inicial.</string>
+    <string name="exercise_machine_press">Press en Máquina</string>
+    <string name="exercise_machine_press_description">1. Siéntate en la máquina y coloca las manos en las asas con un agarre firme.\n\n2. Empuja las asas extendiendo los brazos completamente.\n\n3. Regresa lentamente a la posición inicial manteniendo la tensión en los músculos pectorales.</string>
 
-    <string name="exercise_floor_press">Press Suelo</string>
-    <string name="exercise_floor_press_description">1. Colócate en el suelo con las piernas dobladas. 2. Baja la barra hasta el pecho. 3. Empuja la barra hacia arriba hasta extender los brazos.</string>
+    <string name="exercise_floor_press">Press en el Suelo</string>
+    <string name="exercise_floor_press_description">1. Acuéstate boca arriba en el suelo con una barra o mancuernas.\n\n2. Baja la carga hasta que los codos toquen ligeramente el suelo.\n\n3. Empuja la carga hacia arriba extendiendo los brazos sin bloquearlos.</string>
 
-    <string name="exercise_jm_press">Press JM</string>
-    <string name="exercise_jm_press_description">1. Ajusta las muñecas para hacer el movimiento similar al de un press de banca. 2. Baja la barra controladamente. 3. Empuja la barra hasta que los brazos estén extendidos.</string>
+    <string name="exercise_jm_press">JM Press</string>
+    <string name="exercise_jm_press_description">1. Acuéstate en un banco plano y agarra la barra con un agarre cerrado.\n\n2. Baja la barra controladamente hacia la parte inferior del pecho.\n\n3. Empuja la barra hacia arriba extendiendo los brazos para trabajar los tríceps intensamente.</string>
+
+    <string name="exercise_incline_push_ups">Flexiones Inclinado</string>
+    <string name="exercise_incline_push_ups_description">1. Coloca las manos sobre una superficie elevada, como un banco o caja.\n\n2. Flexiona los codos bajando el torso controladamente.\n\n3. Empuja hacia arriba extendiendo los brazos manteniendo el cuerpo alineado.</string>
 
     <string name="exercise_push_ups">Flexiones</string>
-    <string name="exercise_push_ups_description">1. Coloca las manos a la altura de los hombros. 2. Baja el pecho hacia el suelo manteniendo el cuerpo recto. 3. Empuja hacia arriba hasta extender los brazos.</string>
+    <string name="exercise_push_ups_description">1. Colócate en posición de plancha con las manos a la anchura de los hombros.\n\n2. Flexiona los codos bajando el pecho hacia el suelo manteniendo el cuerpo recto.\n\n3. Empuja hacia arriba extendiendo los brazos para regresar a la posición inicial.</string>
 
-    <string name="exercise_incline_push_ups">Flexiones en Banco Inclinado</string>
-    <string name="exercise_incline_push_ups_description">1. Coloca las manos sobre un banco inclinado. 2. Baja el pecho hacia el banco. 3. Empuja hacia arriba hasta extender los brazos.</string>
+    <string name="exercise_triceps_extension">Extensión de Tríceps</string>
+    <string name="exercise_triceps_extension_description">1. Sostén una mancuerna con ambas manos sobre la cabeza.\n\n2. Flexiona los codos bajando la mancuerna detrás de la cabeza.\n\n3. Extiende los brazos para regresar a la posición inicial contrayendo los tríceps.</string>
 
-    <string name="exercise_dips">Fondos</string>
-    <string name="exercise_dips_description">1. Agarra las barras paralelas con las manos. 2. Baja el torso flexionando los codos. 3. Empuja hacia arriba hasta extender los brazos.</string>
+    <string name="exercise_triceps_pushdown">Jalón de Tríceps</string>
+    <string name="exercise_triceps_pushdown_description">1. Agarra la cuerda o barra en la máquina de poleas altas con las manos en pronación.\n\n2. Empuja hacia abajo extendiendo los codos hasta bloquearlos.\n\n3. Regresa controladamente a la posición inicial manteniendo la tensión en los tríceps.</string>
 
-    <string name="exercise_triceps_extension">Extensión de Triceps</string>
-    <string name="exercise_triceps_extension_description">1. Sostén una barra por encima de la cabeza. 2. Flexiona los codos para bajar la barra hacia la cabeza. 3. Empuja la barra hacia arriba extendiendo los codos.</string>
+    <string name="exercise_fly">Aperturas (Fly)</string>
+    <string name="exercise_fly_description">1. Acuéstate en un banco con una mancuerna en cada mano y los brazos extendidos hacia arriba.\n\n2. Abre los brazos hacia los lados manteniendo una ligera flexión en los codos.\n\n3. Regresa a la posición inicial contrayendo los músculos pectorales.</string>
 
-    <string name="exercise_triceps_pushdown">Empuje Triceps</string>
-    <string name="exercise_triceps_pushdown_description">1. Sujeta la cuerda o barra en la polea alta. 2. Empuja hacia abajo hasta que los codos estén extendidos. 3. Regresa lentamente a la posición inicial.</string>
-
-    <string name="exercise_fly">Aperturas</string>
-    <string name="exercise_fly_description">1. Sostén un par de mancuernas en las manos. 2. Abre los brazos hacia los lados. 3. Vuelve a juntar los brazos hacia el centro.</string>
-
-    <string name="exercise_skull_crushers">Skull Crushers</string>
-    <string name="exercise_skull_crushers_description">1. Acuéstate en un banco plano con una barra. 2. Baja la barra hacia la frente flexionando los codos. 3. Empuja la barra hacia arriba hasta extender los codos.</string>
+    <string name="exercise_skull_crushers">Rompecráneos (Skull Crushers)</string>
+    <string name="exercise_skull_crushers_description">1. Acuéstate en un banco plano con una barra o mancuernas.\n\n2. Flexiona los codos bajando la carga hacia la frente.\n\n3. Extiende los brazos para regresar a la posición inicial trabajando los tríceps.</string>
 
     <string name="exercise_military_press">Press Militar</string>
-    <string name="exercise_military_press_description">1. Sostén la barra a la altura de los hombros. 2. Empuja la barra hacia arriba hasta que los brazos estén completamente extendidos. 3. Baja la barra controladamente hacia los hombros.</string>
+    <string name="exercise_military_press_description">1. Siéntate o párate con la barra a la altura de los hombros.\n\n2. Empuja la barra hacia arriba extendiendo completamente los brazos por encima de la cabeza.\n\n3. Baja la barra controladamente hasta la posición inicial manteniendo la espalda recta.</string>
 
-    <string name="exercise_handstand_pushups">Flexiones en Pino</string>
-    <string name="exercise_handstand_pushups_description">1. Colócate en una posición de pino contra la pared. 2. Flexiona los codos para bajar la cabeza hacia el suelo. 3. Empuja hacia arriba para volver a la posición inicial.</string>
+    <string name="exercise_dips">Fondos en Paralelas</string>
+    <string name="exercise_dips_description">1. Agarra las barras paralelas y suspende el cuerpo con los brazos extendidos.\n\n2. Flexiona los codos bajando el cuerpo manteniendo el torso ligeramente inclinado hacia adelante.\n\n3. Empuja hacia arriba extendiendo los brazos para volver a la posición inicial.</string>
+
+    <string name="exercise_handstand_pushups">Flexiones de Pino</string>
+    <string name="exercise_handstand_pushups_description">1. Colócate en posición de pino apoyando las manos en el suelo y los pies en la pared.\n\n2. Flexiona los codos bajando la cabeza hacia el suelo con control.\n\n3. Empuja con los brazos para volver a la posición inicial extendiendo los codos.</string>
 
     <string name="exercise_landmine_press">Press Landmine</string>
-    <string name="exercise_landmine_press_description">1. Coloca una barra en un extremo de un soporte. 2. Agarra el otro extremo de la barra y empuja hacia arriba. 3. Regresa lentamente a la posición inicial.</string>
+    <string name="exercise_landmine_press_description">1. Sujeta el extremo libre de la barra con una mano, la otra mano puede estabilizar.\n\n2. Empuja la barra hacia adelante y hacia arriba extendiendo el brazo.\n\n3. Baja la barra controladamente para regresar a la posición inicial manteniendo la estabilidad.</string>
 
-    <string name="exercise_pullover">Pull Over</string>
-    <string name="exercise_pullover_description">1. Acuéstate sobre un banco y agarra una mancuerna. 2. Baja los brazos por detrás de la cabeza. 3. Regresa los brazos a la posición inicial.</string>
+    <string name="exercise_rowing">Remo con Barra</string>
+    <string name="exercise_rowing_description">1. Coloca los pies a la anchura de los hombros y agarra la barra con las manos en pronación.\n\n2. Flexiona ligeramente las rodillas y baja el torso manteniendo la espalda recta.\n\n3. Tira de la barra hacia el abdomen contrayendo los músculos de la espalda y baja controladamente.</string>
 
-    <string name="exercise_rowing">Remo</string>
-    <string name="exercise_rowing_description">1. Agarra la barra con las palmas hacia abajo. 2. Tira de la barra hacia el abdomen. 3. Regresa a la posición inicial controladamente.</string>
+    <string name="exercise_t_bar_row">Remo T-Bar</string>
+    <string name="exercise_t_bar_row_description">1. Coloca la barra en la máquina o en una base con un soporte para pecho.\n\n2. Agarra las asas o barra y tira hacia el torso contrayendo la espalda.\n\n3. Regresa controladamente a la posición inicial manteniendo la tensión en los músculos.</string>
 
-    <string name="exercise_row_t_bar">Remo en T</string>
-    <string name="exercise_row_t_bar_description">1. Sujeta el asa del remo en T. 2. Inclina el torso hacia adelante con la espalda recta. 3. Tira del asa hacia tu abdomen y vuelve a la posición inicial.</string>
-
-    <string name="exercise_incline_bench_row">Remo en banco inclinado</string>
-    <string name="exercise_incline_bench_row_description">1. Apoya el pecho sobre un banco inclinado. 2. Sostén las mancuernas y tira hacia tu torso. 3. Baja los brazos controladamente.</string>
+    <string name="exercise_incline_bench_row">Remo en Banco Inclinado</string>
+    <string name="exercise_incline_bench_row_description">1. Acuéstate boca abajo en un banco inclinado sosteniendo mancuernas.\n\n2. Tira de las mancuernas hacia el torso contrayendo la espalda.\n\n3. Baja controladamente sin perder la tensión muscular y repite el movimiento.</string>
 
     <string name="exercise_pendlay_row">Remo Pendlay</string>
-    <string name="exercise_pendlay_row_description">1. Colócate inclinado con la espalda paralela al suelo. 2. Levanta la barra desde el suelo hasta el torso. 3. Baja la barra de nuevo hasta el suelo.</string>
+    <string name="exercise_pendlay_row_description">1. Coloca los pies a la anchura de los hombros y agarra la barra con las manos en pronación.\n\n2. Desde posición paralela al suelo, tira de la barra hacia el abdomen con fuerza.\n\n3. Deja que la barra toque el suelo antes de repetir el movimiento manteniendo la espalda recta.</string>
 
-    <string name="exercise_bent_over_row">Remo inclinado</string>
-    <string name="exercise_bent_over_row_description">1. Inclina el torso hacia adelante con la barra en las manos. 2. Tira de la barra hacia el abdomen. 3. Baja la barra controladamente.</string>
+    <string name="exercise_bent_over_row">Remo con Barra Inclinado</string>
+    <string name="exercise_bent_over_row_description">1. Coloca los pies a la anchura de los hombros y agarra la barra con las manos en pronación.\n\n2. Flexiona ligeramente las rodillas y baja el torso manteniendo la espalda recta.\n\n3. Tira de la barra hacia el abdomen contrayendo la espalda y baja controladamente.</string>
 
-    <string name="exercise_one_arm_row">Remo a una mano</string>
-    <string name="exercise_one_arm_row_description">1. Coloca una rodilla y mano en un banco. 2. Con la otra mano, tira de una mancuerna hacia tu torso. 3. Baja el peso lentamente.</string>
+    <string name="exercise_one_arm_row">Remo a un Brazo</string>
+    <string name="exercise_one_arm_row_description">1. Apoya una mano y rodilla en un banco y sostén una mancuerna con la mano contraria.\n\n2. Tira de la mancuerna hacia el torso contrayendo la espalda.\n\n3. Baja controladamente manteniendo la tensión muscular y repite con el otro brazo.</string>
 
-    <string name="exercise_bodyweight_row">Remo invertido con peso corporal</string>
-    <string name="exercise_bodyweight_row_description">1. Sujétate a una barra con el cuerpo extendido. 2. Tira del pecho hacia la barra. 3. Baja controladamente a la posición inicial.</string>
+    <string name="exercise_row">Remo Sentado</string>
+    <string name="exercise_row_description">1. Siéntate en la máquina con la espalda recta y los pies apoyados en la plataforma.\n\n2. Agarra las asas con los brazos extendidos y tira hacia el torso contrayendo los músculos de la espalda.\n\n3. Vuelve lentamente a la posición inicial manteniendo la tensión muscular.</string>
 
     <string name="exercise_face_pull">Face Pull</string>
-    <string name="exercise_face_pull_description">1. Agarra una cuerda en la polea alta. 2. Tira de la cuerda hacia tu cara manteniendo los codos altos. 3. Vuelve lentamente al inicio.</string>
+    <string name="exercise_face_pull_description">1. Coloca una cuerda en la polea alta y agarra ambos extremos.\n\n2. Tira de la cuerda hacia la cara separando las manos y contrayendo la parte superior de la espalda.\n\n3. Regresa controladamente a la posición inicial manteniendo la tensión.</string>
 
-    <string name="exercise_rear_delt_fly">Pájaros</string>
-    <string name="exercise_rear_delt_fly_description">1. Inclina el torso y sostén mancuernas. 2. Abre los brazos hacia los lados. 3. Junta los brazos controladamente.</string>
+    <string name="exercise_inverted_bodyweight_row">Remo Invertido con Peso Corporal</string>
+    <string name="exercise_inverted_bodyweight_row_description">1. Colócate debajo de una barra fija sujetándola con las manos.\n\n2. Tira del cuerpo hacia la barra manteniendo el cuerpo recto.\n\n3. Baja lentamente hasta estirar los brazos completamente sin perder la postura.</string>
 
-    <string name="exercise_pull_up">Dominadas</string>
-    <string name="exercise_pull_up_description">1. Cuélgate de una barra con las palmas hacia afuera. 2. Sube el cuerpo hasta que la barbilla pase la barra. 3. Baja de forma controlada.</string>
+    <string name="exercise_reverse_fly">Pájaros Invertidos</string>
+    <string name="exercise_reverse_fly_description">1. Inclínate hacia adelante con mancuernas en las manos y los brazos colgando.\n\n2. Abre los brazos hacia los lados manteniendo una ligera flexión en los codos.\n\n3. Regresa controladamente a la posición inicial manteniendo la tensión en los deltoides posteriores.</string>
 
-    <string name="exercise_lat_pulldown">Jalón al pecho</string>
-    <string name="exercise_lat_pulldown_description">1. Siéntate en la máquina y sujeta la barra. 2. Tira la barra hacia el pecho. 3. Regresa lentamente al inicio.</string>
+    <string name="exercise_pull_ups">Dominadas</string>
+    <string name="exercise_pull_ups_description">1. Agarra la barra con las manos en pronación y a la anchura de los hombros.\n\n2. Tira del cuerpo hacia arriba hasta que la barbilla sobrepase la barra.\n\n3. Baja controladamente hasta extender los brazos completamente.</string>
 
-    <string name="exercise_upright_row">Remo vertical</string>
-    <string name="exercise_upright_row_description">1. Sostén una barra frente a ti. 2. Sube la barra hacia el mentón. 3. Baja controladamente.</string>
+    <string name="exercise_lat_pull_down">Jalón al Pecho</string>
+    <string name="exercise_lat_pull_down_description">1. Siéntate en la máquina y agarra la barra con las manos en pronación y abiertas.\n\n2. Tira de la barra hacia el pecho contrayendo los dorsales.\n\n3. Sube lentamente la barra hasta la posición inicial controlando el movimiento.</string>
 
-    <string name="exercise_clean_pull">Clean Pull</string>
-    <string name="exercise_clean_pull_description">1. Comienza en posición de peso muerto. 2. Sube la barra rápidamente hasta la cintura estirando los tobillos, caderas y hombros. 3. Baja con control.</string>
+    <string name="exercise_pull_over">Pullover</string>
+    <string name="exercise_pull_over_description">1. Acuéstate en un banco sosteniendo una mancuerna o barra con ambas manos sobre el pecho.\n\n2. Lleva la carga hacia atrás pasando la cabeza con los brazos ligeramente flexionados.\n\n3. Regresa a la posición inicial contrayendo los músculos del pecho y espalda.</string>
 
-    <string name="exercise_biceps_curl">Curl bíceps</string>
-    <string name="exercise_biceps_curl_description">1. Sostén una barra o mancuernas. 2. Flexiona los codos para subir el peso. 3. Baja lentamente a la posición inicial.</string>
+    <string name="exercise_vertical_row">Remo Vertical</string>
+    <string name="exercise_vertical_row_description">1. Sostén una barra con las manos en pronación y a la anchura de los hombros.\n\n2. Tira de la barra hacia la parte superior del pecho manteniendo los codos altos.\n\n3. Baja controladamente hasta la posición inicial manteniendo la postura.</string>
 
-    <string name="exercise_incline_curl">Curl bíceps inclinado</string>
-    <string name="exercise_incline_curl_description">1. Siéntate en un banco inclinado con mancuernas. 2. Flexiona los brazos hacia arriba. 3. Baja lentamente.</string>
+    <string name="exercise_clean_pull">Tirón de Clean</string>
+    <string name="exercise_clean_pull_description">1. Colócate con los pies a la anchura de los hombros y agarra la barra con las manos.\n\n2. Tira de la barra hacia arriba estirando las caderas y rodillas con fuerza.\n\n3. Baja la barra controladamente manteniendo la técnica y la espalda recta.</string>
 
-    <string name="exercise_hammer_curl">Curl bíceps martillo</string>
-    <string name="exercise_hammer_curl_description">1. Sostén mancuernas con agarre neutro. 2. Flexiona los codos hasta la altura del hombro. 3. Regresa a la posición inicial.</string>
+    <string name="exercise_biceps_curl">Curl de Bíceps</string>
+    <string name="exercise_biceps_curl_description">1. Sostén una barra o mancuernas con las palmas hacia adelante.\n\n2. Flexiona los codos elevando la carga hacia los hombros contrayendo los bíceps.\n\n3. Baja lentamente controlando el peso hasta la posición inicial.</string>
 
-    <string name="exercise_lateral_raise">Elevación lateral</string>
-    <string name="exercise_lateral_raise_description">1. De pie, con mancuernas a los lados. 2. Eleva los brazos hasta la altura de los hombros. 3. Baja con control.</string>
+    <string name="exercise_incline_biceps_curl">Curl de Bíceps en Banco Inclinado</string>
+    <string name="exercise_incline_biceps_curl_description">1. Siéntate en un banco inclinado sosteniendo mancuernas con las palmas hacia adelante.\n\n2. Flexiona los codos levantando las mancuernas hacia los hombros.\n\n3. Baja controladamente manteniendo la tensión en los bíceps.</string>
 
-    <string name="exercise_front_raise">Elevación frontal</string>
-    <string name="exercise_front_raise_description">1. De pie, sostén mancuernas frente a ti. 2. Eleva los brazos hacia el frente. 3. Regresa lentamente al inicio.</string>
+    <string name="exercise_hammer_curl">Curl Martillo</string>
+    <string name="exercise_hammer_curl_description">1. Sostén mancuernas con las palmas enfrentadas a los lados.\n\n2. Flexiona los codos elevando las mancuernas hacia los hombros sin girar las muñecas.\n\n3. Baja controladamente hasta la posición inicial manteniendo la tensión.</string>
 
-    <string name="exercise_ab_wheel">Rueda abdominal</string>
-    <string name="exercise_ab_wheel_description">1. Arrodíllate con la rueda en las manos. 2. Rueda hacia adelante extendiendo el cuerpo. 3. Regresa contrayendo el abdomen.</string>
+    <string name="exercise_lateral_raise">Elevaciones Laterales</string>
+    <string name="exercise_lateral_raise_description">1. Sostén mancuernas a los lados con los brazos extendidos.\n\n2. Eleva los brazos lateralmente hasta que estén a la altura de los hombros.\n\n3. Baja controladamente sin perder la postura y manteniendo una ligera flexión en los codos.</string>
+
+    <string name="exercise_front_raise">Elevaciones Frontales</string>
+    <string name="exercise_front_raise_description">1. Sostén mancuernas delante de los muslos con los brazos extendidos.\n\n2. Eleva los brazos hacia adelante hasta la altura de los hombros.\n\n3. Baja controladamente manteniendo el control del movimiento.</string>
+
+    <string name="exercise_ab_wheel">Rodillo para Abdominales</string>
+    <string name="exercise_ab_wheel_description">1. Arrodíllate y sostiene el rodillo con ambas manos frente a ti.\n\n2. Rueda el rodillo hacia adelante extendiendo el cuerpo sin perder la postura.\n\n3. Regresa a la posición inicial contrayendo el abdomen para evitar arquear la espalda.</string>
 
     <string name="exercise_copenhagen_plank">Plancha Copenhagen</string>
-    <string name="exercise_copenhagen_plank_description">1. Apoya una pierna sobre un banco lateralmente. 2. Eleva la cadera formando una línea recta. 3. Mantén la posición.</string>
+    <string name="exercise_copenhagen_plank_description">1. Apoya un antebrazo en el suelo y la otra pierna sobre un banco.\n\n2. Mantén el cuerpo recto contrayendo el core y los abductores.\n\n3. Sostén la posición el tiempo deseado manteniendo la estabilidad.</string>
 
-    <string name="exercise_side_plank">Plancha lateral</string>
-    <string name="exercise_side_plank_description">1. Apóyate sobre un antebrazo de lado. 2. Eleva la cadera del suelo. 3. Mantén la posición alineada.</string>
+    <string name="exercise_side_plank">Plancha Lateral</string>
+    <string name="exercise_side_plank_description">1. Apoya un antebrazo en el suelo y eleva el cuerpo formando una línea recta.\n\n2. Mantén el core activado y la cadera elevada.\n\n3. Sostén la posición el tiempo deseado sin perder la postura.</string>
 
-    <string name="exercise_landmine_rotation">Rotación barra en suelo</string>
-    <string name="exercise_landmine_rotation_description">1. Sostén una barra con ambas manos. 2. Gira de un lado a otro usando el tronco. 3. Mantén el core contraído.</string>
+    <string name="exercise_barbell_rollout">Rodillo con Barra</string>
+    <string name="exercise_barbell_rollout_description">1. Coloca una barra con discos y agárrala con ambas manos.\n\n2. Rueda la barra hacia adelante extendiendo el cuerpo sin perder la postura.\n\n3. Regresa contrayendo el abdomen para volver a la posición inicial.</string>
 
-    <string name="exercise_calf_raise">Elevación de talones</string>
-    <string name="exercise_calf_raise_description">1. Coloca los pies en un escalón. 2. Eleva los talones contrayendo las pantorrillas. 3. Baja lentamente los talones.</string>
+    <string name="exercise_calf_raise">Elevación de Gemelos</string>
+    <string name="exercise_calf_raise_description">1. Colócate de pie con la punta de los pies sobre un escalón o plataforma.\n\n2. Eleva los talones contrayendo los gemelos.\n\n3. Baja lentamente hasta estirar completamente los músculos y repite.</string>
 
-    <string name="exercise_leg_raise">Elevación de piernas</string>
-    <string name="exercise_leg_raise_description">1. Acuéstate boca arriba. 2. Eleva las piernas rectas. 3. Baja sin tocar el suelo.</string>
+    <string name="exercise_leg_raise">Elevación de Piernas</string>
+    <string name="exercise_leg_raise_description">1. Acuéstate boca arriba con las piernas extendidas.\n\n2. Eleva las piernas juntas sin flexionar las rodillas hasta formar un ángulo de 90°.\n\n3. Baja controladamente sin que los pies toquen el suelo para mantener la tensión.</string>
 
     <string name="exercise_pallof_press">Press Pallof</string>
-    <string name="exercise_pallof_press_description">1. Sujeta una polea a la altura del pecho. 2. Empuja el cable hacia adelante y mantén. 3. Vuelve al pecho y repite.</string>
+    <string name="exercise_pallof_press_description">1. Colócate de lado a una polea con las manos sujetando el mango frente al pecho.\n\n2. Empuja el mango hacia adelante extendiendo los brazos y resistiendo la rotación.\n\n3. Regresa controladamente a la posición inicial manteniendo el core activado.</string>
+
 </resources>

@@ -13,7 +13,9 @@ import com.cursointermedio.myapplication.data.database.entities.RoutineExerciseC
 import com.cursointermedio.myapplication.data.database.entities.RoutineWithExercises
 import com.cursointermedio.myapplication.data.database.entities.RoutineWithOrderedExercises
 import com.cursointermedio.myapplication.data.database.entities.TrainingEntity
+import com.cursointermedio.myapplication.domain.model.ExerciseModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 
 @Dao
 interface RoutineDao {
@@ -44,6 +46,9 @@ interface RoutineDao {
     @Query("SELECT * FROM routine_table WHERE routineId = :routineId")
     suspend fun getRoutineById(routineId: Long): RoutineEntity
 
+    @Query("SELECT * FROM routine_table WHERE routineId = :routineId")
+    fun getRoutineByIdFlow(routineId: Long): Flow<RoutineEntity>
+
     @Query("""
     SELECT e.* FROM exercise_table e
     INNER JOIN RoutineExerciseCrossRef re ON e.exerciseId = re.exerciseId
@@ -52,10 +57,34 @@ interface RoutineDao {
 """)
     suspend fun getOrderedExercisesForRoutine(routineId: Long): List<ExerciseEntity>
 
+
+    @Query("""
+    SELECT e.* FROM exercise_table e
+    INNER JOIN RoutineExerciseCrossRef re ON e.exerciseId = re.exerciseId
+    WHERE re.routineId = :routineId
+    ORDER BY re.`order` ASC
+""")
+    fun getOrderedExercisesForRoutineFlow(routineId: Long): Flow<List<ExerciseEntity>>
+
     @Transaction
     suspend fun getRoutineWithOrderedExercises(routineId: Long): RoutineWithOrderedExercises {
         val routine = getRoutineById(routineId)
         val exercises = getOrderedExercisesForRoutine(routineId)
         return RoutineWithOrderedExercises(routine, exercises)
     }
-}
+
+    fun getRoutineWithOrderedExercisesFlow(routineId: Long): Flow<RoutineWithOrderedExercises> =
+        combine(
+            getRoutineByIdFlow(routineId),
+            getOrderedExercisesForRoutineFlow(routineId)
+        ) { routine, exercises ->
+            RoutineWithOrderedExercises(routine, exercises)
+        }
+
+    @Delete
+    suspend fun removeExerciseFromRoutine(crossRef: RoutineExerciseCrossRef)
+
+    @Query("UPDATE RoutineExerciseCrossRef SET `order` = :order WHERE routineId = :routineId AND exerciseId = :exerciseId")
+    suspend fun updateOrderCrossRefRoutineExercise(exerciseId: Long, routineId: Long, order: Int)
+
+    }

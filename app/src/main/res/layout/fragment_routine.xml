@@ -5,13 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".ui.routine.RoutineFragment"
-    android:padding="10dp"
-    >
+    tools:context=".ui.routine.RoutineFragment">
+
     <LinearLayout
         android:id="@+id/flBack"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="10dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +29,7 @@
             style="@style/btn_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="@string/btn_back" />
+            android:text="@string/btn_back" />
 
     </LinearLayout>
 
@@ -37,10 +39,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:text="@string/btn_edit"
         app:layout_constraintBottom_toBottomOf="@id/flBack"
         app:layout_constraintEnd_toStartOf="@id/ivPlusExercise"
-        app:layout_constraintTop_toTopOf="@id/flBack"
-        android:text="@string/btn_edit" />
+        app:layout_constraintTop_toTopOf="@id/flBack" />
+
+    <TextView
+        android:id="@+id/btnRoutineOk"
+        style="@style/btn_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="@string/btn_ok"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/flBack"
+        app:layout_constraintEnd_toStartOf="@id/ivPlusExercise"
+        app:layout_constraintTop_toTopOf="@id/flBack" />
 
     <ImageView
         android:id="@+id/ivPlusExercise"
@@ -55,6 +69,10 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="10dp"
+        android:textSize="28sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/flBack"
         tools:text="ESPALDA FEMORAL" />
@@ -63,7 +81,60 @@
         android:id="@+id/rvExercise"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="200dp"
+        android:clipToPadding="false"
+        android:layout_marginTop="9dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+
+    <LinearLayout
+        android:id="@+id/llRoutineExercisesShimmer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/bg_icon_search_wrapper"
+            android:backgroundTint="@color/iconSearchBackground1"
+            android:padding="8dp">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_icon_search_wrapper"
+                android:backgroundTint="@color/iconSearchBackground2"
+                android:padding="8dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_search"
+                    android:backgroundTint="@color/icons" />
+            </FrameLayout>
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/routine_not_exercises"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/routine_not_exercises_text"
+            android:textColor="@color/Grey"
+            android:textSize="14sp" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

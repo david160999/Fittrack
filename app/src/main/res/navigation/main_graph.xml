@@ -84,8 +84,7 @@
                 app:destination="@id/exerciseFragment" />
             <argument
                 android:name="id"
-                app:argType="integer"
-                android:defaultValue="0" />
+                app:argType="long" />
             <action
                 android:id="@+id/action_routineFragment_to_addExerciseFragment"
                 app:destination="@id/addExerciseFragment" />

@@ -37,6 +37,12 @@
 
     <!--    RoutineFragment-->
     <string name="routine_prueba">EStoy en Rutina</string>
+    <string name="routine_not_exercises">Sin Ejercicios</string>
+    <string name="routine_not_exercises_text">Presiona "+" para crear ejercicios</string>
+    <string name="routine_count_exercise">%1$d Series</string>
+    <string name="routine_menuOption1">Ver información</string>
+    <string name="routine_menuOption2">Eliminar</string>
+
 
     <!--    WeekFragment-->
     <string name="week_prueba">EStoy en WEEK</string>
@@ -52,6 +58,9 @@
     <string name="week_dialog_delete_title">Eliminar rutina</string>
     <string name="week_dialog_delete_text">¿Estás seguro de que deseas eliminar "'%1$s'"?</string>
     <string name="week_date_routine">Sin fecha</string>
+    <string name="week_not_routines">Sin Entrenamientos</string>
+    <string name="week_not_routines_text">Presiona "+" para crear un entrenamiento</string>
+
 
 
     <!--    ExerciseFragment-->
@@ -64,7 +73,6 @@
     <string name="exercise_tonelaje">Tonelaje</string>
     <string name="exercise_notas">Notas</string>
     <string name="exercise_notas_del_ejercicio">Notas del ejercicio</string>
-
 
     <!--    ExerciseCategories-->
     <string name="exerciseKnee">Dominante de Rodilla</string>

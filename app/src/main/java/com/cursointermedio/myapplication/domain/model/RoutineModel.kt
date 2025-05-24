@@ -2,6 +2,7 @@ package com.cursointermedio.myapplication.domain.model
 
 import androidx.room.ColumnInfo
 import androidx.room.PrimaryKey
+import com.cursointermedio.myapplication.data.database.entities.ExerciseEntity
 import com.cursointermedio.myapplication.data.database.entities.RoutineEntity
 import com.cursointermedio.myapplication.data.database.entities.WeekEntity
 
@@ -16,3 +17,9 @@ data class RoutineModel(
 )
 
 fun RoutineEntity.toDomain() = RoutineModel(routineId, weekRoutineId, name, description, order)
+
+
+data class RoutineWithOrderedExercisesModel(
+    val routine: RoutineModel,
+    val exercises: List<ExerciseModel>
+)

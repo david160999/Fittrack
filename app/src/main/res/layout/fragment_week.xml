@@ -150,37 +150,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/spacer" />
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/flWeekRoutineShimmer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dropdownContainer">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        app:layout_constraintTop_toTopOf="parent">
 
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
             android:background="@drawable/bg_icon_search_wrapper"
             android:backgroundTint="@color/iconSearchBackground1"
-            android:padding="4dp">
+            android:padding="8dp">
 
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_icon_search_wrapper"
                 android:backgroundTint="@color/iconSearchBackground2"
-                android:padding="4dp">
+                android:padding="8dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -190,7 +185,20 @@
             </FrameLayout>
         </FrameLayout>
 
-    </FrameLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/week_not_routines"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/week_not_routines_text"
+            android:textColor="@color/Grey"
+            android:textSize="14sp" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

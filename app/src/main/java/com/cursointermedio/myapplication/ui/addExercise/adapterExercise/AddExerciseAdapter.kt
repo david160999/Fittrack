@@ -2,6 +2,8 @@ package com.cursointermedio.myapplication.ui.addExercise.adapterExercise
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.cursointermedio.myapplication.data.database.entities.RoutineEntity
 import com.cursointermedio.myapplication.databinding.ItemAddexerciseBinding
@@ -12,30 +14,28 @@ import com.cursointermedio.myapplication.ui.addExercise.adapterCategory.Category
 
 
 class AddExerciseAdapter(
-    private val onItemSelected: (ExerciseModel) -> Unit,
-    private var exercises: List<ExerciseModel>
-) :
-    RecyclerView.Adapter<AddExerciseViewHolder>() {
-
+    private val onItemSelected: (ExerciseModel) -> Unit
+) : ListAdapter<ExerciseModel, AddExerciseViewHolder>(ExerciseDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddExerciseViewHolder {
-        val binding =
-            ItemAddexerciseBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemAddexerciseBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return AddExerciseViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: AddExerciseViewHolder, position: Int) {
-        holder.bind(exercises[position], onItemSelected)
-
+        holder.bind(getItem(position), onItemSelected)
     }
 
-    override fun getItemCount() = exercises.size
+    class ExerciseDiffCallback : DiffUtil.ItemCallback<ExerciseModel>() {
+        override fun areItemsTheSame(oldItem: ExerciseModel, newItem: ExerciseModel): Boolean {
+            // Asume que ExerciseModel tiene un id único
+            return oldItem.id == newItem.id
+        }
 
-
-    fun updateList(exerciseList: List<ExerciseModel>) {
-        this.exercises = exerciseList
-        notifyDataSetChanged()
+        override fun areContentsTheSame(oldItem: ExerciseModel, newItem: ExerciseModel): Boolean {
+            // Puedes ajustar según los campos relevantes
+            return oldItem == newItem
+        }
     }
-
 }
 

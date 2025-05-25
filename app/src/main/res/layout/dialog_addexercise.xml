@@ -25,24 +25,39 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="8dp"
+            android:textColor="@color/black"
             android:hint="@string/addExercise_create_name"
             app:boxBackgroundColor="@color/white"
             app:boxBackgroundMode="outline"
+            android:layout_gravity="center_vertical"
             app:boxCornerRadiusBottomEnd="6dp"
             app:boxCornerRadiusBottomStart="6dp"
+            app:hintTextColor="@color/icons"
             app:boxCornerRadiusTopEnd="6dp"
-            app:boxCornerRadiusTopStart="6dp">>
+            app:boxCornerRadiusTopStart="6dp"
+            app:boxStrokeColor="@color/icons"
+            app:endIconMode="none"
+            app:boxStrokeWidth="1dp"
+            app:cursorColor="@color/icons"
+            app:boxStrokeWidthFocused="2dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etExerciseName"
-                style="@style/sub_text"
+                android:imeOptions="actionDone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp" />
+                android:cursorVisible="true"
+                android:maxLines="1"
+                android:enabled="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:inputType="text"
+                android:paddingVertical="8dp"
+                android:textColor="@color/black"
+                android:textSize="11sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -56,23 +71,24 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="4dp"
-                android:gravity="center_vertical"
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
                     android:id="@+id/tvSelectedCategory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="11sp"
-                    android:textColor="@color/icons"/>
+                    android:layout_marginStart="4dp"
+                    android:textColor="@color/icons"
+                    android:textSize="11sp" />
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_arrow_down_float"
                     android:contentDescription="@string/load_menu"
+                    android:src="@drawable/ic_arrow_down_float"
                     app:tint="@color/icons" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>

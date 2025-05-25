@@ -175,7 +175,7 @@ class WeekViewModel @Inject constructor(
                 }
                 getDateUseCase.insertDateList(datesList)
             } catch (e: Exception) {
-                throw e
+                Log.e("InsertDatesToRoutines", "Error al insertar dates a las rutinas", e)
             }
         }
 
@@ -189,7 +189,7 @@ class WeekViewModel @Inject constructor(
             try {
                 getRoutineUseCase.changeOrderRoutines(newRoutinesList)
             } catch (e: Exception) {
-                 throw e
+                Log.e("ChangeOrderRoutines", "Error al cambiar de orden las rutinas", e)
             }
         }
     }

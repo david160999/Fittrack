@@ -155,7 +155,6 @@ class WeekFragment @Inject constructor() : Fragment() {
                 updateRoutineAdapter()
 
             }
-
             is WeekUiState.Error -> {
                 hideLoading()
                 showSnackbar(binding.root, state.message, binding.root.context)

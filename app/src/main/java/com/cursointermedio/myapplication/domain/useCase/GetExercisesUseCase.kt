@@ -14,7 +14,7 @@ class GetExercisesUseCase @Inject constructor(
     private val repository: ExerciseRepository,
     private val getRoutineUseCase: GetRoutineUseCase
 ) {
-    fun invoke(): Flow<List<ExerciseModel>> {
+    fun getAllExercisesFromDatabase(): Flow<List<ExerciseModel>> {
         return repository.getAllExercisesFromDatabase()
     }
 

@@ -6,6 +6,8 @@ import com.cursointermedio.myapplication.databinding.ItemAddexerciseBinding
 import com.cursointermedio.myapplication.databinding.ItemSelectedexerciseBinding
 import com.cursointermedio.myapplication.domain.model.ExerciseModel
 import com.cursointermedio.myapplication.domain.model.getExerciseNameFromKey
+import com.cursointermedio.myapplication.utils.extensions.setupTouchAction
+import com.cursointermedio.myapplication.utils.extensions.setupTouchActionRecyclerView
 
 
 class SelectedExerciseViewHolder(private val binding: ItemSelectedexerciseBinding,
@@ -17,7 +19,7 @@ class SelectedExerciseViewHolder(private val binding: ItemSelectedexerciseBindin
     fun bind(exerciseItemResponse: ExerciseModel, onItemSelected: (ExerciseModel) -> Unit) {
         binding.tvExerciseName.text = exerciseItemResponse.getExerciseNameFromKey(binding.root.context)
 
-        binding.root.setOnClickListener{
+        binding.root.setupTouchActionRecyclerView{
             onItemSelected(exerciseItemResponse)
         }
 

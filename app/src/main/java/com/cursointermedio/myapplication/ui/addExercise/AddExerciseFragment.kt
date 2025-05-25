@@ -2,32 +2,46 @@ package com.cursointermedio.myapplication.ui.addExercise
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.widget.SearchView   // ✅ BIEN, esta es la que corresponde al XML
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.cursointermedio.myapplication.R
 import com.cursointermedio.myapplication.databinding.FragmentAddexerciseBinding
 import com.cursointermedio.myapplication.domain.model.CategoryInfo
 import com.cursointermedio.myapplication.domain.model.ExerciseModel
+import com.cursointermedio.myapplication.domain.model.getExerciseNameFromKey
 import com.cursointermedio.myapplication.ui.addExercise.adapterCategory.CategoryAdapter
 import com.cursointermedio.myapplication.ui.addExercise.adapterExercise.AddExerciseAdapter
 import com.cursointermedio.myapplication.ui.addExercise.adapterExercise.SelectedExerciseAdapter
 import com.cursointermedio.myapplication.ui.addExercise.dialog.AddExerciseDialog
 import com.cursointermedio.myapplication.ui.addExercise.dialog.RemoveExerciseDialog
 import com.cursointermedio.myapplication.ui.routine.RoutineFragmentArgs
+import com.cursointermedio.myapplication.ui.week.WeekFragmentDirections
+import com.cursointermedio.myapplication.utils.extensions.setupTouchAction
+import com.cursointermedio.myapplication.utils.extensions.showSnackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -42,11 +56,10 @@ class AddExerciseFragment : Fragment() {
     private lateinit var adapterCategory: CategoryAdapter
     private lateinit var adapterSelected: SelectedExerciseAdapter
 
-    private lateinit var exercises: Flow<List<ExerciseModel>>
-    private var selectedExercises = mutableListOf<ExerciseModel>()
+    private var selectedExercises = MutableStateFlow<List<ExerciseModel>>(emptyList())
+    private var originalList: List<ExerciseModel> = emptyList()  // Guardamos la lista original
 
-    private lateinit var categories: List<CategoryInfo>
-    private var nameCategory = ""
+    private var categoryList: List<CategoryInfo> = emptyList()
 
     private val args: AddExerciseFragmentArgs by navArgs()
     private var routineId: Long = 0
@@ -60,53 +73,104 @@ class AddExerciseFragment : Fragment() {
     }
 
     private fun initListener() {
-        binding.ivBack.setAlphaTouchListener {
+        binding.ivBack.setupTouchAction {
             findNavController().popBackStack()
         }
 
-        binding.ivPlusExercise.setAlphaTouchListener {
+        binding.ivPlusExercise.setupTouchAction {
             createDialogAdd()
         }
 
-        binding.tvNext.setAlphaTouchListener {
+        binding.tvNext.setupTouchAction {
             lifecycleScope.launch {
-                addExerciseViewModel.insertExerciseToRoutine(routineId, selectedExercises)
+                addExerciseViewModel.insertExerciseToRoutine(routineId, selectedExercises.value)
+                findNavController().popBackStack()
+            }
+        }
 
+        binding.svExercise.setOnClickListener {
+            binding.svExercise.isIconified = false
+            binding.svExercise.requestFocus()
+            val imm =
+                requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showSoftInput(binding.svExercise.findFocus(), InputMethodManager.SHOW_IMPLICIT)
+        }
+
+        binding.svExercise.setOnQueryTextListener(object :
+            SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean = false
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                val filteredText = newText.orEmpty()
+                val filteredList = originalList.filter { exercise ->
+                    val exerciseName = exercise.getExerciseNameFromKey(requireContext())
+                    exerciseName.contains(filteredText, ignoreCase = true)
+                }
+                adapterExercise.submitList(filteredList)
+                return true
+            }
+        })
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    addExerciseViewModel.exerciseList.collectLatest { state ->
+                        when (state) {
+                            is AddExerciseUiState.Error -> showSnackbar(
+                                binding.root,
+                                state.message,
+                                requireContext()
+                            )
+
+                            AddExerciseUiState.Loading -> {}
+                            is AddExerciseUiState.Success -> {
+                                originalList = state.exercises
+                                adapterExercise.submitList(state.exercises)
+                            }
+                        }
+                    }
+                }
+                launch {
+                    addExerciseViewModel.categoryList.collectLatest { state ->
+                        when (state) {
+                            is CategoryUiState.Error -> showSnackbar(
+                                binding.root,
+                                state.message,
+                                requireContext()
+                            )
+
+                            CategoryUiState.Loading -> {}
+                            is CategoryUiState.Success -> {
+                                categoryList = state.categoryList
+                                adapterCategory.submitList(state.categoryList)
+                            }
+                        }
+                    }
+                }
+                launch {
+                    selectedExercises.collectLatest { exerciseList ->
+                        if (exerciseList.isNotEmpty()) {
+                            binding.tvNext.visibility = View.VISIBLE
+                        } else {
+                            binding.tvNext.visibility = View.GONE
+                        }
+                    }
+                }
             }
         }
     }
 
 
     private fun initUI() {
-        exercises = addExerciseViewModel.getAllExercise()
-
         setUpSelectedAdapter()
-
-        lifecycleScope.launch {
-            setUpCategoryAdapter()
-
-            exercises.collect { exercise ->
-                // Solo hacemos esto si hay datos
-                if (exercise.isNotEmpty()) {
-                    if (!::adapterExercise.isInitialized) {
-                        setUpExerciseAdapter(exercise)
-                    } else {
-                        adapterExercise.updateList(exercise)
-                    }
-                }
-            }
-
-        }
-
+        setUpExerciseAdapter()
+        setUpCategoryAdapter()
     }
-
 
     private fun setUpSelectedAdapter() {
         adapterSelected = SelectedExerciseAdapter(
             onItemSelected = { exercise ->
                 createDialogRemove(exercise)
-            },
-            selectedExercises
+            }
         )
         binding.lvAddExercises.layoutManager = LinearLayoutManager(context)
         binding.lvAddExercises.adapter = adapterSelected
@@ -116,129 +180,81 @@ class AddExerciseFragment : Fragment() {
             LinearLayoutManager.VERTICAL // Asegúrate de que sea un layout vertical
         )
         binding.lvAddExercises.addItemDecoration(dividerItemDecoration)
-
-        adapterSelected.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-            override fun onChanged() {
-                updateNextVisibility()
-            }
-
-            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                updateNextVisibility()
-            }
-
-            override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
-                updateNextVisibility()
-            }
-        })
     }
 
-    private fun updateNextVisibility() {
-        binding.tvNext.isVisible = adapterSelected.itemCount != 0
-    }
-
-    private fun setUpExerciseAdapter(exercise: List<ExerciseModel>) {
+    private fun setUpExerciseAdapter() {
         adapterExercise = AddExerciseAdapter(
             onItemSelected = { addExercise ->
                 addToListAddExercise(addExercise)
-            }, exercises = exercise
+            }
         )
 
         binding.rvExercise.layoutManager = LinearLayoutManager(context)
         binding.rvExercise.adapter = adapterExercise
 
-        val dividerItemDecoration = DividerItemDecoration(
-            binding.rvExercise.context,
-            LinearLayoutManager.VERTICAL // Asegúrate de que sea un layout vertical
-        )
+        val dividerItemDecoration =
+            DividerItemDecoration(binding.rvExercise.context, LinearLayoutManager.VERTICAL)
         binding.rvExercise.addItemDecoration(dividerItemDecoration)
     }
 
-    private suspend fun setUpCategoryAdapter() {
-        this.categories = addExerciseViewModel.getCategories()
+    private fun setUpCategoryAdapter() {
+        adapterCategory =
+            CategoryAdapter { categoryId, isSelected ->
+                selectCategory(
+                    categoryId,
+                    isSelected
+                )
+            }
+        binding.rvCategory.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rvCategory.adapter = adapterCategory
 
-        if (this.categories.isNotEmpty()) {
-            adapterCategory =
-                CategoryAdapter({ categoryId, isSelected ->
-                    selectCategory(
-                        categoryId,
-                        isSelected
-                    )
-                }, this.categories)
-            binding.rvCategory.layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            binding.rvCategory.adapter = adapterCategory
-        }
     }
 
     private fun addToListAddExercise(exercise: ExerciseModel) {
-        selectedExercises.add(exercise) // compatible con todas las APIs
-        adapterSelected.updateList(selectedExercises)
+        if (!selectedExercises.value.contains(exercise)) {
+            val newList = selectedExercises.value.toMutableList()
+            newList.add(exercise)
+            selectedExercises.value = newList
+            adapterSelected.submitList(newList)
+        }
     }
 
     private fun removeToListAddExercise(exercise: ExerciseModel) {
-        selectedExercises.remove(exercise) // compatible con todas las APIs
-        adapterSelected.updateList(selectedExercises)
+        val newList = selectedExercises.value.toMutableList()  // copia mutable nueva
+        newList.remove(exercise)                          // elimina el ejercicio
+        selectedExercises.value = newList                       // asigna la lista nueva
+        adapterSelected.submitList(newList)               // pasa la nueva lista al adapter
     }
 
-    private suspend fun selectCategory(categoryId: Long, isSelected: Boolean) {
+    private fun selectCategory(categoryId: Long, isSelected: Boolean) {
         if (isSelected) {
-            val exerciseList = addExerciseViewModel.getAllExercise()
-            exerciseList.collect {
-                adapterExercise.updateList(it)
-            }
+            addExerciseViewModel.getAllExercise()
         } else {
-            val filteredList = addExerciseViewModel.getExercisesFromCategory(categoryId)
-            adapterExercise.updateList(filteredList)
+            addExerciseViewModel.getExercisesFromCategory(categoryId)
         }
-
-
     }
 
     private fun createDialogAdd() {
-            val dialog = AddExerciseDialog(onSaveClickListener = { exercise ->
-                lifecycleScope.launch {
-                    addExerciseViewModel.insertExercise(exercise)
-                }
-            }, this.categories)
+        val dialog = AddExerciseDialog(onSaveClickListener = { exercise ->
+            lifecycleScope.launch {
+                addExerciseViewModel.insertExercise(exercise)
+            }
+        }, this.categoryList)
 
-            dialog.show(parentFragmentManager, "dialog")
+        dialog.show(parentFragmentManager, "dialog")
 
     }
+
     private fun createDialogRemove(exercise: ExerciseModel) {
 
         val dialog = RemoveExerciseDialog(onSaveClickListener = {
             lifecycleScope.launch {
                 removeToListAddExercise(exercise)
             }
-        })
+        }, exercise = exercise)
 
         dialog.show(parentFragmentManager, "dialog")
-    }
-
-    private fun createDialogNext() {
-
-
-    }
-
-
-    @SuppressLint("ClickableViewAccessibility")
-    private fun View.setAlphaTouchListener(onClick: (() -> Unit)? = null) {
-        this.setOnTouchListener { v, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> v.alpha = 0.2f
-                MotionEvent.ACTION_UP -> {
-                    v.alpha = 1f
-                    val x = event.x
-                    val y = event.y
-                    if (x in 0f..v.width.toFloat() && y in 0f..v.height.toFloat()) {
-                        onClick?.invoke()
-                    }
-                }
-
-                MotionEvent.ACTION_CANCEL -> v.alpha = 1f
-            }
-            true
-        }
     }
 
     override fun onCreateView(

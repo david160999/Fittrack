@@ -8,6 +8,7 @@ import com.cursointermedio.myapplication.databinding.ItemTrainingBinding
 import com.cursointermedio.myapplication.domain.model.CategoryInfo
 import com.cursointermedio.myapplication.domain.model.ExerciseModel
 import com.cursointermedio.myapplication.domain.model.getExerciseNameFromKey
+import com.cursointermedio.myapplication.utils.extensions.setupTouchActionRecyclerView
 
 class AddExerciseViewHolder(private val binding: ItemAddexerciseBinding,
 ) :
@@ -17,7 +18,7 @@ class AddExerciseViewHolder(private val binding: ItemAddexerciseBinding,
     @SuppressLint("ClickableViewAccessibility", "PrivateResource")
     fun bind(exerciseItemResponse: ExerciseModel, onItemSelected: (ExerciseModel) -> Unit) {
 
-        binding.root.setOnClickListener{
+        binding.root.setupTouchActionRecyclerView{
             onItemSelected(exerciseItemResponse)
         }
 

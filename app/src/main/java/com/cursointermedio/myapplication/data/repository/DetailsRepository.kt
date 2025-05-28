@@ -24,7 +24,22 @@ private val detailDao: DetailsDao
         detailDao.insertDetailToRoutineExercise(detail)
     }
 
-    fun getDetailOfRoutineAndExercise(routineId: Long, exerciseID: Long): List<DetailsEntity>{
-        return detailDao.getDetailOfRoutineAndExercise(routineId, exerciseID)
+    suspend fun updateDetailToRoutineExercise(detail: List<DetailsEntity>){
+        detailDao.updateDetailToRoutineExercise(detail)
+    }
+
+    suspend fun getDetailOfRoutineAndExercise(routineId: Long, exerciseId: Long): List<DetailModel> {
+        val response =  detailDao.getDetailOfRoutineAndExercise(routineId, exerciseId)
+        return response.map {it.toDomain() }
+    }
+
+    fun getDetailOfRoutineAndExerciseFlow(routineId: Long, exerciseId: Long): Flow<List<DetailModel>> {
+        return detailDao.getDetailOfRoutineAndExerciseFlow(routineId, exerciseId)
+            .map { list -> list.map { it.toDomain() } }
+    }
+
+    suspend fun deleteLastDetail(routineId: Long, exerciseId: Long) {
+        detailDao.deleteLastDetail(routineId = routineId, exerciseId= exerciseId)
+
     }
 }

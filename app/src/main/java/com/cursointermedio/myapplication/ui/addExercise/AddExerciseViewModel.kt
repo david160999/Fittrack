@@ -93,7 +93,8 @@ class AddExerciseViewModel @Inject constructor(
                     val crossRef = RoutineExerciseCrossRef(
                         routineId = routineId,
                         exerciseId = exercise.id!!,
-                        order = index
+                        order = index,
+                        notes = null
                     )
                     getExercisesUseCase.insertExerciseToRoutine(crossRef)
                 }

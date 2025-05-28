@@ -12,30 +12,29 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv1"
-            android:layout_width="150dp"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="6dp"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="8dp"
-            app:cardElevation="0dp"
             app:layout_constraintEnd_toStartOf="@id/cv2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/ivCardView1"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_gravity="center"
-                android:background="@drawable/ic_plus_700"
-                android:backgroundTint="@color/secondary_text" />
-
-            <TextView
-                android:id="@+id/tvCardView1"
+            <EditText
+                android:id="@+id/etWeight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="gone" />
+                android:layout_gravity="center_vertical"
+                android:background="@null"
+                android:ems="10"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="5"
+                android:textColor="#000000"
+                android:textSize="16sp" />
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
@@ -50,7 +49,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <EditText
-                android:id="@+id/etWeight"
+                android:id="@+id/etReps"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -77,7 +76,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <EditText
-                android:id="@+id/etReps"
+                android:id="@+id/etRpe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -94,29 +93,30 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv4"
-            android:layout_width="60dp"
+            android:layout_width="150dp"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="6dp"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/cv3"
             app:layout_constraintTop_toTopOf="parent">
 
-            <EditText
-                android:id="@+id/etRpe"
+            <ImageView
+                android:id="@+id/ivCardView1"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_plus_700"
+                android:backgroundTint="@color/secondary_text" />
+
+            <TextView
+                android:id="@+id/tvCardView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="@null"
-                android:ems="10"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:gravity="center"
-                android:inputType="number"
-                android:maxLength="5"
-                android:textColor="#000000"
-                android:textSize="16sp" />
+                android:layout_gravity="center"
+                android:visibility="gone" />
         </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

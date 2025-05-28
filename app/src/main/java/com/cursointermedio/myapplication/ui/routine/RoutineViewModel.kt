@@ -67,7 +67,8 @@ class RoutineViewModel @Inject constructor(
                     val crossRef = RoutineExerciseCrossRef(
                         routineId = routineId,
                         exerciseId = exercise.id,
-                        order = null
+                        order = null,
+                        notes = null
                     )
                     getRoutineUseCase.removeExerciseFromRoutine(crossRef)
                 }

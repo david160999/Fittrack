@@ -7,7 +7,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
-
     <string name="btn_back">Atrás</string>
     <string name="btn_cancel">Cancelar</string>
     <string name="btn_save">Guardar</string>
@@ -28,7 +27,6 @@
     <string name="home_user_name">Hola, %1$s</string>
 
 
-
     <!--    SettingsFragment-->
     <string name="settings_home">Home</string>
     <string name="settings_configuration">Configuración</string>
@@ -43,6 +41,9 @@
     <string name="routine_menuOption1">Ver información</string>
     <string name="routine_menuOption2">Eliminar</string>
 
+    <!--DetailsFRagment-->
+    <string name="detail_menuOption1">Ver información</string>
+    <string name="detail_menuOption2">Eliminar última serie</string>
 
     <!--    WeekFragment-->
     <string name="week_prueba">EStoy en WEEK</string>
@@ -62,7 +63,6 @@
     <string name="week_not_routines_text">Presiona "+" para crear un entrenamiento</string>
 
 
-
     <!--    ExerciseFragment-->
     <string name="exercise_name">NOMBRE EJERCICIO</string>
     <string name="exercise_rpe">RPE</string>
@@ -70,7 +70,7 @@
     <string name="exercise_reps">REPS</string>
     <string name="exercise_estadisticas">Estadísticas</string>
     <string name="exercise_e1rm">E1RM:</string>
-    <string name="exercise_tonelaje">Tonelaje</string>
+    <string name="exercise_tonelaje">Tonelaje:</string>
     <string name="exercise_notas">Notas</string>
     <string name="exercise_notas_del_ejercicio">Notas del ejercicio</string>
 
@@ -109,7 +109,7 @@
     <string name="addExercise_dialogRemove_title">ELIMINAR EJERCICIO</string>
     <string name="addExercise_dialogRemove_text">¿Estás seguro/a de que deseas eliminar "%1$s?"</string>
 
-<!--    Days of Week-->
+    <!--    Days of Week-->
     <string name="weekDay_Mon">Lun</string>
     <string name="weekDay_Tue">Mar</string>
     <string name="weekDay_Wed">Mié</string>

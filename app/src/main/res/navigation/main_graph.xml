@@ -95,7 +95,10 @@
             android:label="fragment_exercise"
             tools:layout="@layout/fragment_exercise" >
             <argument
-                android:name="id"
+                android:name="exerciseId"
+                app:argType="long" />
+            <argument
+                android:name="routineId"
                 app:argType="long" />
         </fragment>
         <action

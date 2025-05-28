@@ -59,4 +59,15 @@ class ExerciseRepository @Inject constructor(
         return exerciseDao.getDetailCountFromExercise(exerciseId, routineId)
     }
 
+    suspend fun getNotesFromCrossRef(routineId: Long, exerciseId: Long): String?{
+        return exerciseDao.getNotesFromCrossRef(routineId = routineId, exerciseId = exerciseId)
+    }
+
+    suspend fun updateNotesFromCrossRef(routineId: Long, exerciseId: Long, notes:String){
+        exerciseDao.updateNotesFromCrossRef(routineId = routineId, exerciseId = exerciseId, notes)
+    }
+
+    suspend fun getExercise(exerciseId: Long): ExerciseModel{
+        return exerciseDao.getExercise(exerciseId).toDomain()
+    }
 }

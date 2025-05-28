@@ -22,14 +22,6 @@
             android:layout_height="wrap_content"
             android:background="@drawable/ic_arrow_left"
             android:backgroundTint="@color/icons" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Espalda femoral"
-            android:textColor="@color/icons"
-            android:textSize="20sp"/>
-
     </LinearLayout>
 
 
@@ -38,8 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="8dp"
-        android:text="@string/exercise_name"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +39,7 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginStart="80dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="100dp"
@@ -60,26 +51,7 @@
         app:tabSelectedTextColor="@color/icons"
         app:tabTextColor="@color/black">
 
-        <!--        <com.google.android.material.tabs.TabItem-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:background="@color/icons"-->
-        <!--            android:text="EEE" />-->
-
-        <!--        <com.google.android.material.tabs.TabItem-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:background="@color/icons"-->
-        <!--            android:text="DDD" />-->
-
-
-        <!--        <com.google.android.material.tabs.TabItem-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:icon="@drawable/ic_3point" />-->
-
     </com.google.android.material.tabs.TabLayout>
-
 
     <ImageView
         android:id="@+id/ivPoints"
@@ -93,47 +65,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
-    <LinearLayout
-        android:id="@+id/linearTexts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ivPoints"
-        android:layout_marginEnd="8dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:text="@string/exercise_weight"
-            android:textSize="12sp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="32dp"
-            android:text="@string/exercise_reps"
-            android:textSize="12sp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="22dp"
-            android:text="@string/exercise_rpe"
-            android:textSize="12sp"/>
-
-    </LinearLayout>
-
-
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:layout_weight="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearTexts" />
+        app:layout_constraintTop_toBottomOf="@+id/ivPoints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

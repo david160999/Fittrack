@@ -126,7 +126,9 @@ fun RoutineModel.toDatabase() = RoutineEntity(routineId, weekRoutineId, name, de
 data class RoutineExerciseCrossRef(
     val routineId: Long,
     val exerciseId: Long,
-    @ColumnInfo(defaultValue = "0", name = "order")val order:Int?
+    @ColumnInfo(defaultValue = "0", name = "order")val order:Int?,
+    @ColumnInfo(name = "notes")val notes:String?
+
 )
 
 data class RoutineWithExercises(

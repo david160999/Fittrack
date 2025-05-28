@@ -68,7 +68,7 @@ class TrainingMapper @Inject constructor(
 //                                      Ejercicios
                                 val details = detailsRepository.getDetailOfRoutineAndExercise(
                                     routineId = routine.routineId,
-                                    exerciseID = exercise.id!!
+                                    exerciseId = exercise.id!!
                                 )
                                 hashMapOf(
                                     "exerciseId" to exercise.id,
@@ -131,7 +131,8 @@ class TrainingMapper @Inject constructor(
                             val crossReference = RoutineExerciseCrossRef(
                                 routineId = routine.routineId!!,
                                 exerciseId = exercise.exerciseId!!,
-                                order = index
+                                order = index,
+                                notes = null
                             )
                             exerciseRepository.insertExerciseToRoutine(crossReference)
 

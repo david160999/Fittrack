@@ -191,7 +191,8 @@ class RoutineFragment : Fragment() {
     private fun navigateToExercise(exerciseId: Long) {
         findNavController().navigate(
             RoutineFragmentDirections.actionRoutineFragmentToExerciseFragment(
-                exerciseId
+                routineId = routineId,
+                exerciseId = exerciseId
             )
         )
     }

@@ -41,7 +41,8 @@ class GetExercisesUseCase @Inject constructor(
             val relation = RoutineExerciseCrossRef(
                 routineId = newRoutineId,  // ID de la rutina
                 exerciseId = exercise.id!!,  // ID del ejercici
-                order = index
+                order = index,
+                notes = null
             )
             insertExerciseToRoutine(relation)
         }
@@ -58,5 +59,17 @@ class GetExercisesUseCase @Inject constructor(
 
     fun changeOrderRoutines(newCrossRefList: List<RoutineExerciseCrossRef>) {
 
+    }
+
+    suspend fun getNotesFromCrossRef(routineId: Long, exerciseId: Long): String?{
+        return repository.getNotesFromCrossRef(routineId = routineId, exerciseId = exerciseId)
+    }
+
+    suspend fun updateNotesFromCrossRef(routineId: Long, exerciseId: Long, notes:String){
+        repository.updateNotesFromCrossRef(routineId = routineId, exerciseId = exerciseId, notes)
+    }
+
+    suspend fun getExercise(exerciseId: Long): ExerciseModel{
+        return repository.getExercise(exerciseId)
     }
 }

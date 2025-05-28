@@ -15,16 +15,24 @@ class GetDetailsUseCase @Inject constructor(
     private val repository: DetailsRepository
 ) {
 
-    fun getDetailOfRoutine(routineId: Long): List<DetailModel> {
-        return repository.getDetailOfRoutine(routineId)
+    suspend fun getDetailOfRoutineAndExercise(routineId: Long, exerciseId: Long): List<DetailModel> {
+        return repository.getDetailOfRoutineAndExercise(routineId, exerciseId)
+    }
+
+    fun getDetailOfRoutineAndExerciseFlow(routineId: Long, exerciseId: Long): Flow<List<DetailModel>> {
+        return repository.getDetailOfRoutineAndExerciseFlow(routineId, exerciseId)
     }
 
     suspend fun insertDetailToRoutineExercise(detail: DetailModel){
         repository.insertDetailToRoutineExercise(detail.toDatabase())
     }
 
+    suspend fun updateDetailToRoutineExercise(detail: List<DetailModel>){
+        repository.updateDetailToRoutineExercise(detail.map{it.toDatabase()})
+    }
+
     suspend fun copyDetailsToNewWeek(routineId: Long, newRoutineId: Long) {
-        val detalles = getDetailOfRoutine(routineId)
+        val detalles = repository.getDetailOfRoutine(routineId)
 
         detalles.forEach() { detalle ->
             val nuevoDetalle = DetailModel(
@@ -44,7 +52,7 @@ class GetDetailsUseCase @Inject constructor(
     }
 
     suspend fun copyOnlyObjectiveToNewWeek(routineId: Long, newRoutineId: Long) {
-        val detalles = getDetailOfRoutine(routineId)
+        val detalles = repository.getDetailOfRoutine(routineId)
 
         detalles.forEach() { detalle ->
             val nuevoDetalle = DetailModel(
@@ -63,7 +71,10 @@ class GetDetailsUseCase @Inject constructor(
 
     }
 
-    fun getDetailOfRoutineAndExercise(routineId: Long, exerciseID: Long): List<DetailsEntity>{
-        return repository.getDetailOfRoutineAndExercise(routineId, exerciseID)
+    suspend fun deleteLastDetail(routineId: Long, exerciseId: Long) {
+        repository.deleteLastDetail(routineId = routineId, exerciseId = exerciseId)
+
     }
+
+
 }

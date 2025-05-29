@@ -21,15 +21,15 @@
             android:id="@+id/ivProfileImage"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:scaleType="centerCrop"
-            android:background="@drawable/ic_circle" />
+            android:background="@drawable/ic_circle"
+            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/userName"
             style="@style/text"
-            android:layout_marginStart="4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:text="" />
 
     </LinearLayout>
@@ -121,6 +121,49 @@
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvNotes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:background="@color/white"
+        app:cardCornerRadius="8dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ff0000"
+            android:backgroundTint="@color/white"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:text="@string/home_notes"
+                android:textColor="@color/primary_text"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="25dp"
+                android:text="@string/home_sub_notes"
+                android:textColor="@color/secondary_text" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/ic_plus"
+                android:backgroundTint="@color/icons" />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvTrac"
@@ -147,19 +190,86 @@
                 android:textSize="18sp" />
 
             <TextView
+                android:id="@+id/tvResultTrac"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="25dp"
                 android:text="@string/home_sub_trac"
-                android:textColor="@color/secondary_text" />
+                android:textColor="@color/secondary_text"
+                android:visibility="visible" />
+
+            <LinearLayout
+                android:id="@+id/lyResultTrac"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tvResultPush"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="24dp"
+                    android:textColor="@color/tracColor"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tvResultPull"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="24dp"
+                    android:textColor="@color/tracColor"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tvResultLeg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="24dp"
+                    android:textColor="@color/tracColor"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ic_mental"
+                    android:backgroundTint="@color/tracColor"
+                    android:layout_marginEnd="4dp"/>
+
+                <TextView
+                    android:id="@+id/tvResultMental"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/tracColor"
+                    android:textSize="12sp" />
+
+
+            </LinearLayout>
 
             <ImageView
+                android:id="@+id/ivNotTracInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:background="@drawable/ic_plus"
+                android:backgroundTint="@color/icons" />
+
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/ivTracInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/ic_3point"
                 android:backgroundTint="@color/icons" />
 
         </RelativeLayout>

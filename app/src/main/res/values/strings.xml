@@ -25,7 +25,68 @@
     <string name="home_trac">Trac</string>
     <string name="home_sub_trac">¡Comienza a hacer autoevaluaciones!</string>
     <string name="home_user_name">Hola, %1$s</string>
+    <string name="home_sub_trac_push">Empuje:  %1$d/5</string>
+    <string name="home_sub_trac_pull">Tracción:  %1$d/5</string>
+    <string name="home_sub_trac_leg">Pierna:  %1$d/5</string>
+    <string name="home_sub_trac_mental">%1$d/20</string>
+    <string name="home_notes">Nota</string>
+    <string name="home_sub_notes">Empieza a poner notas en el calendario!</string>
+    <string name="home_sub_add_notes">Añade una nota</string>
 
+
+    <!--    Trac Dialog-->
+    <string name="home_trac_selection">--Seleciona--</string>
+    <string name="home_trac_afterDay">DESPUÉS DE UN DÍA DE ENTRENAMINETO</string>
+    <string name="home_trac_save">Añadir Trac</string>
+
+    <string name="home_trac_leg">Fatifa de pierna:</string>
+    <string name="home_trac_leg_option1">Fatiga muy severa</string>
+    <string name="home_trac_leg_option2">Fatiga severa</string>
+    <string name="home_trac_leg_option3">Fatiga moderada</string>
+    <string name="home_trac_leg_option4">Fatiga leve</string>
+    <string name="home_trac_leg_option5">Sin fatiga</string>
+
+    <string name="home_trac_push">Fatiga de empuje:</string>
+    <string name="home_trac_push_option1">Fatiga muy severa</string>
+    <string name="home_trac_push_option2">Fatiga severa</string>
+    <string name="home_trac_push_option3">Fatiga moderada</string>
+    <string name="home_trac_push_option4">Fatiga leve</string>
+    <string name="home_trac_push_option5">Sin fatiga</string>
+
+    <string name="home_trac_pull">Fatiga de tracción:</string>
+    <string name="home_trac_pull_option1">Fatiga muy severa</string>
+    <string name="home_trac_pull_option2">Fatiga severa</string>
+    <string name="home_trac_pull_option3">Fatiga moderada</string>
+    <string name="home_trac_pull_option4">Fatiga leve</string>
+    <string name="home_trac_pull_option5">Sin fatiga</string>
+
+    <string name="home_trac_food">Descanso/Alimentación:</string>
+    <string name="home_trac_food_option1">Muy pobre</string>
+    <string name="home_trac_food_option2">Pobre</string>
+    <string name="home_trac_food_option3">Aceptable</string>
+    <string name="home_trac_food_option4">Buena</string>
+    <string name="home_trac_food_option5">Excelente</string>
+
+    <string name="home_trac_rest">Recuperación percibida:</string>
+    <string name="home_trac_rest_option1">Muy mala</string>
+    <string name="home_trac_rest_option2">Mala</string>
+    <string name="home_trac_rest_option3">Regular</string>
+    <string name="home_trac_rest_option4">Buena</string>
+    <string name="home_trac_rest_option5">Excelente</string>
+
+    <string name="home_trac_motivation">Motivación:</string>
+    <string name="home_trac_motivation_option1">Muy baja</string>
+    <string name="home_trac_motivation_option2">Baja</string>
+    <string name="home_trac_motivation_option3">Media</string>
+    <string name="home_trac_motivation_option4">Alta</string>
+    <string name="home_trac_motivation_option5">Muy alta</string>
+
+    <string name="home_trac_technic">Comodidad técnica:</string>
+    <string name="home_trac_technic_option1">Muy incómodo</string>
+    <string name="home_trac_technic_option2">Incómodo</string>
+    <string name="home_trac_technic_option3">Neutral</string>
+    <string name="home_trac_technic_option4">Cómodo</string>
+    <string name="home_trac_technic_option5">Muy cómodo</string>
 
     <!--    SettingsFragment-->
     <string name="settings_home">Home</string>

@@ -41,7 +41,7 @@ interface DateDao {
     suspend fun insertTrac(tracEntity: TracEntity)
 
     @Query("SELECT * FROM trac_table WHERE dateId = :dateId")
-    suspend fun getTracByDate(dateId: String): TracEntity?
+    fun getTracByDateFlow(dateId: String): Flow<TracEntity?>
 
     @Update
     suspend fun updateTrac(tracEntity: TracEntity)
@@ -51,4 +51,8 @@ interface DateDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDateList(dateList:List<DateEntity>)
+
+    @Delete
+    suspend fun deleteTrac(trac: TracEntity)
+
 }

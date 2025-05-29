@@ -29,8 +29,8 @@ class DateRepositoryImpl @Inject constructor(
         return dateDao.getDate(dateId)
     }
 
-    override suspend fun getTracByDate(dateId: String): TracEntity? {
-        return dateDao.getTracByDate(dateId)
+    override fun getTracByDateFlow(dateId: String): Flow<TracEntity?> {
+        return dateDao.getTracByDateFlow(dateId)
     }
 
     override suspend fun deleteDate(date: DateEntity) {
@@ -53,5 +53,10 @@ class DateRepositoryImpl @Inject constructor(
     override suspend fun insertDateList(dateList: List<DateEntity>) {
         dateDao.insertDateList(dateList)
     }
+
+    override suspend fun deleteTrac(trac: TracEntity){
+        dateDao.deleteTrac(trac)
+    }
+
 
 }

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="16dp"
+    android:paddingBottom="10dp"> <!-- 🔥 Esto simula un "margin" -->
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvDialogNotes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/white"
+        app:cardCornerRadius="8dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ff0000"
+            android:backgroundTint="@color/white"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:text="@string/home_notes"
+                android:textColor="@color/primary_text"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/etAddNote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="25dp"
+                android:background="@android:color/transparent"
+                android:hint="@string/home_sub_add_notes"
+                android:textColor="@color/secondary_text"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:text="@string/btn_save"
+                android:textColor="@color/icons" />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</FrameLayout>

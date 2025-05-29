@@ -37,8 +37,8 @@ class GetDateUseCase @Inject constructor(
         return repository.getDate(dateId)
     }
 
-    suspend fun getTracByDate(dateId: String): TracEntity? {
-        return repository.getTracByDate(dateId)
+    fun getTracByDateFlow(dateId: String): Flow<TracEntity?>{
+        return repository.getTracByDateFlow(dateId)
     }
 
     suspend fun deleteDate(date: DateEntity) {
@@ -56,5 +56,9 @@ class GetDateUseCase @Inject constructor(
 
     suspend fun insertDateList(dateList: List<DateEntity>) {
         repository.insertDateList(dateList)
+    }
+
+    suspend fun deleteTrac(trac: TracEntity){
+        repository.deleteTrac(trac)
     }
 }

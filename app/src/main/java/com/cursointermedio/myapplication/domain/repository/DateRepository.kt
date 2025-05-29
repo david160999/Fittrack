@@ -16,7 +16,7 @@ interface DateRepository {
 
     suspend fun getDate(dateId: String): DateEntity?
 
-    suspend fun getTracByDate(dateId: String): TracEntity?
+    fun getTracByDateFlow(dateId: String): Flow<TracEntity?>
 
     suspend fun deleteDate(date: DateEntity)
 
@@ -26,4 +26,7 @@ interface DateRepository {
 
     suspend fun insertDateList(dateList: List<DateEntity>)
 
-}
+    suspend fun deleteTrac(trac: TracEntity)
+
+
+    }

@@ -32,12 +32,18 @@
     <string name="home_notes">Nota</string>
     <string name="home_sub_notes">Empieza a poner notas en el calendario!</string>
     <string name="home_sub_add_notes">Añade una nota</string>
+    <string name="home_sub_add_weight">Hoy: </string>
+    <string name="home_sub_add_weightText">Añade tu peso corporal</string>
 
 
     <!--    Trac Dialog-->
     <string name="home_trac_selection">--Seleciona--</string>
     <string name="home_trac_afterDay">DESPUÉS DE UN DÍA DE ENTRENAMINETO</string>
     <string name="home_trac_save">Añadir Trac</string>
+    <string name="home_trac_delete">Elimar trac</string>
+    <string name="home_notes_delete">Elimnar nota</string>
+    <string name="home_weight_delete">Eliminar peso corporal</string>
+
 
     <string name="home_trac_leg">Fatifa de pierna:</string>
     <string name="home_trac_leg_option1">Fatiga muy severa</string>

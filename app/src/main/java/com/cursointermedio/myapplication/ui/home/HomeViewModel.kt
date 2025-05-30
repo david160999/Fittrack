@@ -28,7 +28,10 @@ class HomeViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase,
     private val getDateUseCase: GetDateUseCase
 ) : ViewModel() {
-    private val date = LocalDate.now()
+    private val currentDay = LocalDate.now()
+
+    private val _dateInfo = MutableStateFlow<DateEntity?>(null)
+    val dateInfo: StateFlow<DateEntity?> get() = _dateInfo
 
     private val _tracInfo = MutableStateFlow<TracEntity?>(null)
     val tracInfo: StateFlow<TracEntity?> get() = _tracInfo
@@ -38,6 +41,7 @@ class HomeViewModel @Inject constructor(
 
 
     init {
+        getDateFlow()
         getTracByDateFlow()
         viewModelScope.launch {
             try {
@@ -47,15 +51,28 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getTracByDateFlow() {
+    private fun getTracByDateFlow() {
         viewModelScope.launch {
             try {
-                getDateUseCase.getTracByDateFlow(date.toString()).collectLatest {
+                getDateUseCase.getTracByDateFlow(currentDay.toString()).collectLatest {
                     _tracInfo.value = it
                 }
 
             } catch (e: Exception) {
-                Log.e("getTracByDate", "Error recoger los datos del trac del dia $date", e)
+                Log.e("getTracByDate", "Error recoger los datos del trac del dia $currentDay", e)
+            }
+        }
+    }
+
+    private fun getDateFlow() {
+        viewModelScope.launch {
+            try {
+                getDateUseCase.getDateFlow(currentDay.toString()).collectLatest {
+                    _dateInfo.value = it
+                }
+
+            } catch (e: Exception) {
+                Log.e("getDate", "Error recoger los datos de date $currentDay", e)
             }
         }
     }
@@ -63,9 +80,9 @@ class HomeViewModel @Inject constructor(
     fun insertOrUpdateTrac(trac: TracEntity) {
         viewModelScope.launch {
             try {
-                val date = getDateUseCase.getDate(trac.dateId)
+                val date = _dateInfo.value
 
-                if (date != null) {
+                if (date == null) {
                     val newDate = DateEntity(trac.dateId, null, null, null)
                     getDateUseCase.insertOrUpdateDate(newDate)
                 }
@@ -83,7 +100,80 @@ class HomeViewModel @Inject constructor(
                 getDateUseCase.deleteTrac(_tracInfo.value!!)
 
             } catch (e: Exception) {
-                Log.e("getTracByDate", "Error recoger los datos del trac del dia $date", e)
+                Log.e("getTracByDate", "Error recoger los datos del trac del dia $currentDay", e)
+            }
+        }
+    }
+
+    fun deleteNote() {
+        viewModelScope.launch {
+            try {
+                val dateId = _dateInfo.value?.dateId
+                if (dateId!=null){
+                    getDateUseCase.deleteNote(dateId)
+                }
+            } catch (e: Exception) {
+                Log.e("getTracByDate", "Error recoger los datos del trac del dia $currentDay", e)
+            }
+        }
+    }
+
+    fun deleteBodyWeight() {
+        viewModelScope.launch {
+            try {
+                val dateId = _dateInfo.value?.dateId
+                if (dateId!=null){
+                    getDateUseCase.deleteBodyWeight(dateId)
+                }
+            } catch (e: Exception) {
+                Log.e("getTracByDate", "Error recoger los datos del trac del dia $currentDay", e)
+            }
+        }
+    }
+    fun updateBodyWeight(weight: Float) {
+        viewModelScope.launch {
+            try {
+                val date = _dateInfo.value
+
+                if (date == null) {
+                    val newDate = DateEntity(currentDay.toString(), null, bodyWeight = weight, null)
+                    getDateUseCase.insertOrUpdateDate(newDate)
+                } else {
+                    getDateUseCase.updateBodyWeight(
+                        dateId = currentDay.toString(),
+                        bodyWeight = weight
+                    )
+                }
+
+            } catch (e: Exception) {
+                Log.e(
+                    "getTracByDate",
+                    "Error al actualizar los datos del peso en el dia $currentDay", e
+                )
+            }
+        }
+    }
+
+    fun updateNote(notes: String) {
+        viewModelScope.launch {
+            try {
+                val date = _dateInfo.value
+
+                if (date == null) {
+                    val newDate = DateEntity(currentDay.toString(), note = notes, null, null)
+                    getDateUseCase.insertOrUpdateDate(newDate)
+                } else {
+                    getDateUseCase.updateNote(
+                        dateId = currentDay.toString(),
+                        note = notes
+                    )
+                }
+
+            } catch (e: Exception) {
+                Log.e(
+                    "updateNote",
+                    "Error al actualizar los datos de las notas en el dia $currentDay", e
+                )
             }
         }
     }

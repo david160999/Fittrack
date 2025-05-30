@@ -18,6 +18,7 @@
             android:layout_height="wrap_content"
             android:background="#ff0000"
             android:backgroundTint="@color/white"
+            android:orientation="vertical"
             android:paddingHorizontal="10dp"
             android:paddingVertical="15dp">
 
@@ -25,47 +26,60 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:text="@string/home_notes"
+                android:text="@string/home_weight"
                 android:textColor="@color/primary_text"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toTopOf="@id/etAddNote"
+                app:layout_constraintBottom_toTopOf="@id/etAddWeight"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/ivSubNotes"
+                android:id="@+id/ivSubWeight"
                 android:layout_width="14dp"
                 android:layout_height="14dp"
-                android:backgroundTint="@color/notesColor"
-                android:background="@drawable/ic_note"
-                app:layout_constraintBottom_toBottomOf="@+id/etAddNote"
-                app:layout_constraintTop_toTopOf="@+id/etAddNote"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:background="@drawable/ic_person"
+                android:backgroundTint="@color/weightColor"
+                app:layout_constraintBottom_toBottomOf="@+id/tvSubWeight"
+                app:layout_constraintEnd_toStartOf="@id/tvSubWeight"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tvSubWeight" />
 
-            <EditText
-                android:layout_marginStart="6dp"
-                android:id="@+id/etAddNote"
+            <TextView
+                android:id="@+id/tvSubWeight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:background="@android:color/transparent"
-                android:hint="@string/home_sub_add_notes"
+                android:text="@string/home_sub_add_weight"
                 android:textColor="@color/secondary_text"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/ivSubNotes" />
+                app:layout_constraintStart_toEndOf="@+id/ivSubWeight" />
+
+            <EditText
+                android:layout_marginStart="6dp"
+                android:id="@+id/etAddWeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:inputType="number"
+                android:hint="@string/home_sub_add_weightText"
+                android:textColorHint="@color/DarkGrey"
+                android:background="@android:color/transparent"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvSubWeight" />
 
             <TextView
-                android:id="@+id/btnSaveNotes"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/btnSaveWeight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:text="@string/btn_save"
-                android:textColor="@color/icons" />
+                android:textColor="@color/icons"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

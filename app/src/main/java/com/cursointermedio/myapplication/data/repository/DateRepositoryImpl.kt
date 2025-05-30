@@ -1,5 +1,6 @@
 package com.cursointermedio.myapplication.data.repository
 
+import androidx.room.Query
 import com.cursointermedio.myapplication.data.database.dao.DateDao
 import com.cursointermedio.myapplication.data.database.entities.DateEntity
 import com.cursointermedio.myapplication.data.database.entities.DateWithTrac
@@ -27,6 +28,10 @@ class DateRepositoryImpl @Inject constructor(
 
     override suspend fun getDate(dateId: String): DateEntity? {
         return dateDao.getDate(dateId)
+    }
+
+    override fun getDateFlow(dateId: String): Flow<DateEntity?> {
+        return dateDao.getDateFlow(dateId)
     }
 
     override fun getTracByDateFlow(dateId: String): Flow<TracEntity?> {
@@ -58,5 +63,20 @@ class DateRepositoryImpl @Inject constructor(
         dateDao.deleteTrac(trac)
     }
 
+    override suspend fun updateNote(dateId: String, note: String?) {
+        dateDao.updateNote(dateId, note)
+    }
+
+    override suspend fun updateBodyWeight(dateId: String, bodyWeight: Float?) {
+        dateDao.updateBodyWeight(dateId, bodyWeight)
+    }
+
+    override suspend fun deleteNote(dateId: String) {
+        dateDao.deleteNote(dateId)
+    }
+
+    override suspend fun deleteBodyWeight(dateId: String) {
+        dateDao.deleteBodyWeight(dateId)
+    }
 
 }

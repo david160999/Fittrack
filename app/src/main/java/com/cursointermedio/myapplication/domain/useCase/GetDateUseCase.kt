@@ -37,6 +37,10 @@ class GetDateUseCase @Inject constructor(
         return repository.getDate(dateId)
     }
 
+    fun getDateFlow(dateId: String): Flow<DateEntity?> {
+        return repository.getDateFlow(dateId)
+    }
+
     fun getTracByDateFlow(dateId: String): Flow<TracEntity?>{
         return repository.getTracByDateFlow(dateId)
     }
@@ -60,5 +64,21 @@ class GetDateUseCase @Inject constructor(
 
     suspend fun deleteTrac(trac: TracEntity){
         repository.deleteTrac(trac)
+    }
+
+    suspend fun updateNote(dateId: String, note: String?) {
+        repository.updateNote(dateId, note)
+    }
+
+    suspend fun updateBodyWeight(dateId: String, bodyWeight: Float?) {
+        repository.updateBodyWeight(dateId, bodyWeight)
+    }
+
+    suspend fun deleteNote(dateId: String) {
+        repository.deleteNote(dateId)
+    }
+
+    suspend fun deleteBodyWeight(dateId: String) {
+        repository.deleteBodyWeight(dateId)
     }
 }

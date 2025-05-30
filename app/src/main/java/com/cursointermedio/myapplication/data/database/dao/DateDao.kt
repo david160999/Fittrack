@@ -23,6 +23,9 @@ interface DateDao {
     @Query("SELECT * FROM date_table WHERE dateId = :dateId")
     suspend fun getDate(dateId: String): DateEntity?
 
+    @Query("SELECT * FROM date_table WHERE dateId = :dateId")
+    fun getDateFlow(dateId: String): Flow<DateEntity?>
+
     @Transaction
     @Query("SELECT * FROM date_table WHERE dateId = :dateId")
     suspend fun getDateWithTrac(dateId: String): DateWithTrac?
@@ -35,6 +38,29 @@ interface DateDao {
 
     @Delete
     suspend fun deleteDate(dateEntity: DateEntity)
+
+    @Query("""
+        UPDATE date_table 
+        SET note = :note 
+        WHERE dateId = :dateId
+    """)
+    suspend fun updateNote(dateId: String, note: String?)
+
+    @Query("""
+        UPDATE date_table 
+        SET bodyWeight = :bodyWeight 
+        WHERE dateId = :dateId
+    """)
+    suspend fun updateBodyWeight(dateId: String, bodyWeight: Float?)
+
+    // Borrar solo la nota (ponerla en null)
+    @Query("UPDATE date_table SET note = NULL WHERE dateId = :dateId")
+    suspend fun deleteNote(dateId: String)
+
+    // Borrar solo el peso corporal (ponerlo en null)
+    @Query("UPDATE date_table SET bodyWeight = NULL WHERE dateId = :dateId")
+    suspend fun deleteBodyWeight(dateId: String)
+
 
     //TracEntity
     @Insert(onConflict = OnConflictStrategy.REPLACE)

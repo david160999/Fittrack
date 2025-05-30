@@ -8,24 +8,25 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.ViewGroup
 import android.view.WindowManager
-import androidx.cardview.widget.CardView
 import androidx.fragment.app.DialogFragment
 import com.cursointermedio.myapplication.R
 import com.cursointermedio.myapplication.databinding.DialogAddNotesBinding
+import com.cursointermedio.myapplication.databinding.DialogAddWeightBinding
 import com.cursointermedio.myapplication.utils.extensions.setupTouchAction
 
-class AddNoteDialog(
+
+class AddWeightDialog(
     private val onDismissCallback: (() -> Unit)? = null,
-    private val onSaveClick: (String) -> Unit,
-    private val notes: String?
+    private val onSaveClick: (Float) -> Unit,
+    private val weight: Float?
 ) : DialogFragment() {
 
-    private var _binding: DialogAddNotesBinding? = null
+    private var _binding: DialogAddWeightBinding? = null
     private val binding get() = _binding!!
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        _binding = DialogAddNotesBinding.inflate(layoutInflater)
+        _binding = DialogAddWeightBinding.inflate(layoutInflater)
 
         val dialog = Dialog(requireContext(), R.style.DialogAnimationStyle)
         dialog.setContentView(binding.root)
@@ -48,18 +49,19 @@ class AddNoteDialog(
         onDismissCallback?.invoke()
     }
 
-    private fun initUi(){
-        if (!notes.isNullOrBlank()){
-            binding.etAddNote.setText(notes.toString())
+    private fun initUi() {
+        if (weight != null) {
+            binding.etAddWeight.setText(weight.toString())
         }
-        binding.etAddNote.requestFocus()
+        binding.etAddWeight.requestFocus()
 
     }
-    private fun initListeners(){
-        binding.btnSaveNotes.setupTouchAction {
-            val notes = binding.etAddNote.text.toString()
-            if (notes.isNotBlank()) {
-                onSaveClick(notes)
+
+    private fun initListeners() {
+        binding.btnSaveWeight.setupTouchAction {
+            val weight = binding.etAddWeight.text.toString()
+            if (weight.isNotBlank()) {
+                onSaveClick(weight.toFloat())
             }
             dialog?.dismiss()
         }

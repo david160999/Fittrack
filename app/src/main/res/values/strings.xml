@@ -35,6 +35,11 @@
     <string name="home_sub_add_weight">Hoy: </string>
     <string name="home_sub_add_weightText">Añade tu peso corporal</string>
 
+<!--    Calendar Fragment-->
+    <string name="calendar_menuOption1">Añadir nota</string>
+    <string name="calendar_menuOption2">Añadir peso corporal</string>
+    <string name="calendar_menuOption3">Añadir trac</string>
+
 
     <!--    Trac Dialog-->
     <string name="home_trac_selection">--Seleciona--</string>

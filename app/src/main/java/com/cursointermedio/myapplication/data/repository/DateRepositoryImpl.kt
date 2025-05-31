@@ -30,8 +30,16 @@ class DateRepositoryImpl @Inject constructor(
         return dateDao.getDate(dateId)
     }
 
+    fun getDateListFlow(dateList: List<String>): Flow<List<DateWithTrac?>> {
+        return dateDao.getDateListFlow(dateList)
+    }
+
     override fun getDateFlow(dateId: String): Flow<DateEntity?> {
         return dateDao.getDateFlow(dateId)
+    }
+
+    fun getDateWithTracFlow(dateId: String): Flow<DateWithTrac?> {
+        return dateDao.getDateWithTracFlow(dateId)
     }
 
     override fun getTracByDateFlow(dateId: String): Flow<TracEntity?> {

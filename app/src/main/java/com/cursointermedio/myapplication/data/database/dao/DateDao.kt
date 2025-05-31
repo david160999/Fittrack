@@ -26,9 +26,16 @@ interface DateDao {
     @Query("SELECT * FROM date_table WHERE dateId = :dateId")
     fun getDateFlow(dateId: String): Flow<DateEntity?>
 
+    @Query("SELECT * FROM date_table WHERE dateId IN (:dateList)")
+    fun getDateListFlow(dateList: List<String>): Flow<List<DateWithTrac?>>
+
     @Transaction
     @Query("SELECT * FROM date_table WHERE dateId = :dateId")
     suspend fun getDateWithTrac(dateId: String): DateWithTrac?
+
+    @Transaction
+    @Query("SELECT * FROM date_table WHERE dateId = :dateId")
+    fun getDateWithTracFlow(dateId: String): Flow<DateWithTrac?>
 
     @Query("SELECT * FROM date_table ORDER BY dateId")
     suspend fun getAllDates(): List<DateEntity>

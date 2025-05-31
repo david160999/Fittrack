@@ -37,8 +37,16 @@ class GetDateUseCase @Inject constructor(
         return repository.getDate(dateId)
     }
 
+    fun getDateListFlow(dateList: List<String>): Flow<List<DateWithTrac?>> {
+        return repository.getDateListFlow(dateList)
+    }
+
     fun getDateFlow(dateId: String): Flow<DateEntity?> {
         return repository.getDateFlow(dateId)
+    }
+
+    fun getDateWithTracFlow(dateId: String): Flow<DateWithTrac?> {
+        return repository.getDateWithTracFlow(dateId)
     }
 
     fun getTracByDateFlow(dateId: String): Flow<TracEntity?>{

@@ -3,10 +3,17 @@ package com.cursointermedio.myapplication.utils.extensions
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.res.Resources
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.view.WindowManager
+import android.widget.LinearLayout
+import android.widget.PopupWindow
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.cursointermedio.myapplication.R
+import com.cursointermedio.myapplication.ui.home.adapter.HomeMenuOptionAdapter
 import com.google.android.material.snackbar.Snackbar
 import io.grpc.Context
 
@@ -86,4 +93,42 @@ fun isItemBelowThreshold(view: View): Boolean {
     } else {
         false
     }
+}
+
+fun createMenuOption(context: android.content.Context, view: View, text: String, onDelete: () -> Unit) {
+    val popupView = LayoutInflater.from(context).inflate(R.layout.popup_menu_training, null)
+
+    val popupWindow = PopupWindow(
+        popupView,
+        LinearLayout.LayoutParams.WRAP_CONTENT,
+        LinearLayout.LayoutParams.WRAP_CONTENT,
+        true
+    )
+
+    val recyclerView = popupView.findViewById<RecyclerView>((R.id.rvTrainingMenu))
+    recyclerView.layoutManager = LinearLayoutManager(context)
+
+    val items = listOf(
+        text
+    )
+
+    val adapter = HomeMenuOptionAdapter(items) { position ->
+        when (position) {
+            0 -> onDelete()
+        }
+        popupWindow.dismiss()
+    }
+
+    recyclerView.adapter = adapter
+
+    popupWindow.apply {
+        isFocusable = true
+        isOutsideTouchable = true
+        elevation = 20f
+        isClippingEnabled = true
+        softInputMode = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+        animationStyle = R.style.MenuTRainingPopupFadeAnimation
+    }
+    popupWindow.showAsDropDown(view, 0, 0)
+
 }

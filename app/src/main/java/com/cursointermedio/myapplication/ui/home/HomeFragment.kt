@@ -199,8 +199,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun showViewWithAnimation(view: View) {
-
-
         view.apply {
             alpha = 0f
             translationY = view.height.toFloat() / 2

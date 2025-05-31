@@ -1,32 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:background="@color/background"
+    android:fillViewport="true"
+    android:clipToPadding="false"
+    android:paddingBottom="50dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
 
-        <FrameLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/btnMainCalendarSave"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="8dp">
+            android:layout_gravity="end|center_vertical"
+            android:background="@drawable/ic_plus"
+            android:backgroundTint="@color/icons"
+            android:gravity="end" />
 
-            <ImageView
-                android:id="@+id/btnCalendarSave"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|center_vertical"
-                android:background="@drawable/ic_plus"
-                android:backgroundTint="@color/icons"
-                android:gravity="end" />
-
-        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -66,9 +62,10 @@
         <GridView
             android:id="@+id/daysGrid"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:gravity="center"
             android:horizontalSpacing="8dp"
+            android:nestedScrollingEnabled="false"
             android:numColumns="7"
             android:stretchMode="columnWidth"
             android:verticalSpacing="8dp" />
@@ -76,25 +73,26 @@
         <GridView
             android:id="@+id/calendarGrid"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="350dp"
+            android:layout_marginBottom="10dp"
             android:gravity="center"
             android:horizontalSpacing="8dp"
+            android:nestedScrollingEnabled="false"
             android:numColumns="7"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="12dp" />
+            android:verticalSpacing="8dp" />
 
         <LinearLayout
+            android:id="@+id/lyMainCalendarViews"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical"
-            android:paddingBottom="200dp">
+            android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
+                android:layout_marginBottom="5dp"
                 android:id="@+id/cvMainCalendarNotes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="5dp"
                 android:background="@color/white"
                 android:elevation="4dp"
                 app:cardCornerRadius="8dp">
@@ -310,4 +308,4 @@
             </androidx.cardview.widget.CardView>
         </LinearLayout>
     </LinearLayout>
-</androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.core.widget.NestedScrollView>

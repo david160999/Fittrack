@@ -7,23 +7,43 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.cursointermedio.myapplication.R
+import com.cursointermedio.myapplication.databinding.FragmentSettingsBinding
+import com.cursointermedio.myapplication.databinding.FragmentWeekBinding
+import com.cursointermedio.myapplication.ui.week.WeekViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class SettingsFragment : Fragment() {
+@AndroidEntryPoint
+class SettingsFragment @Inject constructor() : Fragment() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val root = inflater.inflate(R.layout.fragment_settings, container, false)
+    private val settingsViewModel: SettingsViewModel by viewModels()
 
-        val btnNavigate = root.findViewById<LinearLayout>(R.id.lyToHome)
+    private var _binding: FragmentSettingsBinding? = null
+    private val binding get() = _binding!!
 
-        btnNavigate.setOnClickListener{
-            findNavController().navigate(R.id.action_settingsFragment_to_homeFragment)
-        }
-        return root
+    private fun initUi() {
+
     }
 
+    private fun initListeners() {
+
+    }
+
+    override fun onCreateView(
+
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentSettingsBinding.inflate(
+            inflater, container, false
+        )
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

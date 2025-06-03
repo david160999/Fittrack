@@ -103,6 +103,12 @@
     <string name="settings_home">Home</string>
     <string name="settings_configuration">Configuración</string>
     <string name="settings_unit_weight">Unidad de peso corporal</string>
+    <string name="settings_unit_exercise">Unidad de peso ejercicios</string>
+    <string name="settings_theme">Tema</string>
+    <string name="settings_language">Idioma</string>
+    <string name="settings_language_selection1">Español</string>
+    <string name="settings_language_selection2">Ingles</string>
+
 
 
     <!--    RoutineFragment-->

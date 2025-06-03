@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     android:orientation="vertical"
-    android:paddingVertical="8dp"
-    tools:context=".ui.settings.SettingsFragment"
-    android:background="@color/background">
+    android:paddingBottom="200dp"
+    tools:context=".ui.settings.SettingsFragment">
 
     <LinearLayout
-        android:id="@+id/lyToHome"
+        android:id="@+id/lyGoHome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:orientation="horizontal"
-        android:paddingHorizontal="8dp">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:layout_width="20dp"
@@ -28,40 +31,283 @@
             android:textColor="@color/icons" />
     </LinearLayout>
 
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:background="@drawable/ic_circle" />
-
-    <TextView
-        style="@style/text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Holaaa"
-        android:textAlignment="center" />
-
-    <TextView
-        style="@style/text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/settings_configuration"
-        android:layout_marginVertical="8dp"/>
-
-
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:orientation="horizontal"
-        android:background="@color/white"
-        android:gravity="center_vertical">
+        android:id="@+id/lyUserProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/lyConfiguration"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lyGoHome">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/ic_circle" />
 
         <TextView
-            style="@style/sub_text"
-            android:layout_width="wrap_content"
+            style="@style/text"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/settings_unit_weight"/>
+            android:textAlignment="center" />
 
+        <TextView
+            style="@style/text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:gravity="center_horizontal"
+            android:textColor="@color/icons"
+            android:textSize="12sp" />
     </LinearLayout>
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/lyConfiguration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/btnCloseSession"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lyUserProfile">
+
+        <TextView
+            style="@style/text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:layout_marginStart="10dp"
+            android:text="@string/settings_configuration"
+            app:layout_constraintBottom_toTopOf="@id/lyConfiguration"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lyUserProfile" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            tools:ignore="RtlSymmetry">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:gravity="start"
+                android:paddingVertical="8dp"
+                android:text="@string/settings_unit_weight"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/modeToggleGroupWeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="15dp"
+                android:orientation="horizontal"
+                app:selectionRequired="true"
+                app:singleSelection="true">
+
+                <Button
+                    android:id="@+id/btnWeightLbs"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:backgroundTint="@color/toggle_bg_color"
+                    android:checkable="true"
+                    android:minWidth="40dp"
+                    android:minHeight="30dp"
+                    android:padding="0dp"
+                    android:text="lbs"
+                    android:textColor="@color/toggle_text_color"
+                    android:textSize="11sp"
+                    app:cornerRadius="8dp" />
+
+                <Button
+                    android:id="@+id/btnWeightKg"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:backgroundTint="@color/toggle_bg_color"
+                    android:checkable="true"
+                    android:minWidth="40dp"
+                    android:minHeight="30dp"
+                    android:padding="0dp"
+                    android:text="kg"
+                    android:textColor="@color/toggle_text_color"
+                    android:textSize="11sp"
+                    app:cornerRadius="8dp" />
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+        </FrameLayout>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="10dp" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            tools:ignore="RtlSymmetry">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:gravity="start"
+                android:paddingVertical="8dp"
+                android:text="@string/settings_unit_exercise"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/modeToggleGroupExercise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="15dp"
+                android:orientation="horizontal"
+                app:selectionRequired="true"
+                app:singleSelection="true">
+
+                <Button
+                    android:id="@+id/btnExerciseLbs"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:backgroundTint="@color/toggle_bg_color"
+                    android:checkable="true"
+                    android:minWidth="40dp"
+                    android:minHeight="30dp"
+                    android:padding="0dp"
+                    android:text="lbs"
+                    android:textColor="@color/toggle_text_color"
+                    android:textSize="11sp"
+                    app:cornerRadius="8dp" />
+
+                <Button
+                    android:id="@+id/btnExerciseKg"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:backgroundTint="@color/toggle_bg_color"
+                    android:checkable="true"
+                    android:minWidth="40dp"
+                    android:minHeight="30dp"
+                    android:padding="0dp"
+                    android:text="kg"
+                    android:textColor="@color/toggle_text_color"
+                    android:textSize="11sp"
+                    app:cornerRadius="8dp" />
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+        </FrameLayout>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="10dp" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            tools:ignore="RtlSymmetry">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="8dp"
+                android:text="@string/settings_theme"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/ic_darkmode" />
+        </FrameLayout>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="10dp" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            tools:ignore="RtlSymmetry">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:paddingVertical="8dp"
+                android:text="@string/settings_language"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <Button
+                style="@style/Widget.Material3.Button.TextButton.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:backgroundTint="@color/white"
+                android:drawableEnd="@drawable/ic_unfold_more_16"
+                android:paddingStart="0dp"
+                android:paddingEnd="15dp"
+                android:text="@string/settings_language_selection1"
+                android:textColor="@color/Grey"
+                app:iconPadding="0dp"
+                app:iconTint="@color/Grey" />
+
+        </FrameLayout>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCloseSession"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/background"
+        android:text="Cerrar sesion"
+        android:textColor="@color/redDark"
+        app:cornerRadius="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lyConfiguration"
+        app:strokeColor="@color/redDark"
+        app:strokeWidth="1dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,7 +12,4 @@
         android:id="@+id/calendarFragment"
         android:icon="@drawable/ic_calendar" />
 
-    <item
-        android:id="@+id/graphicsFragment"
-        android:icon="@drawable/ic_graphics" />
 </menu>

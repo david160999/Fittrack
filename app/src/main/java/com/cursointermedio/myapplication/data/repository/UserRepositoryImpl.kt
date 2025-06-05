@@ -21,4 +21,8 @@ class UserRepositoryImpl @Inject constructor(
             photoUrl = currentUser?.photoUrl ?: Uri.parse("android.resource://com.tuapp.nombre/drawable/avatar_default")
         )
     }
+
+    override fun signOut() {
+        auth.signOut()
+    }
 }

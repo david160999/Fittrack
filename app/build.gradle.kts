@@ -68,6 +68,9 @@ dependencies {
     //Material Design
     implementation ("com.google.android.material:material:1.12.0")
 
+    //AppCompat
+    implementation ("androidx.appcompat:appcompat:1.6.1")
+
     //DaggerHilt
     implementation("com.google.dagger:hilt-android:2.50")
     kapt("com.google.dagger:hilt-compiler:2.50")

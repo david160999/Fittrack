@@ -82,11 +82,8 @@ class RealFragment : Fragment() {
                     }
                 }
                 launch {
-                    exerciseViewModel.detailResponseList.collectLatest { details ->
-                        val tonelajeTotal = details.sumOf {
-                            (it.realWeight ?: 0) * (it.realReps ?: 0)
-                        }
-                        binding.tvTonelaje.text = tonelajeTotal.toString()
+                    exerciseViewModel.exerciseWeight.collectLatest { weight ->
+                        binding.tvTonelaje.text = weight.toString()
                     }
                 }
                 launch {

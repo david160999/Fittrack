@@ -35,7 +35,7 @@
     <string name="home_sub_add_weight">Hoy: </string>
     <string name="home_sub_add_weightText">Añade tu peso corporal</string>
 
-<!--    Calendar Fragment-->
+    <!--    Calendar Fragment-->
     <string name="calendar_menuOption1">Añadir nota</string>
     <string name="calendar_menuOption2">Añadir peso corporal</string>
     <string name="calendar_menuOption3">Añadir trac</string>
@@ -108,7 +108,9 @@
     <string name="settings_language">Idioma</string>
     <string name="settings_language_selection1">Español</string>
     <string name="settings_language_selection2">Ingles</string>
-
+    <string name="settings_close_session_title">CERRAR SESIÓN</string>
+    <string name="settings_close_session_text">¿Estás seguro/a de que deseas cerrar sesión?</string>
+    <string name="settings_close_session_close">Cerrar sesión</string>
 
 
     <!--    RoutineFragment-->

@@ -145,6 +145,18 @@ class CalendarFragment @Inject constructor() : Fragment() {
                     }
                 }
                 launch {
+                    calendarViewModel.userWeight.collectLatest {weight->
+                        if (weight != null) {
+                            if (weight.isNotBlank()) {
+                                binding.tvMainCalendarResultWeight.text = weight.toString()
+                                binding.cvMainCalendarWeight.visibility = View.VISIBLE
+                            } else {
+                                binding.cvMainCalendarWeight.visibility = View.GONE
+                            }
+                        }
+                    }
+                }
+                launch {
                     calendarViewModel.dateSelected.collectLatest {
                         it?.let {
                             if (it.dateEntity.note != null) {

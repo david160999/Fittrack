@@ -13,4 +13,8 @@ class GetUserUseCase@Inject constructor(
     suspend fun getUserData(): UserData {
         return  repository.getUserData()
     }
+
+    fun signOut() {
+        repository.signOut()
+    }
 }

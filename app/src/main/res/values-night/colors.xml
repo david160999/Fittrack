@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tonos oscuros o adaptados para modo oscuro -->
+
+    <color name="black">#FF000000</color> <!-- usualmente negro sigue igual -->
+    <color name="white">#FFFFFFFF</color> <!-- blanco puede usarse para textos -->
+    <color name="Grey">#7A7575</color> <!-- gris más oscuro -->
+    <color name="GreyLight">#8C8C8C</color> <!-- gris claro adaptado -->
+    <color name="DarkGrey">#A0A0A0</color> <!-- gris oscuro más claro para contraste -->
+
+    <!-- Text color -->
+    <color name="primary_text">#FFFFFFFF</color> <!-- texto principal blanco -->
+    <color name="secondary_text">#B3B3B3</color> <!-- texto secundario gris claro -->
+
+    <!-- Background color -->
+    <color name="background">#121212</color> <!-- fondo muy oscuro -->
+
+    <color name="tracColor">#FF4081</color> <!-- un rosa vivo para destacar -->
+    <color name="weightColor">#81C784</color> <!-- verde claro -->
+    <color name="notesColor">#64B5F6</color> <!-- azul claro -->
+
+    <!-- Icon color -->
+    <color name="icons">#B0BEC5</color> <!-- iconos gris claro -->
+    <color name="iconPressed">#90A4AE</color> <!-- icono presionado -->
+
+    <color name="primary">#E0E0E0</color> <!-- primary claro -->
+    <color name="primaryDark">#B0B0B0</color> <!-- primary dark más claro -->
+    <color name="secondary">#FFB74D</color> <!-- naranja claro -->
+    <color name="accent">#FFFFFF</color> <!-- acento blanco -->
+
+    <color name="gold">#FFD54F</color> <!-- dorado más claro -->
+    <color name="black_alpha">#66000000</color> <!-- negro semi transparente -->
+
+    <color name="red">#EF5350</color> <!-- rojo más claro -->
+    <color name="greyPressed">#616161</color> <!-- gris oscuro para pulsado -->
+    <color name="backgroundMenu">#1F1F1F</color> <!-- menú oscuro -->
+
+    <color name="redDark">#B71C1C</color> <!-- rojo oscuro -->
+
+    <color name="iconSearchBackground1">#37474F</color> <!-- azul grisáceo -->
+    <color name="iconSearchBackground2">#263238</color> <!-- más oscuro -->
+
+    <!-- BoxStrokeColor -->
+    <color name="mtrl_textinput_default_box_stroke_color">#81D4FA</color> <!-- azul claro -->
+    <color name="shimmer_placeholder">#303030</color> <!-- gris oscuro para shimmer -->
+</resources>

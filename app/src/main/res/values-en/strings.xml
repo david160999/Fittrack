@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="default_web_client_id">110700243776-9lf0mudn95a9b402c4bghmnf662kgfai.apps.googleusercontent.com</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="btn_back">Back</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_save">Save</string>
+    <string name="btn_edit">Edit</string>
+    <string name="tv_search">Search</string>
+    <string name="tv_next">Next</string>
+    <string name="btn_eliminate">Delete</string>
+    <string name="tv_description">Description</string>
+    <string name="btn_ok">OK</string>
+
+    <!--    HomeFragment-->
+    <string name="home_training">Training</string>
+    <string name="home_sub_training">Start logging your workouts!</string>
+    <string name="home_weight">Body weight</string>
+    <string name="home_sub_weight">Body weight</string>
+    <string name="home_trac">Trac</string>
+    <string name="home_sub_trac">Start doing self-assessments!</string>
+    <string name="home_user_name">Hello, %1$s</string>
+    <string name="home_sub_trac_push">Push:  %1$d/5</string>
+    <string name="home_sub_trac_pull">Pull:  %1$d/5</string>
+    <string name="home_sub_trac_leg">Leg:  %1$d/5</string>
+    <string name="home_sub_trac_mental">%1$d/20</string>
+    <string name="home_notes">Note</string>
+    <string name="home_sub_notes">Start adding notes to the calendar!</string>
+    <string name="home_sub_add_notes">Add a note</string>
+    <string name="home_sub_add_weight">Today: </string>
+    <string name="home_sub_add_weightText">Add your body weight</string>
+
+    <!--    Calendar Fragment-->
+    <string name="calendar_menuOption1">Add note</string>
+    <string name="calendar_menuOption2">Add body weight</string>
+    <string name="calendar_menuOption3">Add trac</string>
+
+    <!--    Trac Dialog-->
+    <string name="home_trac_selection">--Select--</string>
+    <string name="home_trac_afterDay">AFTER A DAY OF TRAINING</string>
+    <string name="home_trac_save">Add Trac</string>
+    <string name="home_trac_delete">Delete trac</string>
+    <string name="home_notes_delete">Delete note</string>
+    <string name="home_weight_delete">Delete body weight</string>
+
+    <string name="home_trac_leg">Leg fatigue:</string>
+    <string name="home_trac_leg_option1">Very severe fatigue</string>
+    <string name="home_trac_leg_option2">Severe fatigue</string>
+    <string name="home_trac_leg_option3">Moderate fatigue</string>
+    <string name="home_trac_leg_option4">Light fatigue</string>
+    <string name="home_trac_leg_option5">No fatigue</string>
+
+    <string name="home_trac_push">Push fatigue:</string>
+    <string name="home_trac_push_option1">Very severe fatigue</string>
+    <string name="home_trac_push_option2">Severe fatigue</string>
+    <string name="home_trac_push_option3">Moderate fatigue</string>
+    <string name="home_trac_push_option4">Light fatigue</string>
+    <string name="home_trac_push_option5">No fatigue</string>
+
+    <string name="home_trac_pull">Pull fatigue:</string>
+    <string name="home_trac_pull_option1">Very severe fatigue</string>
+    <string name="home_trac_pull_option2">Severe fatigue</string>
+    <string name="home_trac_pull_option3">Moderate fatigue</string>
+    <string name="home_trac_pull_option4">Light fatigue</string>
+    <string name="home_trac_pull_option5">No fatigue</string>
+
+    <string name="home_trac_food">Rest/Nutrition:</string>
+    <string name="home_trac_food_option1">Very poor</string>
+    <string name="home_trac_food_option2">Poor</string>
+    <string name="home_trac_food_option3">Acceptable</string>
+    <string name="home_trac_food_option4">Good</string>
+    <string name="home_trac_food_option5">Excellent</string>
+
+    <string name="home_trac_rest">Perceived recovery:</string>
+    <string name="home_trac_rest_option1">Very bad</string>
+    <string name="home_trac_rest_option2">Bad</string>
+    <string name="home_trac_rest_option3">Fair</string>
+    <string name="home_trac_rest_option4">Good</string>
+    <string name="home_trac_rest_option5">Excellent</string>
+
+    <string name="home_trac_motivation">Motivation:</string>
+    <string name="home_trac_motivation_option1">Very low</string>
+    <string name="home_trac_motivation_option2">Low</string>
+    <string name="home_trac_motivation_option3">Medium</string>
+    <string name="home_trac_motivation_option4">High</string>
+    <string name="home_trac_motivation_option5">Very high</string>
+
+    <string name="home_trac_technic">Technical comfort:</string>
+    <string name="home_trac_technic_option1">Very uncomfortable</string>
+    <string name="home_trac_technic_option2">Uncomfortable</string>
+    <string name="home_trac_technic_option3">Neutral</string>
+    <string name="home_trac_technic_option4">Comfortable</string>
+    <string name="home_trac_technic_option5">Very comfortable</string>
+
+    <!--    SettingsFragment-->
+    <string name="settings_home">Home</string>
+    <string name="settings_configuration">Configuration</string>
+    <string name="settings_unit_weight">Body weight unit</string>
+    <string name="settings_unit_exercise">Exercise weight unit</string>
+    <string name="settings_theme">Theme</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_language_selection1">Spanish</string>
+    <string name="settings_language_selection2">English</string>
+    <string name="settings_close_session_title">LOG OUT</string>
+    <string name="settings_close_session_text">Are you sure you want to log out?</string>
+    <string name="settings_close_session_close">Log out</string>
+
+    <!--    RoutineFragment-->
+    <string name="routine_prueba">I am in Routine</string>
+    <string name="routine_not_exercises">No Exercises</string>
+    <string name="routine_not_exercises_text">Press "+" to create exercises</string>
+    <string name="routine_count_exercise">%1$d Sets</string>
+    <string name="routine_menuOption1">View information</string>
+    <string name="routine_menuOption2">Delete</string>
+
+    <!--DetailsFragment-->
+    <string name="detail_menuOption1">View information</string>
+    <string name="detail_menuOption2">Delete last set</string>
+
+    <!--    WeekFragment-->
+    <string name="week_prueba">I am in WEEK</string>
+    <string name="week_title">Title</string>
+    <string name="week_calendar">Add to calendar</string>
+    <string name="week_edit">Edit</string>
+    <string name="week_addRoutine_title">Create a new workout</string>
+    <string name="week_addRoutine_name">Day %1$d </string>
+    <string name="week_saveRoutine">Save</string>
+    <string name="week_all">Copy entire week</string>
+    <string name="week_objective">Copy week to goal</string>
+    <string name="week_all_exercise">Copy exercises</string>
+    <string name="week_dialog_delete_title">Delete routine</string>
+    <string name="week_dialog_delete_text">Are you sure you want to delete "'%1$s'"?</string>
+    <string name="week_date_routine">No date</string>
+    <string name="week_not_routines">No Workouts</string>
+    <string name="week_not_routines_text">Press "+" to create a workout</string>
+
+    <!--    ExerciseFragment-->
+    <string name="exercise_name">EXERCISE NAME</string>
+    <string name="exercise_rpe">RPE</string>
+    <string name="exercise_weight">WEIGHT</string>
+    <string name="exercise_reps">REPS</string>
+    <string name="exercise_estadisticas">Statistics</string>
+    <string name="exercise_e1rm">E1RM:</string>
+    <string name="exercise_tonelaje">Tonnage:</string>
+    <string name="exercise_notas">Notes</string>
+    <string name="exercise_notas_del_ejercicio">Exercise notes</string>
+
+    <!--    ExerciseCategories-->
+    <string name="exerciseKnee">Knee Dominant</string>
+    <string name="exerciseHip">Hip Dominant</string>
+    <string name="exercisePushHorizontal">Horizontal Push</string>
+    <string name="exercisePushVertical">Vertical Push</string>
+    <string name="exercisePullHorizontal">Horizontal Pull</string>
+    <string name="exercisePullVertical">Vertical Pull</string>
+    <string name="exerciseweightlifting">Weightlifting</string>
+    <string name="exerciseOthers">Others</string>
+
+    <!--    TrainingFragment-->
+    <string name="training_new_block">Create a new block</string>
+    <string name="training_block">Blocks</string>
+    <string name="training_numDays">%1$d Days </string>
+    <string name="training_numWeeks">%1$d Weeks</string>
+    <string name="training_menuOption1">Change name</string>
+    <string name="training_menuOption2">Copy</string>
+    <string name="training_menuOption3">Share</string>
+    <string name="training_menuOption4">Delete</string>
+    <string name="training_newBlock">New Block %1$s</string>
+    <string name="training_dialog_code">Enter a code</string>
+    <string name="training_dialog_import">Import Block</string>
+    <string name="training_dialog_share">Share "'%1$s'" with this code</string>
+    <string name="training_dialog_copied">Copied!</string>
+    <string name="training_dialog_delete_title">Delete workout</string>
+    <string name="training_dialog_delete_text">Are you sure you want to delete "'%1$s'"?</string>
+
+    <!--AddExerciseFragment-->
+    <string name="addExercise_create_name">New exercise name</string>
+    <string name="addExercise_create_title">Create a new exercise</string>
+    <string name="load_menu">Open menu</string>
+    <string name="addExercise_dialogRemove_title">DELETE EXERCISE</string>
+    <string name="addExercise_dialogRemove_text">Are you sure you want to delete "%1$s?"</string>
+
+    <!--    Days of Week-->
+    <string name="weekDay_Mon">Mon</string>
+    <string name="weekDay_Tue">Tue</string>
+    <string name="weekDay_Wed">Wed</string>
+    <string name="weekDay_Thu">Thu</string>
+    <string name="weekDay_Fri">Fri</string>
+    <string name="weekDay_Sat">Sat</string>
+    <string name="weekDay_Sun">Sun</string>
+
+</resources>

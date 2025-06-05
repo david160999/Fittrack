@@ -43,6 +43,7 @@
         app:layout_constraintTop_toBottomOf="@id/lyGoHome">
 
         <ImageView
+            android:id="@+id/ivUserProfile"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
@@ -50,12 +51,14 @@
             android:background="@drawable/ic_circle" />
 
         <TextView
+            android:id="@+id/tvUserName"
             style="@style/text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center" />
 
         <TextView
+            android:id="@+id/tvUserEmail"
             style="@style/text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -241,12 +244,16 @@
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
-            <ImageView
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDarkMode"
+                style="?attr/materialIconButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|center_vertical"
                 android:layout_marginEnd="15dp"
-                android:background="@drawable/ic_darkmode" />
+                android:checkable="true"
+                app:icon="@drawable/ic_darkmode"
+                app:iconTint="@color/icons" />
         </FrameLayout>
 
         <com.google.android.material.divider.MaterialDivider
@@ -273,15 +280,16 @@
                 android:textSize="16sp" />
 
             <Button
+                android:id="@+id/btnLanguage"
                 style="@style/Widget.Material3.Button.TextButton.Icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
+                android:layout_marginEnd="15dp"
+                android:paddingEnd="0dp"
+                android:paddingStart="0dp"
                 android:backgroundTint="@color/white"
                 android:drawableEnd="@drawable/ic_unfold_more_16"
-                android:paddingStart="0dp"
-                android:paddingEnd="15dp"
-                android:text="@string/settings_language_selection1"
                 android:textColor="@color/Grey"
                 app:iconPadding="0dp"
                 app:iconTint="@color/Grey" />

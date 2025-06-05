@@ -10,11 +10,13 @@ import com.cursointermedio.myapplication.data.database.entities.TracEntity
 import com.cursointermedio.myapplication.domain.model.WeekWithRoutinesModel
 import com.cursointermedio.myapplication.domain.useCase.GetDateUseCase
 import com.cursointermedio.myapplication.domain.useCase.GetTrainingUseCase
+import com.cursointermedio.myapplication.domain.useCase.GetUserPreferencesUseCase
 import com.cursointermedio.myapplication.domain.useCase.GetWeekUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
@@ -22,7 +24,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CalendarViewModel @Inject constructor(
-    private val getDateUseCase: GetDateUseCase
+    private val getDateUseCase: GetDateUseCase,
+    private val getUserPreferencesUseCase: GetUserPreferencesUseCase
 ) : ViewModel() {
     private val currentDay = LocalDate.now()
 
@@ -31,6 +34,9 @@ class CalendarViewModel @Inject constructor(
 
     private val _dateList = MutableStateFlow<List<DateWithTrac?>>(emptyList())
     val dateList: StateFlow<List<DateWithTrac?>> = _dateList
+
+    private val _userWeight = MutableStateFlow<String?>(null)
+    val userWeight: StateFlow<String?> get() = _userWeight
 
     init {
         getSelectedDateWithTracFlow(currentDay.toString())
@@ -52,8 +58,17 @@ class CalendarViewModel @Inject constructor(
     fun getSelectedDateWithTracFlow(dateId: String) {
         viewModelScope.launch {
             try {
-                getDateUseCase.getDateWithTracFlow(dateId).collectLatest {
-                    _dateSelected.value = it
+                combine( getDateUseCase.getDateWithTracFlow(dateId), getUserPreferencesUseCase.userSettingsFlow)
+                { dateInfo, userSettings ->
+
+                    val weightValue = dateInfo?.dateEntity?.bodyWeight ?: 0f
+                    val unit = if (userSettings.isWeightKgMode) "kg" else "lbs"
+
+                    Pair("$weightValue $unit", dateInfo)
+
+                }.collectLatest { (weightString, dateInfo) ->
+                    _dateSelected.value = dateInfo
+                    _userWeight.value = weightString
                 }
             } catch (e: Exception) {
                 Log.e("getSelectedDateFlow", "Error al recoger los datos del dia seleccionado", e)

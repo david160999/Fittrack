@@ -26,8 +26,10 @@ import com.cursointermedio.myapplication.ui.home.adapter.HomeMenuOptionAdapter
 import com.cursointermedio.myapplication.ui.home.dialog.AddNoteDialog
 import com.cursointermedio.myapplication.ui.home.dialog.AddWeightDialog
 import com.cursointermedio.myapplication.ui.home.dialog.TracDialog
+import com.cursointermedio.myapplication.ui.settings.SettingsUiState
 import com.cursointermedio.myapplication.ui.training.adapter.TrainingMenuAdapter
 import com.cursointermedio.myapplication.utils.extensions.setupTouchAction
+import com.cursointermedio.myapplication.utils.extensions.showSnackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -129,8 +131,6 @@ class HomeFragment : Fragment() {
                             }
 
                             if (it.bodyWeight != null) {
-                                binding.tvResultWeight.text = it.bodyWeight.toString()
-
                                 binding.tvSubWeight.visibility = View.GONE
                                 binding.ivNotResultWeight.visibility = View.GONE
                                 binding.lyResultWeight.visibility = View.VISIBLE
@@ -144,6 +144,15 @@ class HomeFragment : Fragment() {
                             }
                         }
                     }
+                }
+                launch {
+                    homeViewModel.userWeight.collectLatest { weight ->
+                        weight?.isNotBlank().apply {
+                            binding.tvResultWeight.text = weight
+                        }
+
+                    }
+
                 }
             }
         }

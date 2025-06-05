@@ -1,6 +1,7 @@
 package com.cursointermedio.myapplication.ui.exercise
 
 import android.util.Log
+import android.util.Pair
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +10,7 @@ import com.cursointermedio.myapplication.domain.model.ExerciseModel
 import com.cursointermedio.myapplication.domain.useCase.GetDetailsUseCase
 import com.cursointermedio.myapplication.domain.useCase.GetExercisesUseCase
 import com.cursointermedio.myapplication.domain.useCase.GetRoutineUseCase
+import com.cursointermedio.myapplication.domain.useCase.GetUserPreferencesUseCase
 import com.cursointermedio.myapplication.ui.routine.RoutineUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -16,18 +18,24 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.coroutines.cancellation.CancellationException
 
 @HiltViewModel
 class ExerciseViewModel @Inject constructor(
     private val getDetailsUseCase: GetDetailsUseCase,
     private val getExercisesUseCase: GetExercisesUseCase,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val getUserPreferencesUseCase: GetUserPreferencesUseCase
 
 ) : ViewModel() {
+
+    private val _exerciseWeight = MutableStateFlow<String?>(null)
+    val exerciseWeight: StateFlow<String?> get() = _exerciseWeight
 
     val exerciseId: Long = savedStateHandle.get<Long>("exerciseId") ?: -1L
     val routineId: Long = savedStateHandle.get<Long>("routineId") ?: -1L
@@ -55,18 +63,29 @@ class ExerciseViewModel @Inject constructor(
 
     private fun getDetailOfRoutineAndExerciseFlow() {
         viewModelScope.launch {
-            getDetailsUseCase.getDetailOfRoutineAndExerciseFlow(
-                routineId = routineId,
-                exerciseId = exerciseId
-            )
+            combine(
+                getDetailsUseCase.getDetailOfRoutineAndExerciseFlow(
+                    routineId = routineId,
+                    exerciseId = exerciseId
+                ),
+                getUserPreferencesUseCase.userSettingsFlow
+            ) { detail, userSettings ->
+
+                val unit = if (userSettings.isExerciseKgMode) "kg" else "lbs"
+                val weightTotal = detail.sumOf {
+                    (it.realWeight ?: 0) * (it.realReps ?: 0)
+                }
+
+                Triple(detail, "$weightTotal $unit", userSettings)
+            }
                 .flowOn(Dispatchers.IO)
                 .catch { e ->
-                    _detailList.value =
-                        DetailUiState.Error(e.message ?: "Ha ocurrido un error inesperado.")
+                    _detailList.value = DetailUiState.Error(e.message ?: "Ha ocurrido un error inesperado.")
                 }
-                .collectLatest { detailList ->
+                .collectLatest { (detailList, formattedWeight, _) ->
                     _detailList.value = DetailUiState.Success(detailList)
                     _detailResponseList.value = detailList
+                    _exerciseWeight.value = formattedWeight
                 }
         }
     }
@@ -167,8 +186,14 @@ class ExerciseViewModel @Inject constructor(
 
     fun changeFragmentAdapter(fragment: Int) {
         when (fragment) {
-            0 -> {_adapterFragment.value = 0}
-            1 -> {_adapterFragment.value = 1}
+            0 -> {
+                _adapterFragment.value = 0
+            }
+
+            1 -> {
+                _adapterFragment.value = 1
+            }
+
             else -> {}
         }
     }

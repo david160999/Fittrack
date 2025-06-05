@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="description_not_available">Description not available</string>
+    <string name="description">Description</string>
+
+    <!-- Exercises -->
+    <string name="exercise_squat">Squat</string>
+    <string name="exercise_squat_description">1. Stand with your feet shoulder-width apart and your back straight.\n\n2. Bend your knees and hips lowering your body as if you were going to sit down, keeping your chest up.\n\n3. Descend until your thighs are parallel to the floor and return to the starting position by pushing through your heels.</string>
+
+    <string name="exercise_hack_squat">Hack Squat</string>
+    <string name="exercise_hack_squat_description">1. Position your back against the machine and place your feet shoulder-width apart on the platform.\n\n2. Bend your knees lowering the weight controlledly without lifting your back.\n\n3. Push the platform up until your legs are fully extended, maintaining control.</string>
+
+    <string name="exercise_bulgarian_squat">Bulgarian Split Squat</string>
+    <string name="exercise_bulgarian_squat_description">1. Place one foot behind you resting on a bench and the other firmly in front on the ground.\n\n2. Bend the front knee lowering your body while keeping your torso upright.\n\n3. Push with the front leg to return to the starting position without letting the back knee touch the ground.</string>
+
+    <string name="exercise_static_lunge">Static Lunge</string>
+    <string name="exercise_static_lunge_description">1. Take a step forward and lower your body by bending both knees until the back knee almost touches the floor.\n\n2. Keep your torso upright and the front knee aligned with the foot.\n\n3. Push with the front leg to return to the starting position and repeat with the other leg.</string>
+
+    <string name="exercise_front_squat">Front Squat</string>
+    <string name="exercise_front_squat_description">1. Hold a barbell across the front of your shoulders with your elbows raised.\n\n2. Bend your knees and hips lowering your body while keeping your torso straight and looking forward.\n\n3. Push up through your heels to return to the starting position.</string>
+
+    <string name="exercise_platz_squat">Platz Squat</string>
+    <string name="exercise_platz_squat_description">1. Stand with your feet wider than a traditional squat and your toes slightly pointed out.\n\n2. Lower yourself by bending your knees until your thighs are parallel or slightly lower.\n\n3. Keep your back straight and push up forcefully to return to the starting position.</string>
+
+    <string name="exercise_zercher_squat">Zercher Squat</string>
+    <string name="exercise_zercher_squat_description">1. Place the barbell in the crook of your elbows in front of your chest, holding it with your hands.\n\n2. Bend your knees and hips lowering your body like in a classic squat.\n\n3. Push with your legs upwards to return to the starting position while keeping your torso straight.</string>
+
+    <string name="exercise_leg_curl">Leg Curl</string>
+    <string name="exercise_leg_curl_description">1. Lie face down on the machine with your ankles under the padded roller.\n\n2. Bend your knees to lift the roller towards your glutes contracting your hamstrings.\n\n3. Lower slowly to the starting position without losing muscle tension.</string>
+
+    <string name="exercise_leg_extension">Leg Extension</string>
+    <string name="exercise_leg_extension_description">1. Sit on the machine with your back straight and feet under the padded roller.\n\n2. Extend your legs forward until fully straightening them, contracting your quadriceps.\n\n3. Lower slowly controlling the weight to avoid injury and return to the starting position.</string>
+
+    <string name="exercise_leg_press">Leg Press</string>
+    <string name="exercise_leg_press_description">1. Sit on the machine with your back supported and place your feet shoulder-width apart on the platform.\n\n2. Push the platform by extending your legs without locking your knees.\n\n3. Slowly bend your knees to return to the starting position controlling the movement.</string>
+
+    <string name="exercise_lunges">Lunges</string>
+    <string name="exercise_lunges_description">1. Take a long step forward with one leg and lower your body by bending both knees until almost touching the floor.\n\n2. Keep your torso upright and the front knee aligned with the foot.\n\n3. Push with the front leg to return to the starting position and repeat with the other leg.</string>
+
+    <string name="exercise_deadlift_conventional">Conventional Deadlift</string>
+    <string name="exercise_deadlift_conventional_description">1. Place your feet shoulder-width apart and grip the bar with your hands just outside your legs.\n\n2. Keep your back straight and lift the bar by pushing with your legs and extending your torso.\n\n3. Lower the bar controlledly maintaining posture until it touches the floor.</string>
+
+    <string name="exercise_deadlift_sumo">Sumo Deadlift</string>
+    <string name="exercise_deadlift_sumo_description">1. Place your feet very wide with toes pointed outward and grip the bar with your hands inside your legs.\n\n2. Keep your back straight and lift the bar by pushing with your legs and extending your torso.\n\n3. Lower controlledly maintaining proper technique until the bar touches the floor.</string>
+
+    <string name="exercise_deadlift_romanian">Romanian Deadlift</string>
+    <string name="exercise_deadlift_romanian_description">1. Hold the bar in front with your hands, feet shoulder-width apart.\n\n2. Slightly bend your knees and lower the bar sliding down your legs, keeping your back straight.\n\n3. Raise by contracting glutes and hamstrings to the starting position without locking your knees.</string>
+
+    <string name="exercise_deadlift_one_leg">Single-Leg Deadlift</string>
+    <string name="exercise_deadlift_one_leg_description">1. Hold a dumbbell or bar with one hand and lift one leg backward.\n\n2. Bend at the hip lowering your torso while keeping your back straight as the leg extends.\n\n3. Return to the starting position controlling the movement and repeat with the other leg.</string>
+
+    <string name="exercise_deadlift_straight_legs">Straight-Leg Deadlift</string>
+    <string name="exercise_deadlift_straight_legs_description">1. Place the bar in front of you with feet hip-width apart.\n\n2. Keep your legs almost straight and lower the bar sliding down your thighs, feeling the stretch in the hamstrings.\n\n3. Raise slowly contracting glutes and hamstrings to return to the starting position.</string>
+
+    <string name="exercise_good_morning">Good Morning</string>
+    <string name="exercise_good_morning_description">1. Place a bar on the upper back and keep your feet shoulder-width apart.\n\n2. Bend at the hips lowering your torso forward keeping your back straight.\n\n3. Raise by contracting glutes and hamstrings to the starting position without arching your back.</string>
+
+    <string name="exercise_hip_thrust">Hip Thrust</string>
+    <string name="exercise_hip_thrust_description">1. Rest the upper part of your back on a bench and place a bar on your hips.\n\n2. Lift your hips pushing through your heels until your body forms a straight line.\n\n3. Lower controlledly to the starting position keeping tension in the glutes.</string>
+
+    <string name="exercise_glute_femoral_raise">Glute-Ham Raise</string>
+    <string name="exercise_glute_femoral_raise_description">1. Lie on your back with knees bent and feet flat on the floor.\n\n2. Lift your hips contracting the glutes until forming a straight line from knees to shoulders.\n\n3. Lower controlledly without fully resting your back on the floor to maintain tension.</string>
+
+    <string name="exercise_abductor_machine">Abductor Machine</string>
+    <string name="exercise_abductor_machine_description">1. Sit on the machine and place your legs against the external pads.\n\n2. Open your legs pushing against the pads contracting the abductor muscles.\n\n3. Slowly return to the starting position controlling the movement to maintain tension.</string>
+
+    <string name="exercise_bench_press">Bench Press</string>
+    <string name="exercise_bench_press_description">1. Lie on a flat bench and grip the bar with your hands slightly wider than shoulder-width.\n\n2. Lower the bar controlledly until it touches your chest.\n\n3. Push the bar up extending your arms without locking your elbows.</string>
+
+    <string name="exercise_incline_bench_press">Incline Bench Press</string>
+    <string name="exercise_incline_bench_press_description">1. Lie on an inclined bench and hold the bar with a grip slightly wider than shoulder-width.\n\n2. Lower the bar to the upper chest controlling the movement.\n\n3. Push the bar up until your arms are extended maintaining correct posture.</string>
+
+    <string name="exercise_decline_bench_press">Decline Bench Press</string>
+    <string name="exercise_decline_bench_press_description">1. Lie on a declined bench and grip the bar with a comfortable and firm grip.\n\n2. Lower the bar controlledly to the lower chest.\n\n3. Push the bar up extending your arms without losing control.</string>
+
+    <string name="exercise_machine_press">Machine Press</string>
+    <string name="exercise_machine_press_description">1. Sit on the machine and place your hands on the handles with a firm grip.\n\n2. Push the handles extending your arms fully.\n\n3. Slowly return to the starting position maintaining tension in the pectoral muscles.</string>
+
+    <string name="exercise_floor_press">Floor Press</string>
+    <string name="exercise_floor_press_description">1. Lie on your back on the floor with a barbell or dumbbells.\n\n2. Lower the weight until your elbows lightly touch the floor.\n\n3. Push the weight up extending your arms without locking them.</string>
+
+    <string name="exercise_jm_press">JM Press</string>
+    <string name="exercise_jm_press_description">1. Lie on a flat bench and grip the bar with a close grip.\n\n2. Lower the bar controlledly to the lower chest.\n\n3. Push the bar up extending your arms to intensely work the triceps.</string>
+
+    <string name="exercise_incline_push_ups">Incline Push-Ups</string>
+    <string name="exercise_incline_push_ups_description">1. Place your hands on an elevated surface such as a bench or box.\n\n2. Bend your elbows lowering your torso controlledly.\n\n3. Push up extending your arms keeping your body aligned.</string>
+
+    <string name="exercise_push_ups">Push-Ups</string>
+    <string name="exercise_push_ups_description">1. Get into a plank position with your hands shoulder-width apart.\n\n2. Bend your elbows lowering your chest to the floor keeping your body straight.\n\n3. Push up extending your arms to return to the starting position.</string>
+
+    <string name="exercise_triceps_extension">Triceps Extension</string>
+    <string name="exercise_triceps_extension_description">1. Hold a dumbbell with both hands above your head.\n\n2. Bend your elbows lowering the dumbbell behind your head.\n\n3. Extend your arms to return to the starting position contracting your triceps.</string>
+
+    <string name="exercise_triceps_pushdown">Triceps Pushdown</string>
+    <string name="exercise_triceps_pushdown_description">1. Grab the rope or bar on the high pulley machine with your hands in pronation.\n\n2. Push down extending your elbows until they lock.\n\n3. Return controlledly to the starting position maintaining tension in your triceps.</string>
+
+    <string name="exercise_fly">Fly</string>
+    <string name="exercise_fly_description">1. Lie on a bench with a dumbbell in each hand and arms extended upwards.\n\n2. Open your arms to the sides keeping a slight bend in the elbows.\n\n3. Return to the starting position contracting your pectoral muscles.</string>
+
+    <string name="exercise_skull_crushers">Skull Crushers</string>
+    <string name="exercise_skull_crushers_description">1. Lie on a flat bench holding a barbell or dumbbells.\n\n2. Bend your elbows lowering the weight toward your forehead.\n\n3. Extend your arms to return to the starting position working the triceps.</string>
+
+    <string name="exercise_military_press">Military Press</string>
+    <string name="exercise_military_press_description">1. Sit or stand with the barbell at shoulder height.\n\n2. Push the barbell up by fully extending your arms overhead.\n\n3. Lower the barbell controlled back to the starting position keeping your back straight.</string>
+
+    <string name="exercise_dips">Parallel Bar Dips</string>
+    <string name="exercise_dips_description">1. Grab the parallel bars and suspend your body with arms extended.\n\n2. Bend your elbows lowering your body while keeping your torso slightly leaned forward.\n\n3. Push up by extending your arms to return to the starting position.</string>
+
+    <string name="exercise_handstand_pushups">Handstand Push-Ups</string>
+    <string name="exercise_handstand_pushups_description">1. Get into a handstand position with your hands on the floor and feet against the wall.\n\n2. Bend your elbows lowering your head towards the ground with control.\n\n3. Push up with your arms to return to the starting position by extending your elbows.</string>
+
+    <string name="exercise_landmine_press">Landmine Press</string>
+    <string name="exercise_landmine_press_description">1. Hold the free end of the barbell with one hand, the other hand can stabilize.\n\n2. Push the bar forward and upward extending your arm.\n\n3. Lower the bar controlled back to the starting position maintaining stability.</string>
+
+    <string name="exercise_rowing">Barbell Row</string>
+    <string name="exercise_rowing_description">1. Place your feet shoulder-width apart and grip the bar with an overhand grip.\n\n2. Slightly bend your knees and lower your torso keeping your back straight.\n\n3. Pull the bar toward your abdomen contracting your back muscles and lower controlled.</string>
+
+    <string name="exercise_t_bar_row">T-Bar Row</string>
+    <string name="exercise_t_bar_row_description">1. Place the bar in the machine or on a base with a chest support.\n\n2. Grab the handles or bar and pull toward your torso contracting your back.\n\n3. Return controlled to the starting position maintaining muscle tension.</string>
+
+    <string name="exercise_incline_bench_row">Incline Bench Row</string>
+    <string name="exercise_incline_bench_row_description">1. Lie face down on an incline bench holding dumbbells.\n\n2. Pull the dumbbells towards your torso contracting your back.\n\n3. Lower controlled without losing muscle tension and repeat the movement.</string>
+
+    <string name="exercise_pendlay_row">Pendlay Row</string>
+    <string name="exercise_pendlay_row_description">1. Place your feet shoulder-width apart and grip the bar with an overhand grip.\n\n2. From a parallel-to-the-floor position, pull the bar toward your abdomen forcefully.\n\n3. Let the bar touch the floor before repeating, keeping your back straight.</string>
+
+    <string name="exercise_bent_over_row">Bent Over Barbell Row</string>
+    <string name="exercise_bent_over_row_description">1. Place your feet shoulder-width apart and grip the bar with an overhand grip.\n\n2. Slightly bend your knees and lower your torso keeping your back straight.\n\n3. Pull the bar toward your abdomen contracting your back and lower controlled.</string>
+
+    <string name="exercise_one_arm_row">One-Arm Row</string>
+    <string name="exercise_one_arm_row_description">1. Support one hand and knee on a bench and hold a dumbbell with the opposite hand.\n\n2. Pull the dumbbell toward your torso contracting your back.\n\n3. Lower controlled keeping muscle tension and repeat with the other arm.</string>
+
+    <string name="exercise_row">Seated Row</string>
+    <string name="exercise_row_description">1. Sit on the machine with a straight back and feet on the platform.\n\n2. Grab the handles with extended arms and pull toward your torso contracting your back muscles.\n\n3. Slowly return to the starting position maintaining muscle tension.</string>
+
+    <string name="exercise_face_pull">Face Pull</string>
+    <string name="exercise_face_pull_description">1. Attach a rope to a high pulley and grab both ends.\n\n2. Pull the rope toward your face separating your hands and contracting your upper back.\n\n3. Return controlled to the starting position maintaining tension.</string>
+
+    <string name="exercise_inverted_bodyweight_row">Inverted Bodyweight Row</string>
+    <string name="exercise_inverted_bodyweight_row_description">1. Position yourself under a fixed bar gripping it with your hands.\n\n2. Pull your body toward the bar keeping your body straight.\n\n3. Lower slowly until your arms are fully extended without losing posture.</string>
+
+    <string name="exercise_reverse_fly">Reverse Fly</string>
+    <string name="exercise_reverse_fly_description">1. Lean forward holding dumbbells with your arms hanging down.\n\n2. Open your arms to the sides keeping a slight bend in your elbows.\n\n3. Return controlled to the starting position maintaining tension in the rear deltoids.</string>
+
+    <string name="exercise_pull_ups">Pull-Ups</string>
+    <string name="exercise_pull_ups_description">1. Grab the bar with an overhand grip at shoulder width.\n\n2. Pull your body up until your chin passes the bar.\n\n3. Lower controlled until your arms are fully extended.</string>
+
+    <string name="exercise_lat_pull_down">Lat Pulldown</string>
+    <string name="exercise_lat_pull_down_description">1. Sit at the machine and grab the bar with an overhand wide grip.\n\n2. Pull the bar toward your chest contracting the lats.\n\n3. Slowly raise the bar back to the starting position controlling the movement.</string>
+
+    <string name="exercise_pull_over">Pullover</string>
+    <string name="exercise_pull_over_description">1. Lie on a bench holding a dumbbell or barbell with both hands over your chest.\n\n2. Bring the weight backward over your head with slightly bent arms.\n\n3. Return to the starting position contracting chest and back muscles.</string>
+
+    <string name="exercise_vertical_row">Vertical Row</string>
+    <string name="exercise_vertical_row_description">1. Hold a barbell with an overhand grip shoulder-width apart.\n\n2. Pull the bar toward the upper chest keeping elbows high.\n\n3. Lower controlled to the starting position maintaining posture.</string>
+
+    <string name="exercise_clean_pull">Clean Pull</string>
+    <string name="exercise_clean_pull_description">1. Stand with feet shoulder-width apart and grip the bar with your hands.\n\n2. Pull the bar upward by extending hips and knees forcefully.\n\n3. Lower the bar controlled maintaining technique and keeping your back straight.</string>
+
+    <string name="exercise_biceps_curl">Biceps Curl</string>
+    <string name="exercise_biceps_curl_description">1. Hold a barbell or dumbbells with palms facing forward.\n\n2. Bend your elbows raising the weight toward your shoulders contracting the biceps.\n\n3. Lower slowly controlling the weight back to the starting position.</string>
+
+    <string name="exercise_incline_biceps_curl">Incline Biceps Curl</string>
+    <string name="exercise_incline_biceps_curl_description">1. Sit on an incline bench holding dumbbells with palms facing forward.\n\n2. Bend your elbows lifting the dumbbells toward your shoulders.\n\n3. Lower controlled maintaining tension in the biceps.</string>
+
+    <string name="exercise_hammer_curl">Hammer Curl</string>
+    <string name="exercise_hammer_curl_description">1. Hold dumbbells with palms facing each other at your sides.\n\n2. Bend your elbows raising the dumbbells toward your shoulders without rotating your wrists.\n\n3. Lower controlled to the starting position maintaining tension.</string>
+
+    <string name="exercise_lateral_raise">Lateral Raises</string>
+    <string name="exercise_lateral_raise_description">1. Hold dumbbells at your sides with arms extended.\n\n2. Raise your arms laterally until they reach shoulder height.\n\n3. Lower controlled without losing posture and keeping a slight bend in the elbows.</string>
+
+    <string name="exercise_front_raise">Front Raises</string>
+    <string name="exercise_front_raise_description">1. Hold dumbbells in front of your thighs with arms extended.\n\n2. Raise your arms forward until shoulder height.\n\n3. Lower controlled maintaining control of the movement.</string>
+
+    <string name="exercise_ab_wheel">Ab Wheel Rollout</string>
+    <string name="exercise_ab_wheel_description">1. Kneel and hold the ab wheel with both hands in front of you.\n\n2. Roll the wheel forward extending your body without losing posture.\n\n3. Return to the starting position contracting your abs to avoid arching your back.</string>
+
+    <string name="exercise_copenhagen_plank">Copenhagen Plank</string>
+    <string name="exercise_copenhagen_plank_description">1. Support one forearm on the ground and the other leg on a bench.\n\n2. Keep your body straight contracting your core and abductors.\n\n3. Hold the position for the desired time maintaining stability.</string>
+
+    <string name="exercise_side_plank">Side Plank</string>
+    <string name="exercise_side_plank_description">1. Support one forearm on the ground and lift your body forming a straight line.\n\n2. Keep your core engaged and hips elevated.\n\n3. Hold the position for the desired time without losing posture.</string>
+
+    <string name="exercise_barbell_rollout">Barbell Rollout</string>
+    <string name="exercise_barbell_rollout_description">1. Place a barbell with plates and grip it with both hands.\n\n2. Roll the barbell forward extending your body without losing posture.\n\n3. Return contracting your abs to go back to the starting position.</string>
+
+    <string name="exercise_calf_raise">Calf Raise</string>
+    <string name="exercise_calf_raise_description">1. Stand with the balls of your feet on a step or platform.\n\n2. Raise your heels contracting your calves.\n\n3. Lower slowly until fully stretching the muscles and repeat.</string>
+
+    <string name="exercise_leg_raise">Leg Raise</string>
+    <string name="exercise_leg_raise_description">1. Lie on your back with legs extended.\n\n2. Raise your legs together without bending your knees until a 90° angle.\n\n3. Lower controlled without letting your feet touch the ground to maintain tension.</string>
+
+    <string name="exercise_pallof_press">Pallof Press</string>
+    <string name="exercise_pallof_press_description">1. Stand sideways to a cable machine holding the handle in front of your chest.\n\n2. Push the handle forward extending your arms and resisting rotation.\n\n3. Return controlled to the starting position keeping your core activated.</string>
+</resources>

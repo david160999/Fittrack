@@ -12,6 +12,7 @@ import com.cursointermedio.myapplication.domain.useCase.GetExercisesUseCase
 import com.cursointermedio.myapplication.domain.useCase.GetRoutineUseCase
 import com.cursointermedio.myapplication.domain.useCase.GetUserPreferencesUseCase
 import com.cursointermedio.myapplication.ui.routine.RoutineUiState
+import com.cursointermedio.myapplication.utils.extensions.E1RMFormulas
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,8 +35,8 @@ class ExerciseViewModel @Inject constructor(
 
 ) : ViewModel() {
 
-    private val _exerciseWeight = MutableStateFlow<String?>(null)
-    val exerciseWeight: StateFlow<String?> get() = _exerciseWeight
+    private val _exerciseStatistics = MutableStateFlow(Pair("", ""))
+    val exerciseStatistics: StateFlow<Pair<String, String>> get() = _exerciseStatistics
 
     val exerciseId: Long = savedStateHandle.get<Long>("exerciseId") ?: -1L
     val routineId: Long = savedStateHandle.get<Long>("routineId") ?: -1L
@@ -75,17 +76,19 @@ class ExerciseViewModel @Inject constructor(
                 val weightTotal = detail.sumOf {
                     (it.realWeight ?: 0) * (it.realReps ?: 0)
                 }
-
-                Triple(detail, "$weightTotal $unit", userSettings)
+                val weight1ERM = detail.sumOf {
+                    E1RMFormulas.brzycki(it.realWeight ?: 0, it.realReps ?: 0)
+                }
+                Triple(detail, "$weightTotal $unit", "$weight1ERM $unit")
             }
                 .flowOn(Dispatchers.IO)
                 .catch { e ->
                     _detailList.value = DetailUiState.Error(e.message ?: "Ha ocurrido un error inesperado.")
                 }
-                .collectLatest { (detailList, formattedWeight, _) ->
+                .collectLatest { (detailList, formattedWeight, weight1ERM) ->
                     _detailList.value = DetailUiState.Success(detailList)
                     _detailResponseList.value = detailList
-                    _exerciseWeight.value = formattedWeight
+                    _exerciseStatistics.value = Pair(formattedWeight, weight1ERM)
                 }
         }
     }

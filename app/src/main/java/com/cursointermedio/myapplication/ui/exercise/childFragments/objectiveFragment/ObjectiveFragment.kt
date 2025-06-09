@@ -73,8 +73,9 @@ class ObjectiveFragment : Fragment() {
                     }
                 }
                 launch {
-                    exerciseViewModel.exerciseWeight.collectLatest { weight ->
-                        binding.tvTonelaje.text = weight.toString()
+                    exerciseViewModel.exerciseStatistics.collectLatest { statistics ->
+                        binding.tvTonelaje.text = statistics.first.toString()
+                        binding.tvResultErm.text = statistics.second.toString()
                     }
                 }
                 launch {

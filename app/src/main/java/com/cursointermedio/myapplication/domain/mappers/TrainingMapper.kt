@@ -58,7 +58,8 @@ class TrainingMapper @Inject constructor(
                     "description" to week.week.description,
                     "routines" to week.routineList.map { routine ->
 //                              Rutinas
-                        val routineWithExercise = routineRepository.getRoutineWithOrderedExercises(routine.routineId!!)
+                        val routineWithExercise =
+                            routineRepository.getRoutineWithOrderedExercises(routine.routineId!!)
                         hashMapOf(
                             "routineId" to routine.routineId,
                             "name" to routine.name,
@@ -116,7 +117,13 @@ class TrainingMapper @Inject constructor(
 
                     week.routines.map { routine ->
                         val newRoutine =
-                            RoutineEntity(null, newWeekId, routine.name, routine.description, routine.order)
+                            RoutineEntity(
+                                null,
+                                newWeekId,
+                                routine.name,
+                                routine.description,
+                                routine.order
+                            )
                         val newRoutineId = routineRepository.insertRoutineToWeek(newRoutine)
 
                         routine.exercises.mapIndexed { index, exercise ->
@@ -129,27 +136,26 @@ class TrainingMapper @Inject constructor(
                             exerciseRepository.insertExercise(newExercise)
 
                             val crossReference = RoutineExerciseCrossRef(
-                                routineId = routine.routineId!!,
+                                routineId = newRoutineId,
                                 exerciseId = exercise.exerciseId!!,
                                 order = index,
                                 notes = null
                             )
                             exerciseRepository.insertExerciseToRoutine(crossReference)
-
-                            exercise.details.map { detail ->
-                                val newDetail = DetailsEntity(
-                                    null,
-                                    routineDetailsId = newRoutineId,
-                                    exerciseDetailsId = exercise.exerciseId,
-                                    realWeight = detail.realWeight,
-                                    realReps = detail.realReps,
-                                    realRpe = detail.realRpe,
-                                    objRpe = detail.objRpe,
-                                    objReps = detail.objReps,
-                                    objWeight = detail.objWeight
-                                )
-                                detailsRepository.insertDetailToRoutineExercise(newDetail)
-                            }
+//                            exercise.details.map { detail ->
+//                                val newDetail = DetailsEntity(
+//                                    null,
+//                                    routineDetailsId = newRoutineId,
+//                                    exerciseDetailsId = exercise.exerciseId,
+//                                    realWeight = detail.realWeight,
+//                                    realReps = detail.realReps,
+//                                    realRpe = detail.realRpe,
+//                                    objRpe = detail.objRpe,
+//                                    objReps = detail.objReps,
+//                                    objWeight = detail.objWeight
+//                                )
+//                                detailsRepository.insertDetailToRoutineExercise(newDetail)
+//                            }
                         }
                     }
                 }

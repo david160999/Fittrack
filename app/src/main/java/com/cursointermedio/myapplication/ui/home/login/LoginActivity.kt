@@ -64,8 +64,7 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Éxito: el usuario está autenticado
                     val user = auth.currentUser
-                    Log.d("GoogleLogin", "Bienvenido ${user?.displayName}")
-                    // Navegar a la siguiente pantalla
+                    goToMainScreen()
                 } else {
                     Log.w("GoogleLogin", "Error autenticando con Google", task.exception)
                 }

@@ -73,7 +73,7 @@ class WeekViewModel @Inject constructor(
                     val weekFlows = weeks.map { week ->
                         val routineFlows = week.routineList.map { routine ->
                             combine(
-                                getExercisesUseCase.getExerciseFromRoutineCount(routine.routineId!!),
+                                getExercisesUseCase.getExerciseFromRoutineCountFlow(routine.routineId!!),
                                 getDateUseCase.getDatesFromRoutine(routine.routineId)
                             ) { numExercise, date ->
                                 routine.copy(exerciseCount = numExercise, date = date)

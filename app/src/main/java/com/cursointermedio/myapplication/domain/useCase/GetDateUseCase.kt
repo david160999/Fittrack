@@ -89,4 +89,8 @@ class GetDateUseCase @Inject constructor(
     suspend fun deleteBodyWeight(dateId: String) {
         repository.deleteBodyWeight(dateId)
     }
+
+    suspend fun deleteRoutineCalendar(dateId: String) {
+        repository.deleteRoutineCalendar(dateId)
+    }
 }

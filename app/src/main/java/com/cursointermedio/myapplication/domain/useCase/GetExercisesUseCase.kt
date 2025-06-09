@@ -48,13 +48,17 @@ class GetExercisesUseCase @Inject constructor(
         }
     }
 
-    fun getExerciseFromRoutineCount(routineId: Long): Flow<Int> {
-        return repository.getExerciseFromRoutineCount(routineId)
+    fun getExerciseFromRoutineCountFlow(routineId: Long): Flow<Int> {
+        return repository.getExerciseFromRoutineCountFlow(routineId)
     }
 
     suspend fun getDetailCountFromExercise(exerciseId: Long, routineId: Long):Int {
         return repository.getDetailCountFromExercise(exerciseId, routineId)
 
+    }
+
+    suspend fun getExerciseFromRoutineCount(routineId: Long): Int {
+        return repository.getExerciseFromRoutineCount(routineId)
     }
 
     fun changeOrderRoutines(newCrossRefList: List<RoutineExerciseCrossRef>) {

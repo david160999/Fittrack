@@ -63,6 +63,7 @@ class MainCalendarAdapter(
         }
 
         // Ocultar indicadores por defecto
+        binding.viewRoutine.visibility = View.INVISIBLE
         binding.viewWeight.visibility = View.INVISIBLE
         binding.viewNotes.visibility = View.INVISIBLE
         binding.viewTrac.visibility = View.INVISIBLE
@@ -79,8 +80,13 @@ class MainCalendarAdapter(
                 if (dateEntity.dateEntity.note != null) {
                     binding.viewNotes.visibility = View.VISIBLE
                 }
+
                 if (dateEntity.tracEntity != null) {
                     binding.viewTrac.visibility = View.VISIBLE
+                }
+
+                if (dateEntity.dateEntity.routineId != null) {
+                    binding.viewRoutine.visibility = View.VISIBLE
                 }
 
                 break // Termina el loop al encontrar el item correspondiente

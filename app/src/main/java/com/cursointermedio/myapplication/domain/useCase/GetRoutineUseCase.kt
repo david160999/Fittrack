@@ -26,6 +26,10 @@ class GetRoutineUseCase @Inject constructor(
         return repository.getRoutineWithExercises(routineId)
     }
 
+    suspend fun getRoutineById(routineId: Long): RoutineModel{
+        return repository.getRoutineById(routineId)
+    }
+
     suspend fun copyRoutine(rutinaOriginal: RoutineModel, nuevoWeekId: Long): Long {
         val nuevaRutina = RoutineModel(
             routineId = null,

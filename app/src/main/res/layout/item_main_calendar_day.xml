@@ -19,14 +19,23 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_horizontal"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="10dp"
+        android:paddingHorizontal="1dp">
+
+        <View
+            android:id="@+id/viewRoutine"
+            android:visibility="invisible"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:layout_margin="1dp"
+            android:background="@drawable/circle_routine" />
 
         <View
             android:id="@+id/viewNotes"
             android:visibility="invisible"
             android:layout_width="6dp"
             android:layout_height="6dp"
-            android:layout_margin="2dp"
+            android:layout_margin="1dp"
             android:background="@drawable/circle_notes" />
 
         <View
@@ -34,7 +43,7 @@
             android:visibility="invisible"
             android:layout_width="6dp"
             android:layout_height="6dp"
-            android:layout_margin="2dp"
+            android:layout_margin="1dp"
             android:background="@drawable/circle_weight" />
 
         <View
@@ -42,7 +51,7 @@
             android:visibility="invisible"
             android:layout_width="6dp"
             android:layout_height="6dp"
-            android:layout_margin="2dp"
+            android:layout_margin="1dp"
             android:background="@drawable/circle_trac" />
     </LinearLayout>
 </LinearLayout>

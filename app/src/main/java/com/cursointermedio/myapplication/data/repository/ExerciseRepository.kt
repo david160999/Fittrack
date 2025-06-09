@@ -1,11 +1,7 @@
 package com.cursointermedio.myapplication.data.repository
 
 import android.util.Log
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import com.cursointermedio.myapplication.data.database.dao.ExerciseDao
-import com.cursointermedio.myapplication.data.database.entities.CategoryEntity
-import com.cursointermedio.myapplication.data.database.entities.DetailsEntity
 import com.cursointermedio.myapplication.data.database.entities.ExerciseDetailsCount
 import com.cursointermedio.myapplication.data.database.entities.ExerciseEntity
 import com.cursointermedio.myapplication.data.database.entities.RoutineExerciseCrossRef
@@ -51,7 +47,11 @@ class ExerciseRepository @Inject constructor(
         return exerciseDao.getExerciseDetailsCount(routineId)
     }
 
-    fun getExerciseFromRoutineCount(routineId: Long): Flow<Int> {
+    fun getExerciseFromRoutineCountFlow(routineId: Long): Flow<Int> {
+        return exerciseDao.getExerciseFromRoutineCountFlow(routineId)
+    }
+
+    suspend fun getExerciseFromRoutineCount(routineId: Long): Int {
         return exerciseDao.getExerciseFromRoutineCount(routineId)
     }
 

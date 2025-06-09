@@ -1,5 +1,6 @@
 package com.cursointermedio.myapplication.data.repository
 
+import androidx.room.Query
 import com.cursointermedio.myapplication.data.database.dao.RoutineDao
 import com.cursointermedio.myapplication.data.database.dao.WeekDao
 import com.cursointermedio.myapplication.data.database.entities.RoutineEntity
@@ -20,6 +21,10 @@ class RoutineRepository @Inject constructor(
 ) {
     suspend fun insertRoutineToWeek(routine: RoutineEntity): Long {
         return routineDao.insertRoutineToWeek(routine)
+    }
+
+    suspend fun getRoutineById(routineId: Long): RoutineModel{
+        return routineDao.getRoutineById(routineId).toDomain()
     }
 
     suspend fun getRoutineWithExercises(routineId: Long): RoutineWithExercises {

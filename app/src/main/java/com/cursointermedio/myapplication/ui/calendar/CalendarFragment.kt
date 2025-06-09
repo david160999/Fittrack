@@ -18,6 +18,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cursointermedio.myapplication.R
@@ -28,6 +29,7 @@ import com.cursointermedio.myapplication.ui.home.dialog.AddNoteDialog
 import com.cursointermedio.myapplication.ui.home.dialog.AddWeightDialog
 import com.cursointermedio.myapplication.ui.home.dialog.TracDialog
 import com.cursointermedio.myapplication.ui.training.adapter.TrainingMenuAdapter
+import com.cursointermedio.myapplication.ui.week.WeekFragmentDirections
 import com.cursointermedio.myapplication.utils.extensions.createMenuOption
 import com.cursointermedio.myapplication.utils.extensions.setupTouchAction
 import dagger.hilt.android.AndroidEntryPoint
@@ -115,6 +117,12 @@ class CalendarFragment @Inject constructor() : Fragment() {
         binding.cvMainCalendarTrac.setupTouchAction {
             createTracDialog()
         }
+        binding.cvMainCalendarRoutine.setupTouchAction {
+            val routineId = calendarViewModel.routineInfo.value?.routineId
+            if (routineId != null) {
+                navigateToRoutine(routineId)
+            }
+        }
         binding.btnDeleteMainCalendarNotes.setupTouchAction {
             createMenuOption(
                 requireContext(),
@@ -137,6 +145,13 @@ class CalendarFragment @Inject constructor() : Fragment() {
             ) { calendarViewModel.deleteTrac() }
         }
 
+        binding.btnDeleteMainCalendarRoutine.setupTouchAction {
+            createMenuOption(
+                requireContext(),
+                binding.btnDeleteMainCalendarRoutine,
+                ContextCompat.getString(requireContext(), R.string.btn_eliminate)
+            ) { calendarViewModel.deleteRoutine() }
+        }
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
@@ -145,14 +160,18 @@ class CalendarFragment @Inject constructor() : Fragment() {
                     }
                 }
                 launch {
-                    calendarViewModel.userWeight.collectLatest {weight->
+                    calendarViewModel.userWeight.collectLatest { weight ->
                         if (weight != null) {
-                            if (weight.isNotBlank()) {
-                                binding.tvMainCalendarResultWeight.text = weight.toString()
-                                binding.cvMainCalendarWeight.visibility = View.VISIBLE
-                            } else {
-                                binding.cvMainCalendarWeight.visibility = View.GONE
-                            }
+                            binding.tvMainCalendarResultWeight.text = weight.toString()
+
+                        }
+                    }
+                }
+                launch {
+                    calendarViewModel.routineInfo.collectLatest { routine ->
+                        routine?.let {
+                            binding.tvRoutineNumExercise.text = routine.exerciseCount.toString()
+                            binding.tvRoutineTrainingName.text = routine.name.toString()
                         }
                     }
                 }
@@ -173,6 +192,12 @@ class CalendarFragment @Inject constructor() : Fragment() {
                                 binding.cvMainCalendarWeight.visibility = View.VISIBLE
                             } else {
                                 binding.cvMainCalendarWeight.visibility = View.GONE
+                            }
+
+                            if (it.dateEntity.routineId != null) {
+                                binding.cvMainCalendarRoutine.visibility = View.VISIBLE
+                            } else {
+                                binding.cvMainCalendarRoutine.visibility = View.GONE
                             }
 
                             if (it.tracEntity != null) {
@@ -203,6 +228,7 @@ class CalendarFragment @Inject constructor() : Fragment() {
                             binding.cvMainCalendarNotes.visibility = View.GONE
                             binding.cvMainCalendarWeight.visibility = View.GONE
                             binding.cvMainCalendarTrac.visibility = View.GONE
+                            binding.cvMainCalendarRoutine.visibility = View.GONE
                         }
                     }
 
@@ -232,9 +258,17 @@ class CalendarFragment @Inject constructor() : Fragment() {
 
         val adapter = AddCalendarAdapter(items) { position ->
             when (position) {
-                0 -> {createAddNoteDialog()}
-                1 -> {createAddWeightDialog()}
-                2 -> {createTracDialog()}
+                0 -> {
+                    createAddNoteDialog()
+                }
+
+                1 -> {
+                    createAddWeightDialog()
+                }
+
+                2 -> {
+                    createTracDialog()
+                }
             }
             popupWindow.dismiss()
         }
@@ -289,7 +323,7 @@ class CalendarFragment @Inject constructor() : Fragment() {
         )
         calendarGrid.adapter = adapter
 
-        if (fixSelectedDate.month == selectedDate.month && fixSelectedDate.year == selectedDate.year){
+        if (fixSelectedDate.month == selectedDate.month && fixSelectedDate.year == selectedDate.year) {
             adapter.setFirstSelected(fixSelectedDate.dayOfMonth)
         }
 
@@ -314,7 +348,12 @@ class CalendarFragment @Inject constructor() : Fragment() {
         hideViewWithAnimation(view)
         val dialog = AddNoteDialog(
             onDismissCallback = { showViewWithAnimation(view) },
-            onSaveClick = { notes -> calendarViewModel.updateNote(notes, fixSelectedDate.toString()) },
+            onSaveClick = { notes ->
+                calendarViewModel.updateNote(
+                    notes,
+                    fixSelectedDate.toString()
+                )
+            },
             notes = calendarViewModel.dateSelected.value?.dateEntity?.note
         )
         dialog.show(parentFragmentManager, "dialog")
@@ -326,7 +365,12 @@ class CalendarFragment @Inject constructor() : Fragment() {
         hideViewWithAnimation(view)
         val dialog = AddWeightDialog(
             onDismissCallback = { showViewWithAnimation(view) },
-            onSaveClick = { weight -> calendarViewModel.updateBodyWeight(weight, fixSelectedDate.toString()) },
+            onSaveClick = { weight ->
+                calendarViewModel.updateBodyWeight(
+                    weight,
+                    fixSelectedDate.toString()
+                )
+            },
             weight = calendarViewModel.dateSelected.value?.dateEntity?.bodyWeight
         )
         dialog.show(parentFragmentManager, "dialog")
@@ -373,6 +417,13 @@ class CalendarFragment @Inject constructor() : Fragment() {
         }
     }
 
+    private fun navigateToRoutine(routineId: Long) {
+        findNavController().navigate(
+            WeekFragmentDirections.actionWeekFragmentToRoutineFragment(
+                routineId
+            )
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?

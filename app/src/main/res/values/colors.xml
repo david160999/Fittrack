@@ -17,6 +17,8 @@
     <color name="tracColor">#C71585</color>
     <color name="weightColor">#4CAF50</color>
     <color name="notesColor">#2196F3</color>
+    <color name="routineColor">#FFEB3B</color>
+
 
     <!--Icon color-->
     <color name="icons">#407B8D</color>

@@ -34,6 +34,7 @@
     <string name="home_sub_add_notes">Añade una nota</string>
     <string name="home_sub_add_weight">Hoy: </string>
     <string name="home_sub_add_weightText">Añade tu peso corporal</string>
+    <string name="home_routine_title">Entranamiento</string>
 
     <!--    Calendar Fragment-->
     <string name="calendar_menuOption1">Añadir nota</string>
@@ -48,7 +49,6 @@
     <string name="home_trac_delete">Elimar trac</string>
     <string name="home_notes_delete">Elimnar nota</string>
     <string name="home_weight_delete">Eliminar peso corporal</string>
-
 
     <string name="home_trac_leg">Fatifa de pierna:</string>
     <string name="home_trac_leg_option1">Fatiga muy severa</string>

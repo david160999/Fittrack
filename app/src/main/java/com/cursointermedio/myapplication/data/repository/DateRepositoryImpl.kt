@@ -87,4 +87,8 @@ class DateRepositoryImpl @Inject constructor(
         dateDao.deleteBodyWeight(dateId)
     }
 
+    override suspend fun deleteRoutineCalendar(dateId: String) {
+        dateDao.deleteRoutineCalendar(dateId)
+    }
+
 }

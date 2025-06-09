@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="0dp"
+    android:clipChildren="false"
     android:clipToPadding="false"
-    android:clipChildren="false">
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="0dp">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:layout_marginStart="12dp"
-        android:layout_marginEnd="6dp">
+        android:layout_marginEnd="6dp"
+        android:background="@color/white">
 
         <TextView
             android:id="@+id/tvNameDragAdapter"

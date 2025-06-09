@@ -141,7 +141,7 @@ class TrainingViewModel @Inject constructor(
                 val uniqueCode = getTrainingUseCase.uploadTrainingData(training)
 
                 if (uniqueCode != null) {
-                    _trainingHashCode.value = Pair(name, uniqueCode)
+                    _trainingHashCode.value =  Pair(name, uniqueCode)
                 } else {
                     _trainingHashCode.value = null
                 }

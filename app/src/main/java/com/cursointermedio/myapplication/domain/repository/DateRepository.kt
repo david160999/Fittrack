@@ -38,4 +38,6 @@ interface DateRepository {
 
     suspend fun deleteBodyWeight(dateId: String)
 
+    suspend fun deleteRoutineCalendar(dateId: String)
+
 }

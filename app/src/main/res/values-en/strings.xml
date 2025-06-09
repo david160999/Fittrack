@@ -33,6 +33,7 @@
     <string name="home_sub_add_notes">Add a note</string>
     <string name="home_sub_add_weight">Today: </string>
     <string name="home_sub_add_weightText">Add your body weight</string>
+    <string name="home_routine_title">Training</string>
 
     <!--    Calendar Fragment-->
     <string name="calendar_menuOption1">Add note</string>

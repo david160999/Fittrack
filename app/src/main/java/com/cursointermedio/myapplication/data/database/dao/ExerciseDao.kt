@@ -9,9 +9,7 @@ import com.cursointermedio.myapplication.data.database.entities.CategoryEntity
 import com.cursointermedio.myapplication.data.database.entities.ExerciseDetailsCount
 import com.cursointermedio.myapplication.data.database.entities.ExerciseEntity
 import com.cursointermedio.myapplication.data.database.entities.RoutineExerciseCrossRef
-import com.cursointermedio.myapplication.domain.model.ExerciseModel
 import kotlinx.coroutines.flow.Flow
-import java.util.Locale.Category
 
 @Dao
 interface ExerciseDao {
@@ -47,7 +45,10 @@ interface ExerciseDao {
     suspend fun getExerciseDetailsCount(routineId: Long): List<ExerciseDetailsCount>
 
     @Query("SELECT COUNT(*)  FROM RoutineExerciseCrossRef WHERE routineId = :routineId")
-    fun getExerciseFromRoutineCount(routineId: Long): Flow<Int>
+    fun getExerciseFromRoutineCountFlow(routineId: Long): Flow<Int>
+
+    @Query("SELECT COUNT(*)  FROM RoutineExerciseCrossRef WHERE routineId = :routineId")
+    suspend fun getExerciseFromRoutineCount(routineId: Long): Int
 
     @Query("""
     SELECT COUNT(*) 

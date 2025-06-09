@@ -68,7 +68,8 @@ interface DateDao {
     @Query("UPDATE date_table SET bodyWeight = NULL WHERE dateId = :dateId")
     suspend fun deleteBodyWeight(dateId: String)
 
-
+    @Query("UPDATE date_table SET routineId = NULL WHERE dateId = :dateId")
+    suspend fun deleteRoutineCalendar(dateId: String)
     //TracEntity
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTrac(tracEntity: TracEntity)

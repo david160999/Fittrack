@@ -7,8 +7,12 @@ import androidx.room.util.newStringBuilder
 import com.cursointermedio.myapplication.data.database.entities.DateEntity
 import com.cursointermedio.myapplication.data.database.entities.DateWithTrac
 import com.cursointermedio.myapplication.data.database.entities.TracEntity
+import com.cursointermedio.myapplication.data.database.entities.WeekWithRoutines
+import com.cursointermedio.myapplication.domain.model.RoutineModel
 import com.cursointermedio.myapplication.domain.model.WeekWithRoutinesModel
 import com.cursointermedio.myapplication.domain.useCase.GetDateUseCase
+import com.cursointermedio.myapplication.domain.useCase.GetExercisesUseCase
+import com.cursointermedio.myapplication.domain.useCase.GetRoutineUseCase
 import com.cursointermedio.myapplication.domain.useCase.GetTrainingUseCase
 import com.cursointermedio.myapplication.domain.useCase.GetUserPreferencesUseCase
 import com.cursointermedio.myapplication.domain.useCase.GetWeekUseCase
@@ -25,7 +29,10 @@ import javax.inject.Inject
 @HiltViewModel
 class CalendarViewModel @Inject constructor(
     private val getDateUseCase: GetDateUseCase,
-    private val getUserPreferencesUseCase: GetUserPreferencesUseCase
+    private val getUserPreferencesUseCase: GetUserPreferencesUseCase,
+    private val getRoutineUseCase: GetRoutineUseCase,
+    private val getExercisesUseCase: GetExercisesUseCase
+
 ) : ViewModel() {
     private val currentDay = LocalDate.now()
 
@@ -37,6 +44,9 @@ class CalendarViewModel @Inject constructor(
 
     private val _userWeight = MutableStateFlow<String?>(null)
     val userWeight: StateFlow<String?> get() = _userWeight
+
+    private val _routineInfo = MutableStateFlow<RoutineModel?>(null)
+    val routineInfo: StateFlow<RoutineModel?> get() = _routineInfo
 
     init {
         getSelectedDateWithTracFlow(currentDay.toString())
@@ -58,17 +68,32 @@ class CalendarViewModel @Inject constructor(
     fun getSelectedDateWithTracFlow(dateId: String) {
         viewModelScope.launch {
             try {
-                combine( getDateUseCase.getDateWithTracFlow(dateId), getUserPreferencesUseCase.userSettingsFlow)
+                combine(
+                    getDateUseCase.getDateWithTracFlow(dateId),
+                    getUserPreferencesUseCase.userSettingsFlow
+                )
                 { dateInfo, userSettings ->
+                    var routine: RoutineModel? = null
+                    var exerciseNum = 0
+
+                    if (dateInfo?.dateEntity?.routineId != null) {
+                        exerciseNum = getExercisesUseCase.getExerciseFromRoutineCount(dateInfo.dateEntity.routineId)
+                        routine = getRoutineUseCase.getRoutineById(dateInfo.dateEntity.routineId)
+                    }
 
                     val weightValue = dateInfo?.dateEntity?.bodyWeight ?: 0f
                     val unit = if (userSettings.isWeightKgMode) "kg" else "lbs"
 
-                    Pair("$weightValue $unit", dateInfo)
+                    Triple(
+                        "$weightValue $unit",
+                        dateInfo,
+                        routine?.copy(exerciseCount = exerciseNum)
+                    )
 
-                }.collectLatest { (weightString, dateInfo) ->
+                }.collectLatest { (weightString, dateInfo, routineInfo) ->
                     _dateSelected.value = dateInfo
                     _userWeight.value = weightString
+                    _routineInfo.value = routineInfo
                 }
             } catch (e: Exception) {
                 Log.e("getSelectedDateFlow", "Error al recoger los datos del dia seleccionado", e)
@@ -163,7 +188,7 @@ class CalendarViewModel @Inject constructor(
         }
     }
 
-    fun insertOrUpdateTrac(trac: TracEntity, dateId:String) {
+    fun insertOrUpdateTrac(trac: TracEntity, dateId: String) {
         viewModelScope.launch {
             try {
                 val date = _dateSelected.value?.dateEntity
@@ -178,6 +203,19 @@ class CalendarViewModel @Inject constructor(
 
             } catch (e: Exception) {
                 Log.e("getTracByDate", "Error intentar insertar los datos del trac", e)
+            }
+        }
+    }
+
+    fun deleteRoutine() {
+        viewModelScope.launch {
+            try {
+                val dateId = _dateSelected.value?.dateEntity?.dateId
+                if (dateId != null) {
+                    getDateUseCase.deleteRoutineCalendar(dateId)
+                }
+            } catch (e: Exception) {
+                Log.e("deleteRoutine", "Error al intentar borrar la ruitna del calendario", e)
             }
         }
     }

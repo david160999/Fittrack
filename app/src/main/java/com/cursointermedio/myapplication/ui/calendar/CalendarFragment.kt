@@ -44,15 +44,18 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class CalendarFragment @Inject constructor() : Fragment() {
+    // ViewModel asociado a este fragmento
     private val calendarViewModel by viewModels<CalendarViewModel>()
 
+    // Binding para acceso a las vistas del layout
     private var _binding: FragmentCalendarBinding? = null
     private val binding get() = _binding!!
 
+    // Views principales y variables para la gestión del calendario
     private lateinit var monthYearText: TextView
     private lateinit var calendarGrid: GridView
-    private var selectedDate: LocalDate = LocalDate.now()
-    private var fixSelectedDate = selectedDate
+    private var selectedDate: LocalDate = LocalDate.now()  // Fecha actualmente seleccionada
+    private var fixSelectedDate = selectedDate              // Fecha fija seleccionada para operaciones
 
     private lateinit var adapter: MainCalendarAdapter
 
@@ -61,16 +64,17 @@ class CalendarFragment @Inject constructor() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initUi()
-        initListeners()
+        initUi()        // Inicializa la interfaz de usuario
+        initListeners() // Inicializa los listeners de eventos
     }
 
     private fun initUi() {
-
+        // Configura la animación de transición de cambios en la vista principal del calendario
         binding.lyMainCalendarViews.layoutTransition = LayoutTransition().apply {
             enableTransitionType(LayoutTransition.CHANGING)
         }
 
+        // Lista con nombres de días de la semana
         val listDays = listOf(
             ContextCompat.getString(binding.root.context, R.string.weekDay_Mon),
             ContextCompat.getString(binding.root.context, R.string.weekDay_Tue),
@@ -81,28 +85,34 @@ class CalendarFragment @Inject constructor() : Fragment() {
             ContextCompat.getString(binding.root.context, R.string.weekDay_Sun)
         )
 
+        // Adapter para mostrar los días de la semana en el GridView de días
         val adapterDays =
             ArrayAdapter(binding.root.context, R.layout.item_calendar_week_day, listDays)
         binding.daysGrid.adapter = adapterDays
 
+        // Referencias a vistas importantes para el calendario
         monthYearText = binding.monthYearText
         calendarGrid = binding.calendarGrid
         prevMonth = binding.prevMonth
         nextMonth = binding.nextMonth
 
-        setMonthView()
+        setMonthView()  // Configura la vista del mes actual
     }
 
     private fun initListeners() {
+        // Listener para botón mes anterior: cambia selectedDate y refresca vista
         prevMonth.setOnClickListener {
             selectedDate = selectedDate.minusMonths(1)
             setMonthView()
         }
 
+        // Listener para botón mes siguiente
         nextMonth.setOnClickListener {
             selectedDate = selectedDate.plusMonths(1)
             setMonthView()
         }
+
+        // Otros listeners para botones de guardado y vistas específicas
         binding.btnMainCalendarSave.setupTouchAction {
             createMenuAddCalendar()
         }
@@ -112,7 +122,6 @@ class CalendarFragment @Inject constructor() : Fragment() {
         }
         binding.cvMainCalendarWeight.setupTouchAction {
             createAddWeightDialog()
-
         }
         binding.cvMainCalendarTrac.setupTouchAction {
             createTracDialog()
@@ -123,6 +132,7 @@ class CalendarFragment @Inject constructor() : Fragment() {
                 navigateToRoutine(routineId)
             }
         }
+        // Listeners para botones de eliminar notas, peso, trac y rutina
         binding.btnDeleteMainCalendarNotes.setupTouchAction {
             createMenuOption(
                 requireContext(),
@@ -144,7 +154,6 @@ class CalendarFragment @Inject constructor() : Fragment() {
                 ContextCompat.getString(requireContext(), R.string.home_trac_delete)
             ) { calendarViewModel.deleteTrac() }
         }
-
         binding.btnDeleteMainCalendarRoutine.setupTouchAction {
             createMenuOption(
                 requireContext(),
@@ -152,18 +161,19 @@ class CalendarFragment @Inject constructor() : Fragment() {
                 ContextCompat.getString(requireContext(), R.string.btn_eliminate)
             ) { calendarViewModel.deleteRoutine() }
         }
+
+        // Observadores para actualizar UI con los datos del ViewModel
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     calendarViewModel.dateList.collectLatest {
-                        adapter.updateDateEntityList(it)
+                        adapter.updateDateEntityList(it)  // Actualiza la lista de fechas en el adapter
                     }
                 }
                 launch {
                     calendarViewModel.userWeight.collectLatest { weight ->
                         if (weight != null) {
                             binding.tvMainCalendarResultWeight.text = weight.toString()
-
                         }
                     }
                 }
@@ -178,6 +188,7 @@ class CalendarFragment @Inject constructor() : Fragment() {
                 launch {
                     calendarViewModel.dateSelected.collectLatest {
                         it?.let {
+                            // Muestra nota si existe
                             if (it.dateEntity.note != null) {
                                 binding.tvMainCalendarResultNotes.text =
                                     it.dateEntity.note.toString()
@@ -186,6 +197,7 @@ class CalendarFragment @Inject constructor() : Fragment() {
                                 binding.cvMainCalendarNotes.visibility = View.GONE
                             }
 
+                            // Muestra peso corporal si existe
                             if (it.dateEntity.bodyWeight != null) {
                                 binding.tvMainCalendarResultWeight.text =
                                     it.dateEntity.bodyWeight.toString()
@@ -194,12 +206,14 @@ class CalendarFragment @Inject constructor() : Fragment() {
                                 binding.cvMainCalendarWeight.visibility = View.GONE
                             }
 
+                            // Muestra rutina si existe
                             if (it.dateEntity.routineId != null) {
                                 binding.cvMainCalendarRoutine.visibility = View.VISIBLE
                             } else {
                                 binding.cvMainCalendarRoutine.visibility = View.GONE
                             }
 
+                            // Muestra datos de "trac" si existen
                             if (it.tracEntity != null) {
                                 val push = it.tracEntity.push ?: 0
                                 val pull = it.tracEntity.pull ?: 0
@@ -224,7 +238,7 @@ class CalendarFragment @Inject constructor() : Fragment() {
                             }
 
                         } ?: run {
-                            // Si 'it' es null, ocultamos todas las vistas
+                            // Si no hay fecha seleccionada, oculta todas las vistas relacionadas
                             binding.cvMainCalendarNotes.visibility = View.GONE
                             binding.cvMainCalendarWeight.visibility = View.GONE
                             binding.cvMainCalendarTrac.visibility = View.GONE
@@ -238,6 +252,7 @@ class CalendarFragment @Inject constructor() : Fragment() {
     }
 
     private fun createMenuAddCalendar() {
+        // Infla un popup con opciones para agregar nota, peso o trac
         val popupView = LayoutInflater.from(context).inflate(R.layout.popup_menu_training, null)
 
         val popupWindow = PopupWindow(
@@ -250,12 +265,14 @@ class CalendarFragment @Inject constructor() : Fragment() {
         val recyclerView = popupView.findViewById<RecyclerView>((R.id.rvTrainingMenu))
         recyclerView.layoutManager = LinearLayoutManager(context)
 
+        // Opciones del menú
         val items = listOf(
             ContextCompat.getString(requireContext(), R.string.calendar_menuOption1),
             ContextCompat.getString(requireContext(), R.string.calendar_menuOption2),
             ContextCompat.getString(requireContext(), R.string.calendar_menuOption3),
         )
 
+        // Adapter para las opciones, con callback según la opción seleccionada
         val adapter = AddCalendarAdapter(items) { position ->
             when (position) {
                 0 -> {
@@ -275,6 +292,7 @@ class CalendarFragment @Inject constructor() : Fragment() {
 
         recyclerView.adapter = adapter
 
+        // Configuración de la ventana emergente
         popupWindow.apply {
             isFocusable = true
             isOutsideTouchable = true
@@ -284,30 +302,30 @@ class CalendarFragment @Inject constructor() : Fragment() {
             animationStyle = R.style.MenuTRainingPopupFadeAnimation
         }
 
+        // Muestra el popup debajo del botón de guardar calendario
         popupWindow.showAsDropDown(binding.btnMainCalendarSave, 0, 0)
-
-
     }
 
     private fun setMonthView() {
         val yearMonth = YearMonth.from(selectedDate)
         val daysInMonth = yearMonth.lengthOfMonth()
         val firstDayOfMonth = selectedDate.withDayOfMonth(1)
-        val dayOfWeek = firstDayOfMonth.dayOfWeek.value % 7
+        val dayOfWeek = firstDayOfMonth.dayOfWeek.value % 7  // Ajuste para inicio semana
 
+        // Nombre del mes y año para mostrar en la cabecera
         val monthName = selectedDate.month.getDisplayName(TextStyle.FULL, Locale.getDefault())
         monthYearText.text = "$monthName ${selectedDate.year}"
 
         val dayList = mutableListOf<String>()
         val fullDayList = mutableListOf<String>()
 
-        // Agrega espacios vacíos al principio (no son fechas reales)
+        // Agrega espacios vacíos al principio para alinear el primer día del mes
         for (i in 1..dayOfWeek) {
             dayList.add("") // espacios vacíos antes del 1
             fullDayList.add("")
         }
 
-        // Agrega los días reales con formato
+        // Agrega los días del mes con formato yyyy-MM-dd para identificarlos
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         for (day in 1..daysInMonth) {
             dayList.add(day.toString())
@@ -315,6 +333,7 @@ class CalendarFragment @Inject constructor() : Fragment() {
             fullDayList.add(date.format(formatter))
         }
 
+        // Crea y asigna el adaptador para mostrar el calendario del mes
         adapter = MainCalendarAdapter(
             context = binding.root.context,
             days = dayList,
@@ -323,15 +342,17 @@ class CalendarFragment @Inject constructor() : Fragment() {
         )
         calendarGrid.adapter = adapter
 
+        // Marca el día seleccionado si está en el mes actual mostrado
         if (fixSelectedDate.month == selectedDate.month && fixSelectedDate.year == selectedDate.year) {
             adapter.setFirstSelected(fixSelectedDate.dayOfMonth)
         }
 
+        // Listener para clicks en días del calendario
         calendarGrid.setOnItemClickListener { _, _, position, _ ->
             val day = dayList[position]
             if (day.isNotEmpty()) {
                 val indexInDays = dayList.indexOfFirst { it.toIntOrNull() != null }
-                val realDay = position - (indexInDays - 1)
+                val realDay = position - (indexInDays - 1) // calcula día real correspondiente
                 val realDate = LocalDate.of(selectedDate.year, selectedDate.month, realDay)
                 fixSelectedDate = realDate
 
@@ -340,14 +361,15 @@ class CalendarFragment @Inject constructor() : Fragment() {
             }
         }
 
+        // Solicita la lista de datos para el mes visible
         calendarViewModel.getDateListFlow(fullDayList)
     }
 
     private fun createAddNoteDialog() {
         val view = binding.cvMainCalendarNotes
-        hideViewWithAnimation(view)
+        hideViewWithAnimation(view)  // Oculta vista con animación
         val dialog = AddNoteDialog(
-            onDismissCallback = { showViewWithAnimation(view) },
+            onDismissCallback = { showViewWithAnimation(view) }, // Muestra vista al cerrar diálogo
             onSaveClick = { notes ->
                 calendarViewModel.updateNote(
                     notes,
@@ -357,7 +379,6 @@ class CalendarFragment @Inject constructor() : Fragment() {
             notes = calendarViewModel.dateSelected.value?.dateEntity?.note
         )
         dialog.show(parentFragmentManager, "dialog")
-
     }
 
     private fun createAddWeightDialog() {
@@ -374,7 +395,6 @@ class CalendarFragment @Inject constructor() : Fragment() {
             weight = calendarViewModel.dateSelected.value?.dateEntity?.bodyWeight
         )
         dialog.show(parentFragmentManager, "dialog")
-
     }
 
     private fun createTracDialog() {
@@ -386,6 +406,7 @@ class CalendarFragment @Inject constructor() : Fragment() {
         dialog.show(parentFragmentManager, "dialog")
     }
 
+    // Animación para ocultar una vista suavemente
     private fun hideViewWithAnimation(view: View) {
         val layout = binding.lyMainCalendarViews
         val transition = layout.layoutTransition
@@ -393,17 +414,18 @@ class CalendarFragment @Inject constructor() : Fragment() {
 
         view.animate()
             .alpha(0f)
-            .translationY(view.height.toFloat() / 2) // baja media altura, ajustá como quieras
+            .translationY(view.height.toFloat() / 2) // baja media altura, ajusta como prefieras
             .setDuration(300)
             .withEndAction {
                 view.visibility = View.GONE
-                view.translationY = 0f  // reset para la próxima vez que aparezca
-                view.alpha = 1f         // reset alpha también
-                layout.layoutTransition = transition // Vuelve a activar después
+                view.translationY = 0f  // resetea para la próxima vez
+                view.alpha = 1f         // resetea alpha también
+                layout.layoutTransition = transition // vuelve a activar transición
             }
             .start()
     }
 
+    // Animación para mostrar una vista suavemente
     private fun showViewWithAnimation(view: View) {
         view.apply {
             alpha = 0f
@@ -417,6 +439,7 @@ class CalendarFragment @Inject constructor() : Fragment() {
         }
     }
 
+    // Navega al fragmento de rutina pasando el ID
     private fun navigateToRoutine(routineId: Long) {
         findNavController().navigate(
             WeekFragmentDirections.actionWeekFragmentToRoutineFragment(
@@ -442,6 +465,6 @@ class CalendarFragment @Inject constructor() : Fragment() {
     override fun onResume() {
         super.onResume()
         val currentDay = LocalDate.now()
-        calendarViewModel.getSelectedDateWithTracFlow(currentDay.toString())
+        calendarViewModel.getSelectedDateWithTracFlow(currentDay.toString()) // Actualiza fecha seleccionada al reanudar
     }
 }

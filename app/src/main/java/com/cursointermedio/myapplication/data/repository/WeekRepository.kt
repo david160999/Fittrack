@@ -14,34 +14,46 @@ import javax.inject.Inject
 class WeekRepository @Inject constructor(
     private val weekDao: WeekDao
 ) {
-    fun getWeeksTrainingFromDatabase(trainingID:Long): Flow<List<WeekModel>> {
+    /**
+     * Obtiene las semanas asociadas a un entrenamiento específico desde la base de datos.
+     */
+    fun getWeeksTrainingFromDatabase(trainingID: Long): Flow<List<WeekModel>> {
         val response = weekDao.getWeeksTraining(trainingID)
-        return response.map { it -> it.map { it.toDomain()} }
+        return response.map { list -> list.map { it.toDomain() } }
     }
 
+    /**
+     * Inserta una nueva semana en la base de datos para un entrenamiento.
+     */
     suspend fun insertWeekToTraining(week: WeekEntity): Long {
         return weekDao.insertWeekToTraining(week)
     }
 
+    // Elimina una semana de la base de datos.
     suspend fun deleteWeek(week: WeekModel) {
         weekDao.deleteWeek(week.toDatabase())
     }
-     fun getAllWeeksWithRoutines(trainingID: Long): Flow<List<WeekWithRoutinesModel>> {
-         val response = weekDao.getAllWeeksWithRoutines(trainingID)
-         return response.map { it -> it.map { it.toDomain()} }
-     }
 
-    suspend fun getWeekWithRoutines(weekId:Long): WeekWithRoutinesModel{
+    /**
+     * Obtiene todas las semanas junto con sus rutinas asociadas para un entrenamiento.
+     */
+    fun getAllWeeksWithRoutines(trainingID: Long): Flow<List<WeekWithRoutinesModel>> {
+        val response = weekDao.getAllWeeksWithRoutines(trainingID)
+        return response.map { list -> list.map { it.toDomain() } }
+    }
+
+    /**
+     * Obtiene una semana específica junto con sus rutinas asociadas.
+     */
+    fun getWeekWithRoutines(weekId: Long): WeekWithRoutinesModel {
         val response = weekDao.getWeekWithRoutines(weekId)
         return response.toDomain()
     }
 
+    /**
+     * Obtiene el nombre de un entrenamiento específico.
+     */
     suspend fun getTrainingName(trainingId: Long): String {
         return weekDao.getTrainingName(trainingId)
     }
-
-//    suspend fun deleteAll(){
-//        return trainingDao.deleteAllTraining()
-//    }
-
 }

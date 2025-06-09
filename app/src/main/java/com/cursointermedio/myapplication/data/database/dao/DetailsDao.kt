@@ -15,49 +15,76 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface DetailsDao {
 
-    @Query("SELECT * FROM details_table WHERE :routineID = routineDetailsId AND :exerciseID = exerciseDetailsId")
+    /**
+     * Obtiene los detalles de un ejercicio específico dentro de una rutina como Flow reactivo.
+     */
+    @Query("SELECT * FROM details_table WHERE routineDetailsId = :routineID AND exerciseDetailsId = :exerciseID")
     fun getDetailOfRoutineExercise(
         routineID: Long,
         exerciseID: Long
     ): Flow<MutableList<DetailsEntity>>
 
-    @Query("SELECT * FROM details_table WHERE :routineID = routineDetailsId ")
+    /**
+     * Obtiene la lista de detalles asociados a una rutina específica.
+     */
+    @Query("SELECT * FROM details_table WHERE routineDetailsId = :routineID")
     fun getDetailOfRoutine(routineID: Long): List<DetailsEntity>
 
+    /**
+     * Inserta o reemplaza un detalle para un ejercicio en una rutina.
+     */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDetailToRoutineExercise(details: DetailsEntity)
 
+    /**
+     * Actualiza una lista de detalles (varios registros) en la base de datos.
+     */
     @Update
     suspend fun updateDetailToRoutineExercise(details: List<DetailsEntity>)
 
+    /**
+     * Elimina un detalle específico.
+     */
     @Delete
     suspend fun deleteDetail(detail: DetailsEntity)
 
+    /**
+     * Actualiza un detalle específico.
+     */
     @Update
     suspend fun updateDetail(detail: DetailsEntity)
 
-    @Query("SELECT * FROM details_table WHERE :routineId = routineDetailsId AND :exerciseId = exerciseDetailsId ")
+    /**
+     * Obtiene los detalles de un ejercicio en una rutina de forma puntual (suspend).
+     */
+    @Query("SELECT * FROM details_table WHERE routineDetailsId = :routineId AND exerciseDetailsId = :exerciseId")
     suspend fun getDetailOfRoutineAndExercise(
         routineId: Long,
         exerciseId: Long
     ): List<DetailsEntity>
 
-    @Query("SELECT * FROM details_table WHERE :routineId = routineDetailsId AND :exerciseId = exerciseDetailsId ")
+    /**
+     * Obtiene los detalles de un ejercicio en una rutina como Flow reactivo.
+     */
+    @Query("SELECT * FROM details_table WHERE routineDetailsId = :routineId AND exerciseDetailsId = :exerciseId")
     fun getDetailOfRoutineAndExerciseFlow(
         routineId: Long,
         exerciseId: Long
     ): Flow<List<DetailsEntity>>
 
+    /**
+     * Elimina el último detalle agregado para un ejercicio en una rutina, usando subconsulta para obtener el último detalleId.
+     */
     @Query(
         """
-    DELETE FROM details_table 
-    WHERE detailsId = (
-        SELECT detailsId FROM details_table 
-        WHERE routineDetailsId = :routineId AND exerciseDetailsId = :exerciseId 
-        ORDER BY detailsId DESC 
-        LIMIT 1
-    )"""
+        DELETE FROM details_table 
+        WHERE detailsId = (
+            SELECT detailsId FROM details_table 
+            WHERE routineDetailsId = :routineId AND exerciseDetailsId = :exerciseId 
+            ORDER BY detailsId DESC 
+            LIMIT 1
+        )
+        """
     )
     suspend fun deleteLastDetail(routineId: Long, exerciseId: Long)
-
 }

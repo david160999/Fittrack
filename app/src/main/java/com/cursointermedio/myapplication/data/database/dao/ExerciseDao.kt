@@ -14,57 +14,56 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ExerciseDao {
 
+    // Obtiene todos los ejercicios como Flow para observar cambios en tiempo real.
     @Query("SELECT * FROM exercise_table")
     fun getAllExercises(): Flow<List<ExerciseEntity>>
 
-    @Query("SELECT * FROM exercise_table WHERE :routineID = exerciseId")
+    // Obtiene ejercicios relacionados a una rutina específica.
+    @Query("SELECT * FROM exercise_table WHERE exerciseId = :routineID")
     fun getExercisesRoutine(routineID: Int): Flow<MutableList<ExerciseEntity>>
 
+    // Inserta un ejercicio, ignora si ya existe (para evitar duplicados).
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertExercise(exercise: ExerciseEntity)
 
+    // Inserta o reemplaza la relación entre ejercicio y rutina.
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertExerciseToRoutine(exercise: RoutineExerciseCrossRef)
 
-    @Query("SELECT * FROM exercise_table WHERE :categoryId = categoryExerciseId")
+    // Obtiene los ejercicios que pertenecen a una categoría específica.
+    @Query("SELECT * FROM exercise_table WHERE categoryExerciseId = :categoryId")
     suspend fun getExercisesFromCategory(categoryId: Long): List<ExerciseEntity>
 
-
+    // Obtiene todas las categorías (no es típico que esté en ExerciseDao, pero puede estar).
     @Query("SELECT * FROM category_table")
     suspend fun getCategories(): List<CategoryEntity>
 
-    @Transaction
-    @Query("""
-        SELECT e.exerciseId, COUNT(d.detailsId) as detailsCount
-        FROM exercise_table e
-        LEFT JOIN details_table d ON e.exerciseId = d.exerciseDetailsId
-        WHERE e.exerciseId IN (SELECT exerciseId FROM RoutineExerciseCrossRef WHERE routineId = :routineId)
-        GROUP BY e.exerciseId
-        ORDER BY e.exerciseId
-    """)
-    suspend fun getExerciseDetailsCount(routineId: Long): List<ExerciseDetailsCount>
-
-    @Query("SELECT COUNT(*)  FROM RoutineExerciseCrossRef WHERE routineId = :routineId")
+    // Cuenta los ejercicios de una rutina, devuelve un Flow para observar cambios.
+    @Query("SELECT COUNT(*) FROM RoutineExerciseCrossRef WHERE routineId = :routineId")
     fun getExerciseFromRoutineCountFlow(routineId: Long): Flow<Int>
 
-    @Query("SELECT COUNT(*)  FROM RoutineExerciseCrossRef WHERE routineId = :routineId")
+    // Cuenta los ejercicios de una rutina, llamado puntual suspend.
+    @Query("SELECT COUNT(*) FROM RoutineExerciseCrossRef WHERE routineId = :routineId")
     suspend fun getExerciseFromRoutineCount(routineId: Long): Int
 
+    // Cuenta los detalles de un ejercicio en una rutina.
     @Query("""
-    SELECT COUNT(*) 
-    FROM details_table 
-    WHERE exerciseDetailsId = :exerciseId 
-    AND routineDetailsId = :routineId
-""")
-    suspend fun getDetailCountFromExercise(exerciseId: Long, routineId: Long):Int
+        SELECT COUNT(*) 
+        FROM details_table 
+        WHERE exerciseDetailsId = :exerciseId 
+        AND routineDetailsId = :routineId
+    """)
+    suspend fun getDetailCountFromExercise(exerciseId: Long, routineId: Long): Int
 
-    @Query("SELECT notes FROM routineexercisecrossref WHERE exerciseId = :exerciseId AND routineId = :routineId" )
+    // Obtiene las notas asociadas a la relación ejercicio-rutina.
+    @Query("SELECT notes FROM routineexercisecrossref WHERE exerciseId = :exerciseId AND routineId = :routineId")
     suspend fun getNotesFromCrossRef(routineId: Long, exerciseId: Long): String?
 
+    // Actualiza las notas asociadas a la relación ejercicio-rutina.
     @Query("UPDATE routineexercisecrossref SET notes = :notes WHERE exerciseId = :exerciseId AND routineId = :routineId")
     suspend fun updateNotesFromCrossRef(routineId: Long, exerciseId: Long, notes: String)
 
-    @Query("SELECT * FROM exercise_table WHERE exerciseId = :exerciseId" )
+    // Obtiene un ejercicio específico por su ID.
+    @Query("SELECT * FROM exercise_table WHERE exerciseId = :exerciseId")
     suspend fun getExercise(exerciseId: Long): ExerciseEntity
-
-    }
+}

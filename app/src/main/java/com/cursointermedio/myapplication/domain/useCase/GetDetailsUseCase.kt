@@ -14,27 +14,26 @@ import javax.inject.Inject
 class GetDetailsUseCase @Inject constructor(
     private val repository: DetailsRepository
 ) {
-
-    suspend fun getDetailOfRoutineAndExercise(routineId: Long, exerciseId: Long): List<DetailModel> {
-        return repository.getDetailOfRoutineAndExercise(routineId, exerciseId)
-    }
-
+    // Devuelve un Flow con la lista de detalles para una rutina y ejercicio específicos.
     fun getDetailOfRoutineAndExerciseFlow(routineId: Long, exerciseId: Long): Flow<List<DetailModel>> {
         return repository.getDetailOfRoutineAndExerciseFlow(routineId, exerciseId)
     }
 
-    suspend fun insertDetailToRoutineExercise(detail: DetailModel){
+    // Inserta un detalle de rutina convertido a entidad en la base de datos.
+    suspend fun insertDetailToRoutineExercise(detail: DetailModel) {
         repository.insertDetailToRoutineExercise(detail.toDatabase())
     }
 
-    suspend fun updateDetailToRoutineExercise(detail: List<DetailModel>){
-        repository.updateDetailToRoutineExercise(detail.map{it.toDatabase()})
+    // Actualiza una lista de detalles de rutina convirtiéndolos a entidades antes de guardar.
+    suspend fun updateDetailToRoutineExercise(detail: List<DetailModel>) {
+        repository.updateDetailToRoutineExercise(detail.map { it.toDatabase() })
     }
 
+    // Copia todos los detalles de una rutina a una nueva rutina, asignando un nuevo ID y manteniendo todos los valores.
     suspend fun copyDetailsToNewWeek(routineId: Long, newRoutineId: Long) {
         val detalles = repository.getDetailOfRoutine(routineId)
 
-        detalles.forEach() { detalle ->
+        detalles.forEach { detalle ->
             val nuevoDetalle = DetailModel(
                 detailsId = 0,
                 routineDetailsId = newRoutineId,
@@ -48,13 +47,13 @@ class GetDetailsUseCase @Inject constructor(
             )
             insertDetailToRoutineExercise(nuevoDetalle)
         }
-
     }
 
+    // Copia solo los valores objetivos (objetivos) de una rutina a una nueva rutina, dejando nulos los valores reales.
     suspend fun copyOnlyObjectiveToNewWeek(routineId: Long, newRoutineId: Long) {
         val detalles = repository.getDetailOfRoutine(routineId)
 
-        detalles.forEach() { detalle ->
+        detalles.forEach { detalle ->
             val nuevoDetalle = DetailModel(
                 detailsId = 0,
                 routineDetailsId = newRoutineId,
@@ -68,13 +67,11 @@ class GetDetailsUseCase @Inject constructor(
             )
             insertDetailToRoutineExercise(nuevoDetalle)
         }
-
     }
 
+    // Elimina el último detalle registrado para una combinación de rutina y ejercicio.
     suspend fun deleteLastDetail(routineId: Long, exerciseId: Long) {
         repository.deleteLastDetail(routineId = routineId, exerciseId = exerciseId)
-
     }
-
 
 }

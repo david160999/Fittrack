@@ -31,35 +31,43 @@ class CategoryAdapter(
     override fun onBindViewHolder(holder: CategoryViewHolder, @SuppressLint("RecyclerView") position: Int) {
         val category = getItem(position)
 
-        // Actualizar el fondo según el estado de selección
+
+        // Actualiza el fondo dependiendo del estado de selección
         when {
             isSelected -> {
+                // Si algún ítem está seleccionado, mostrar el fondo por defecto
                 holder.defaultBg()
                 lastItemSelectedPos = RecyclerView.NO_POSITION
             }
             position == selectedItemPos -> {
+                // Si es el ítem seleccionado, cambiar al fondo seleccionado
                 holder.selectedBg()
             }
             else -> {
+                // Ítems no seleccionados mantienen fondo por defecto
                 holder.defaultBg()
             }
         }
 
+        // Vincula los datos del ítem y el callback para la selección
         holder.bind(category, onItemSelected)
 
+        // Maneja el click en el ítem
         holder.itemView.setOnClickListener {
-            val oldSelectedPos = selectedItemPos
             selectedItemPos = position
 
-            // Cambiar estado de selección
+            // Cambia el estado de selección si se hace click sobre el mismo ítem
             isSelected = selectedItemPos == lastItemSelectedPos
 
+            // Si no hay ítem previamente seleccionado, lo asigna
             if (lastItemSelectedPos == RecyclerView.NO_POSITION) {
                 lastItemSelectedPos = selectedItemPos
             } else {
+                // Notifica el cambio para actualizar el ítem previamente seleccionado
                 notifyItemChanged(lastItemSelectedPos)
                 lastItemSelectedPos = selectedItemPos
             }
+            // Notifica que el ítem actual cambió para actualizar la UI
             notifyItemChanged(selectedItemPos)
         }
     }

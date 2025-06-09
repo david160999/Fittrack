@@ -6,14 +6,14 @@ import com.cursointermedio.myapplication.domain.model.UserData
 import javax.inject.Inject
 
 class GetUserUseCase@Inject constructor(
-    private val repository: UserRepositoryImpl,
-
-    ) {
-
+    private val repository: UserRepositoryImpl
+){
+    // Obtiene los datos del usuario actual.
     suspend fun getUserData(): UserData {
-        return  repository.getUserData()
+        return repository.getUserData()
     }
 
+    // Cierra la sesión del usuario actual.
     fun signOut() {
         repository.signOut()
     }

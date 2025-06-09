@@ -17,45 +17,50 @@ class GetWeekUseCase @Inject constructor(
     private val getDetailsUseCase: GetDetailsUseCase
 
 ) {
-    operator fun invoke(trainingId:Long): Flow<List<WeekModel>> {
+    // Obtiene la lista de semanas asociadas a un entrenamiento, como Flow para observar cambios.
+    operator fun invoke(trainingId: Long): Flow<List<WeekModel>> {
         return repository.getWeeksTrainingFromDatabase(trainingId)
     }
 
-    suspend fun insertWeekToTraining(week : WeekModel): Long {
+    // Inserta una nueva semana en un entrenamiento y devuelve el ID generado.
+    suspend fun insertWeekToTraining(week: WeekModel): Long {
         return repository.insertWeekToTraining(week.toDatabase())
-
     }
 
-     fun getAllWeeksWithRoutines(trainingId: Long) : Flow<List<WeekWithRoutinesModel>> = repository.getAllWeeksWithRoutines(trainingId)
+    // Obtiene todas las semanas con sus rutinas asociadas, como Flow para observar cambios.
+    fun getAllWeeksWithRoutines(trainingId: Long): Flow<List<WeekWithRoutinesModel>> =
+        repository.getAllWeeksWithRoutines(trainingId)
 
-
-    suspend fun deleteWeek(week: WeekModel){
+    // Elimina una semana específica.
+    suspend fun deleteWeek(week: WeekModel) {
         return repository.deleteWeek(week)
     }
 
+    // Obtiene el nombre del entrenamiento según su ID.
     suspend fun getTrainingName(trainingId: Long): String {
         return repository.getTrainingName(trainingId)
     }
 
-    suspend fun getWeekWithRoutines(weekId:Long): WeekWithRoutinesModel{
-       return repository.getWeekWithRoutines(weekId)
+    // Obtiene una semana con todas sus rutinas (sin ser Flow).
+    fun getWeekWithRoutines(weekId: Long): WeekWithRoutinesModel {
+        return repository.getWeekWithRoutines(weekId)
     }
 
+    // Copia una semana completa junto con sus rutinas, ejercicios y detalles, según la opción seleccionada.
     suspend fun createCopyOfWeek(
         weekIdOriginal: Long?,
         trainingWeekId: Long,
         optionSelected: CopyOption?,
-
-        ) {
+    ) {
         withContext(Dispatchers.IO) {
             try {
-                // Paso 1: Obtener la semana con sus rutinas
+                // Paso 1: Obtener la semana original con sus rutinas
                 val semanaConRutinasOriginal = getWeekWithRoutines(weekIdOriginal!!)
 
                 val semanaOriginal = semanaConRutinasOriginal.week
                 val rutinasOriginales = semanaConRutinasOriginal.routineList
 
-                // Paso 2: Crear una nueva semana
+                // Paso 2: Crear una nueva semana con los datos de la original
                 val nuevaSemana = WeekModel(
                     weekId = null,
                     trainingWeekId = trainingWeekId,
@@ -64,13 +69,14 @@ class GetWeekUseCase @Inject constructor(
                 )
                 val nuevoWeekId = insertWeekToTraining(nuevaSemana)
 
-                // Paso 3: Copiar cada rutina
+                // Paso 3: Copiar cada rutina y sus ejercicios
                 rutinasOriginales.forEach { rutinaOriginal ->
                     val newRoutineId = getRoutineUseCase.copyRoutine(rutinaOriginal, nuevoWeekId)
 
-                    //Paso 4: Copiar ejercicios de esa rutina
+                    // Copiar ejercicios asociados a la rutina copiada
                     getExercisesUseCase.copyExercise(rutinaOriginal.routineId!!, newRoutineId)
 
+                    // Según la opción, copiar solo objetivos o todos los detalles
                     when (optionSelected) {
                         is CopyOption.CopyOnlyObjective -> getDetailsUseCase.copyOnlyObjectiveToNewWeek(
                             rutinaOriginal.routineId,
@@ -84,16 +90,16 @@ class GetWeekUseCase @Inject constructor(
 
                         else -> {}
                     }
-
                 }
             } catch (e: Exception) {
-                // Si ocurre un error (por ejemplo, un valor nulo o cualquier otro problema), lo capturamos aquí
+                // Captura y loguea errores ocurridos durante la copia
                 Log.e("Error", "Ocurrió un error al intentar copiar la semana: ${e.message}")
             }
         }
     }
 }
 
+// Opciones para controlar qué detalles se copian al duplicar una semana.
 sealed class CopyOption {
     data object CopyOnlyObjective : CopyOption()
     data object CopyAllDetails : CopyOption()

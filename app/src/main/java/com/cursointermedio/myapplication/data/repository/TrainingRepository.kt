@@ -24,58 +24,65 @@ class TrainingRepository @Inject constructor(
     private val trainingDao: TrainingDao,
     private val firestore: FirebaseFirestore,
     private val auth: FirebaseAuth,
-
-
     ) {
+    // -------- LOCAL DATABASE --------
+
+    // Devuelve todos los entrenamientos como flujo reactivo
     fun getAllTrainingsFromDatabase(): Flow<List<TrainingModel>> {
-        val response = trainingDao.getAllTraining()
-        return response.map { it -> it.map { it.toDomain() } }
+        return trainingDao.getAllTraining()
+            .map { list -> list.map { it.toDomain() } }
     }
 
+    // Inserta un entrenamiento y devuelve el ID
     suspend fun insertTraining(training: TrainingEntity): Long {
         return trainingDao.insertTraining(training)
     }
 
+    // Elimina un entrenamiento
     suspend fun deleteTraining(training: TrainingEntity) {
         trainingDao.deleteTraining(training)
     }
 
-
-    suspend fun getTrainingWithWeeksAndRoutines(trainingId: Long): TrainingWithWeeksAndRoutines =
-        trainingDao.getTrainingWithWeeksAndRoutines(trainingId)
-
-
+    // Elimina todos los entrenamientos
     suspend fun deleteAll() {
-        return trainingDao.deleteAllTraining()
+        trainingDao.deleteAllTraining()
     }
 
+    // Cambia el nombre (o cualquier otro campo editable) del entrenamiento
     suspend fun changeNameTraining(training: TrainingEntity) {
         trainingDao.changeNameTraining(training)
     }
 
+    // Obtiene un entrenamiento con sus semanas y rutinas
+    suspend fun getTrainingWithWeeksAndRoutines(trainingId: Long): TrainingWithWeeksAndRoutines {
+        return trainingDao.getTrainingWithWeeksAndRoutines(trainingId)
+    }
+
+    // Devuelve lista con cantidad de semanas y rutinas (para mostrar resumen visual)
     fun getTrainingsWithWeekAndRoutineCounts(): Flow<List<TrainingsWithWeekAndRoutineCounts>> {
         return trainingDao.getTrainingsWithWeekAndRoutineCounts()
     }
 
-    //    FIREBASE
+    // -------- FIREBASE --------
+
+    // Sube entrenamiento a Firebase con código único + UID
     suspend fun uploadTrainingData(trainingMapper: Map<String, Any?>, code: String): String? {
         return try {
             val user = auth.currentUser ?: throw UserNotFoundException("Usuario no autenticado")
             val uniqueCode = code + user.uid
 
-            // Subir datos a Firebase
             firestore.collection("trainingData")
-                .document(uniqueCode)  // Usamos el uniqueCode directamente
+                .document(uniqueCode)
                 .set(trainingMapper)
                 .await()
 
-            // Retornar el código único
             uniqueCode
         } catch (e: Exception) {
             throw TrainingUploadException("Error al subir datos a Firebase: ${e.message}")
         }
     }
 
+    // Descarga datos desde Firebase por código
     suspend fun downLoadTrainingData(code: String): DocumentSnapshot? {
         return try {
             val snapshot = firestore.collection("trainingData")

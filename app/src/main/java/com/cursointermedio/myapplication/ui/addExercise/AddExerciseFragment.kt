@@ -46,72 +46,109 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AddExerciseFragment : Fragment() {
+
+    // ViewModel para manejar la lógica de negocio y datos
     private val addExerciseViewModel: AddExerciseViewModel by viewModels()
 
+    // Binding para acceder a vistas de forma segura
     private var _binding: FragmentAddexerciseBinding? = null
     private val binding get() = _binding!!
 
-    //    private lateinit var adapterExercise: AddExerciseAdapter
+    // Adaptadores para la lista de ejercicios, categorías y ejercicios seleccionados
     private lateinit var adapterExercise: AddExerciseAdapter
     private lateinit var adapterCategory: CategoryAdapter
     private lateinit var adapterSelected: SelectedExerciseAdapter
 
-    private var selectedExercises = MutableStateFlow<List<ExerciseModel>>(emptyList())
-    private var originalList: List<ExerciseModel> = emptyList()  // Guardamos la lista original
+    // Estado reactivo con la lista de ejercicios seleccionados
+    private val selectedExercises = MutableStateFlow<List<ExerciseModel>>(emptyList())
 
+    // Lista original de ejercicios para buscar y filtrar
+    private var originalList: List<ExerciseModel> = emptyList()
+
+    // Lista de categorías disponibles
     private var categoryList: List<CategoryInfo> = emptyList()
 
+    // Argumentos recibidos desde la navegación (por ejemplo, rutinaId)
     private val args: AddExerciseFragmentArgs by navArgs()
     private var routineId: Long = 0
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        // Inflar la vista con ViewBinding
+        _binding = FragmentAddexerciseBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // Obtener rutinaId pasado en los argumentos
         routineId = args.routineId
+
+        // Inicializar la UI y los listeners
         initUI()
-        initListener()
+        initListeners()
     }
 
-    private fun initListener() {
+    private fun initUI() {
+        // Configurar adaptadores para listas
+        setUpSelectedAdapter()
+        setUpExerciseAdapter()
+        setUpCategoryAdapter()
+    }
+
+    private fun initListeners() {
+        // Botón para regresar al fragmento anterior
         binding.ivBack.setupTouchAction {
             findNavController().popBackStack()
         }
 
+        // Botón para abrir diálogo para añadir nuevo ejercicio
         binding.ivPlusExercise.setupTouchAction {
             createDialogAdd()
         }
 
+        // Botón para guardar la selección y regresar
         binding.tvNext.setupTouchAction {
             lifecycleScope.launch {
+                // Insertar ejercicios seleccionados a la rutina
                 addExerciseViewModel.insertExerciseToRoutine(routineId, selectedExercises.value)
                 findNavController().popBackStack()
             }
         }
 
-        binding.svExercise.setOnClickListener {
-            binding.svExercise.isIconified = false
-            binding.svExercise.requestFocus()
-            val imm =
-                requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showSoftInput(binding.svExercise.findFocus(), InputMethodManager.SHOW_IMPLICIT)
+        // Configurar SearchView para buscar ejercicios por nombre
+        binding.svExercise.apply {
+            setOnClickListener {
+                isIconified = false
+                requestFocus()
+                val imm =
+                    requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.showSoftInput(findFocus(), InputMethodManager.SHOW_IMPLICIT)
+            }
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?) = false
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    // Filtrar lista original por texto introducido
+                    val filteredText = newText.orEmpty()
+                    val filteredList = originalList.filter { exercise ->
+                        exercise.getExerciseNameFromKey(requireContext())
+                            .contains(filteredText, ignoreCase = true)
+                    }
+                    // Actualizar lista visible en el adaptador
+                    adapterExercise.submitList(filteredList)
+                    return true
+                }
+            })
         }
 
-        binding.svExercise.setOnQueryTextListener(object :
-            SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean = false
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                val filteredText = newText.orEmpty()
-                val filteredList = originalList.filter { exercise ->
-                    val exerciseName = exercise.getExerciseNameFromKey(requireContext())
-                    exerciseName.contains(filteredText, ignoreCase = true)
-                }
-                adapterExercise.submitList(filteredList)
-                return true
-            }
-        })
+        // Recoger estados de datos de ViewModel y actualizar UI reactivamente
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                // Recoger lista de ejercicios
                 launch {
                     addExerciseViewModel.exerciseList.collectLatest { state ->
                         when (state) {
@@ -121,14 +158,19 @@ class AddExerciseFragment : Fragment() {
                                 requireContext()
                             )
 
-                            AddExerciseUiState.Loading -> {}
+                            AddExerciseUiState.Loading -> { /* Opcional: mostrar progreso */
+                            }
+
                             is AddExerciseUiState.Success -> {
+                                // Guardar lista original y mostrarla
                                 originalList = state.exercises
                                 adapterExercise.submitList(state.exercises)
                             }
                         }
                     }
                 }
+
+                // Recoger lista de categorías
                 launch {
                     addExerciseViewModel.categoryList.collectLatest { state ->
                         when (state) {
@@ -138,137 +180,122 @@ class AddExerciseFragment : Fragment() {
                                 requireContext()
                             )
 
-                            CategoryUiState.Loading -> {}
+                            CategoryUiState.Loading -> { /* Opcional: mostrar progreso */
+                            }
+
                             is CategoryUiState.Success -> {
+                                // Guardar categorías y actualizar adaptador
                                 categoryList = state.categoryList
                                 adapterCategory.submitList(state.categoryList)
                             }
                         }
                     }
                 }
+
+                // Observar lista de ejercicios seleccionados para actualizar UI
                 launch {
                     selectedExercises.collectLatest { exerciseList ->
-                        if (exerciseList.isNotEmpty()) {
-                            binding.tvNext.visibility = View.VISIBLE
-                        } else {
-                            binding.tvNext.visibility = View.GONE
-                        }
+                        // Actualizar adaptador de ejercicios seleccionados
+                        adapterSelected.submitList(exerciseList)
+                        // Mostrar u ocultar botón siguiente según si hay ejercicios seleccionados
+                        binding.tvNext.visibility =
+                            if (exerciseList.isNotEmpty()) View.VISIBLE else View.GONE
                     }
                 }
             }
         }
     }
 
-
-    private fun initUI() {
-        setUpSelectedAdapter()
-        setUpExerciseAdapter()
-        setUpCategoryAdapter()
-    }
-
     private fun setUpSelectedAdapter() {
+        // Adaptador para ejercicios seleccionados con callback para eliminar ejercicio
         adapterSelected = SelectedExerciseAdapter(
-            onItemSelected = { exercise ->
-                createDialogRemove(exercise)
-            }
+            onItemSelected = { exercise -> createDialogRemove(exercise) }
         )
         binding.lvAddExercises.layoutManager = LinearLayoutManager(context)
         binding.lvAddExercises.adapter = adapterSelected
 
-        val dividerItemDecoration = DividerItemDecoration(
-            binding.rvExercise.context,
-            LinearLayoutManager.VERTICAL // Asegúrate de que sea un layout vertical
+        // Añadir separador vertical entre ítems
+        binding.lvAddExercises.addItemDecoration(
+            DividerItemDecoration(binding.rvExercise.context, LinearLayoutManager.VERTICAL)
         )
-        binding.lvAddExercises.addItemDecoration(dividerItemDecoration)
     }
 
     private fun setUpExerciseAdapter() {
+        // Adaptador para lista de ejercicios con callback para añadir ejercicio seleccionado
         adapterExercise = AddExerciseAdapter(
-            onItemSelected = { addExercise ->
-                addToListAddExercise(addExercise)
-            }
+            onItemSelected = { addExercise -> addToListAddExercise(addExercise) }
         )
-
         binding.rvExercise.layoutManager = LinearLayoutManager(context)
         binding.rvExercise.adapter = adapterExercise
 
-        val dividerItemDecoration =
+        // Añadir separador vertical
+        binding.rvExercise.addItemDecoration(
             DividerItemDecoration(binding.rvExercise.context, LinearLayoutManager.VERTICAL)
-        binding.rvExercise.addItemDecoration(dividerItemDecoration)
+        )
     }
 
     private fun setUpCategoryAdapter() {
-        adapterCategory =
-            CategoryAdapter { categoryId, isSelected ->
-                selectCategory(
-                    categoryId,
-                    isSelected
-                )
-            }
+        // Adaptador para categorías con callback para selección de categoría
+        adapterCategory = CategoryAdapter { categoryId, isSelected ->
+            selectCategory(categoryId, isSelected)
+        }
         binding.rvCategory.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvCategory.adapter = adapterCategory
-
     }
 
+    // Añade ejercicio a la lista de seleccionados si no está ya
     private fun addToListAddExercise(exercise: ExerciseModel) {
         if (!selectedExercises.value.contains(exercise)) {
-            val newList = selectedExercises.value.toMutableList()
-            newList.add(exercise)
-            selectedExercises.value = newList
-            adapterSelected.submitList(newList)
+            selectedExercises.value = selectedExercises.value + exercise
         }
     }
 
+    // Elimina ejercicio de la lista de seleccionados
     private fun removeToListAddExercise(exercise: ExerciseModel) {
-        val newList = selectedExercises.value.toMutableList()  // copia mutable nueva
-        newList.remove(exercise)                          // elimina el ejercicio
-        selectedExercises.value = newList                       // asigna la lista nueva
-        adapterSelected.submitList(newList)               // pasa la nueva lista al adapter
+        selectedExercises.value = selectedExercises.value - exercise
     }
 
+    // Cambia la lista de ejercicios mostrada según categoría seleccionada
     private fun selectCategory(categoryId: Long, isSelected: Boolean) {
         if (isSelected) {
+            // Si categoría está deseleccionada, mostrar todos los ejercicios
             addExerciseViewModel.getAllExercise()
         } else {
+            // Mostrar solo ejercicios de la categoría seleccionada
             addExerciseViewModel.getExercisesFromCategory(categoryId)
         }
     }
 
+    // Muestra diálogo para añadir nuevo ejercicio
     private fun createDialogAdd() {
-        val dialog = AddExerciseDialog(onSaveClickListener = { exercise ->
-            lifecycleScope.launch {
-                addExerciseViewModel.insertExercise(exercise)
-            }
-        }, this.categoryList)
-
-        dialog.show(parentFragmentManager, "dialog")
-
-    }
-
-    private fun createDialogRemove(exercise: ExerciseModel) {
-
-        val dialog = RemoveExerciseDialog(onSaveClickListener = {
-            lifecycleScope.launch {
-                removeToListAddExercise(exercise)
-            }
-        }, exercise = exercise)
-
-        dialog.show(parentFragmentManager, "dialog")
-    }
-
-    override fun onCreateView(
-
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentAddexerciseBinding.inflate(
-            inflater,
-            container,
-            false
+        val dialog = AddExerciseDialog(
+            onSaveClickListener = { exercise ->
+                lifecycleScope.launch {
+                    addExerciseViewModel.insertExercise(exercise)
+                }
+            },
+            categoryList
         )
-        return binding.root
+        dialog.show(parentFragmentManager, "dialog")
     }
 
+    // Muestra diálogo para confirmar eliminación de ejercicio seleccionado
+    private fun createDialogRemove(exercise: ExerciseModel) {
+        val dialog = RemoveExerciseDialog(
+            onSaveClickListener = {
+                lifecycleScope.launch {
+                    removeToListAddExercise(exercise)
+                }
+            },
+            exercise = exercise
+        )
+        dialog.show(parentFragmentManager, "dialog")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Limpiar binding para evitar fugas de memoria
+        _binding = null
+    }
 }

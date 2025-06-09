@@ -24,8 +24,8 @@ import java.util.Locale
 class UserPreferences @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
-    // Define la instancia de DataStore
 
+    // Keys usadas para DataStore
     companion object {
         private val USERNAME_KEY = stringPreferencesKey("username")
         private val EMAIL_KEY = stringPreferencesKey("email")
@@ -34,10 +34,14 @@ class UserPreferences @Inject constructor(
         private val WEIGHT_KG_MODE_KEY = booleanPreferencesKey("weight_kg_mode")
         private val EXERCISE_KG_MODE_KEY = booleanPreferencesKey("exercise_kg_mode")
 
+        // Constantes para SharedPreferences
         private const val LANGUAGE= "language"
         private const val PREFS_NAME = "user_preferences"
         private const val DARK_MODE = ("dark_mode")
 
+        /**
+         * Aplica el idioma guardado desde SharedPreferences al contexto de la app.
+         */
         fun applyLanguage(context: Context): Context {
             val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             val languageCode = prefs.getString(LANGUAGE, "en") ?: "en"
@@ -51,6 +55,9 @@ class UserPreferences @Inject constructor(
             return context.createConfigurationContext(config)
         }
 
+        /**
+         * Aplica el modo oscuro según la preferencia guardada en SharedPreferences.
+         */
         fun applyDarkMode(context: Context) {
             val prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
             val isDarkMode = prefs.getBoolean(DARK_MODE, false)

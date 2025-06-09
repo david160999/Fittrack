@@ -27,41 +27,52 @@ import javax.inject.Inject
 @HiltViewModel
 class AddExerciseViewModel @Inject constructor(
     private val getExercisesUseCase: GetExercisesUseCase,
+) : ViewModel() {
 
-    ) : ViewModel() {
+    // Estado para la lista de categorías, expuesto como StateFlow inmutable
     private val _categoryList = MutableStateFlow<CategoryUiState>(CategoryUiState.Loading)
     val categoryList: StateFlow<CategoryUiState> = _categoryList
 
+    // Estado para la lista de ejercicios, expuesto como StateFlow inmutable
     private val _exerciseList = MutableStateFlow<AddExerciseUiState>(AddExerciseUiState.Loading)
     val exerciseList: StateFlow<AddExerciseUiState> = _exerciseList
 
     init {
+        // Al inicializar el ViewModel, cargamos todos los ejercicios y categorías
         getAllExercise()
         getCategories()
     }
 
+    /**
+     * Obtiene todos los ejercicios desde la base de datos usando el caso de uso.
+     * Actualiza el estado _exerciseList según el resultado.
+     */
     fun getAllExercise() {
         viewModelScope.launch {
             getExercisesUseCase.getAllExercisesFromDatabase()
-                .flowOn(Dispatchers.IO)
+                .flowOn(Dispatchers.IO) // Ejecutar en hilo IO para no bloquear UI
                 .catch { e ->
+                    // Captura errores y actualiza estado con mensaje de error
                     _exerciseList.value =
                         AddExerciseUiState.Error(e.message ?: "Ha ocurrido un error inesperado.")
                 }
                 .collectLatest { exercises ->
+                    // Emitir la lista de ejercicios cuando llega
                     _exerciseList.value = AddExerciseUiState.Success(exercises)
                 }
         }
-
     }
 
+    /**
+     * Obtiene los ejercicios filtrados por categoría.
+     * Actualiza el estado _exerciseList con los ejercicios correspondientes o error.
+     */
     fun getExercisesFromCategory(categoryId: Long) {
         viewModelScope.launch {
             _exerciseList.value = AddExerciseUiState.Loading
             try {
                 val exercise = getExercisesUseCase.getExercisesFromCategory(categoryId)
                 _exerciseList.value = AddExerciseUiState.Success(exercise)
-
             } catch (e: Exception) {
                 _exerciseList.value =
                     AddExerciseUiState.Error(e.message ?: "Ha ocurrido un error inesperado.")
@@ -69,6 +80,10 @@ class AddExerciseViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Obtiene la lista de categorías disponibles.
+     * Actualiza el estado _categoryList con los datos o error.
+     */
     private fun getCategories() {
         viewModelScope.launch {
             _categoryList.value = CategoryUiState.Loading
@@ -79,10 +94,13 @@ class AddExerciseViewModel @Inject constructor(
                 _categoryList.value =
                     CategoryUiState.Error(e.message ?: "Ha ocurrido un error inesperado.")
             }
-
         }
     }
 
+    /**
+     * Inserta los ejercicios seleccionados en una rutina dada.
+     * Cada ejercicio se añade con un orden y sin notas por defecto.
+     */
     fun insertExerciseToRoutine(
         routineId: Long,
         selectedExercises: List<ExerciseModel>
@@ -92,7 +110,7 @@ class AddExerciseViewModel @Inject constructor(
                 selectedExercises.forEachIndexed { index, exercise ->
                     val crossRef = RoutineExerciseCrossRef(
                         routineId = routineId,
-                        exerciseId = exercise.id!!,
+                        exerciseId = exercise.id!!, // Aseguramos que el ID no sea nulo
                         order = index,
                         notes = null
                     )
@@ -104,14 +122,15 @@ class AddExerciseViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Inserta un nuevo ejercicio en la base de datos.
+     */
     fun insertExercise(exercise: ExerciseModel) {
         viewModelScope.launch {
             try {
                 getExercisesUseCase.insertExercise(exercise)
-
             } catch (e: Exception) {
-                Log.e("insertExercise", "Error al insertar ejercicios a la rutina", e)
-
+                Log.e("insertExercise", "Error al insertar ejercicio", e)
             }
         }
     }

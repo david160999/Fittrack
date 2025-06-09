@@ -19,54 +19,66 @@ import javax.inject.Inject
 class RoutineRepository @Inject constructor(
     private val routineDao: RoutineDao
 ) {
+    // Inserta una rutina en una semana específica
     suspend fun insertRoutineToWeek(routine: RoutineEntity): Long {
         return routineDao.insertRoutineToWeek(routine)
     }
 
-    suspend fun getRoutineById(routineId: Long): RoutineModel{
+    // Obtiene una rutina por ID y la convierte al modelo de dominio
+    suspend fun getRoutineById(routineId: Long): RoutineModel {
         return routineDao.getRoutineById(routineId).toDomain()
     }
 
-    suspend fun getRoutineWithExercises(routineId: Long): RoutineWithExercises {
-        return routineDao.getRoutineWithExercises(routineId)
-    }
-
+    // Cambia el nombre de una rutina
     suspend fun changeNameRoutine(routine: RoutineEntity) {
         routineDao.changeNameRoutine(routine)
     }
 
+    // Elimina la rutina completa
     suspend fun deleteRoutine(routine: RoutineEntity) {
         routineDao.deleteRoutine(routine)
     }
 
+    // Cambia el orden de todas las rutinas (probablemente dentro de una semana)
     suspend fun changeOrderRoutines(routines: List<RoutineEntity>) {
         routineDao.changeOrderRoutines(routines)
     }
 
+    // Rutina + ejercicios ordenados (suspend)
     suspend fun getRoutineWithOrderedExercises(routineId: Long): RoutineWithOrderedExercisesModel {
-        val respond = routineDao.getRoutineWithOrderedExercises(routineId)
-
+        val result = routineDao.getRoutineWithOrderedExercises(routineId)
         return RoutineWithOrderedExercisesModel(
-            routine = respond.routine.toDomain(),
-            exercises = respond.exercises.map { it.toDomain() }
+            routine = result.routine.toDomain(),
+            exercises = result.exercises.map { it.toDomain() }
         )
     }
 
+    // Rutina + ejercicios ordenados (flow reactivo)
     fun getRoutineWithOrderedExercisesFlow(routineId: Long): Flow<RoutineWithOrderedExercisesModel> {
-        return routineDao.getRoutineWithOrderedExercisesFlow(routineId).map { entity ->
-            RoutineWithOrderedExercisesModel(
-                routine = entity.routine.toDomain(),
-                exercises = entity.exercises.map { it.toDomain() }
-            )
-        }
+        return routineDao.getRoutineWithOrderedExercisesFlow(routineId)
+            .map { entity ->
+                RoutineWithOrderedExercisesModel(
+                    routine = entity.routine.toDomain(),
+                    exercises = entity.exercises.map { it.toDomain() }
+                )
+            }
     }
 
+    // Elimina una relación rutina-ejercicio
     suspend fun removeExerciseFromRoutine(crossRef: RoutineExerciseCrossRef) {
         routineDao.removeExerciseFromRoutine(crossRef)
     }
 
-    suspend fun updateOrderCrossRefRoutineExercise(exerciseId: Long, routineId: Long, order:Int){
-        routineDao.updateOrderCrossRefRoutineExercise(exerciseId = exerciseId, routineId = routineId, order = order)
+    // Actualiza el orden de un ejercicio dentro de una rutina
+    suspend fun updateOrderCrossRefRoutineExercise(
+        exerciseId: Long,
+        routineId: Long,
+        order: Int
+    ) {
+        routineDao.updateOrderCrossRefRoutineExercise(
+            exerciseId = exerciseId,
+            routineId = routineId,
+            order = order
+        )
     }
-
-    }
+}

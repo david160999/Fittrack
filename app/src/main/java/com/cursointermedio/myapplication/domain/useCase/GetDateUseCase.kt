@@ -21,75 +21,77 @@ class GetDateUseCase @Inject constructor(
     private val repository: DateRepositoryImpl,
 ) {
 
+    // Inserta o actualiza una entidad Date en la base de datos.
     suspend fun insertOrUpdateDate(date: DateEntity) {
         repository.insertOrUpdateDate(date)
     }
 
-    suspend fun getDateWithTrac(dateId: String): DateWithTrac? {
-        return repository.getDateWithTrac(dateId)
-    }
-
+    // Inserta o actualiza una entidad Trac en la base de datos.
     suspend fun insertOrUpdateTrac(trac: TracEntity) {
         repository.insertOrUpdateTrac(trac)
     }
 
+    // Obtiene una entidad Date a partir de su ID.
     suspend fun getDate(dateId: String): DateEntity? {
         return repository.getDate(dateId)
     }
 
+    // Obtiene un Flow con una lista de fechas y sus trazas asociadas para una lista de IDs.
     fun getDateListFlow(dateList: List<String>): Flow<List<DateWithTrac?>> {
         return repository.getDateListFlow(dateList)
     }
 
+    // Obtiene un Flow con la entidad Date para un ID específico.
     fun getDateFlow(dateId: String): Flow<DateEntity?> {
         return repository.getDateFlow(dateId)
     }
 
+    // Obtiene un Flow con la entidad Date y su Trac asociada para un ID específico.
     fun getDateWithTracFlow(dateId: String): Flow<DateWithTrac?> {
         return repository.getDateWithTracFlow(dateId)
     }
 
-    fun getTracByDateFlow(dateId: String): Flow<TracEntity?>{
+    // Obtiene un Flow con la entidad Trac asociada a una fecha.
+    fun getTracByDateFlow(dateId: String): Flow<TracEntity?> {
         return repository.getTracByDateFlow(dateId)
     }
 
-    suspend fun deleteDate(date: DateEntity) {
-        repository.deleteDate(date)
-    }
-
-    suspend fun updateNoteForDate(dateId: String, note: String) {
-        repository.updateNoteForDate(dateId, note)
-    }
-
+    // Obtiene un Flow que emite las fechas asociadas a una rutina específica.
     fun getDatesFromRoutine(routineId: Long): Flow<String> {
         return repository.getDatesFromRoutine(routineId)
-
     }
 
+    // Inserta una lista de entidades Date en la base de datos.
     suspend fun insertDateList(dateList: List<DateEntity>) {
         repository.insertDateList(dateList)
     }
 
-    suspend fun deleteTrac(trac: TracEntity){
+    // Elimina una entidad Trac de la base de datos.
+    suspend fun deleteTrac(trac: TracEntity) {
         repository.deleteTrac(trac)
     }
 
+    // Actualiza la nota asociada a una fecha.
     suspend fun updateNote(dateId: String, note: String?) {
         repository.updateNote(dateId, note)
     }
 
+    // Actualiza el peso corporal asociado a una fecha.
     suspend fun updateBodyWeight(dateId: String, bodyWeight: Float?) {
         repository.updateBodyWeight(dateId, bodyWeight)
     }
 
+    // Elimina la nota asociada a una fecha.
     suspend fun deleteNote(dateId: String) {
         repository.deleteNote(dateId)
     }
 
+    // Elimina el peso corporal asociado a una fecha.
     suspend fun deleteBodyWeight(dateId: String) {
         repository.deleteBodyWeight(dateId)
     }
 
+    // Elimina la información del calendario de rutina asociada a una fecha.
     suspend fun deleteRoutineCalendar(dateId: String) {
         repository.deleteRoutineCalendar(dateId)
     }

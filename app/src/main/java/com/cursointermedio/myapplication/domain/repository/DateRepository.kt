@@ -40,4 +40,7 @@ interface DateRepository {
 
     suspend fun deleteRoutineCalendar(dateId: String)
 
+    fun getDateListFlow(dateList: List<String>): Flow<List<DateWithTrac?>>
+
+    fun getDateWithTracFlow(dateId: String): Flow<DateWithTrac?>
 }

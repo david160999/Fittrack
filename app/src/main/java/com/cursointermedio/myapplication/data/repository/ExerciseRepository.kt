@@ -16,58 +16,62 @@ class ExerciseRepository @Inject constructor(
     private val exerciseDao: ExerciseDao
 ) {
 
+    // Flow reactivo de todos los ejercicios en la base de datos
     fun getAllExercisesFromDatabase(): Flow<List<ExerciseModel>> {
-        val response = exerciseDao.getAllExercises()
-        return response.map { it -> it.map { it.toDomain() } }
+        return exerciseDao.getAllExercises()
+            .map { entities -> entities.map { it.toDomain() } }
     }
 
-    suspend fun insertExercise(exercises: ExerciseEntity) {
-        exerciseDao.insertExercise(exercises)
+    // Inserta un ejercicio (ignora si ya existe)
+    suspend fun insertExercise(exercise: ExerciseEntity) {
+        exerciseDao.insertExercise(exercise)
     }
 
-    suspend fun insertExerciseToRoutine(exercise: RoutineExerciseCrossRef) =
-        exerciseDao.insertExerciseToRoutine(exercise)
+    // Inserta relación entre rutina y ejercicio
+    suspend fun insertExerciseToRoutine(crossRef: RoutineExerciseCrossRef) {
+        exerciseDao.insertExerciseToRoutine(crossRef)
+    }
 
+    // Obtiene ejercicios según categoría
     suspend fun getExercisesFromCategory(categoryId: Long): List<ExerciseModel> {
-        val response = exerciseDao.getExercisesFromCategory(categoryId)
+        return exerciseDao.getExercisesFromCategory(categoryId)
+            .map { it.toDomain() }
+    }
+
+    // Devuelve todas las categorías como modelos de dominio
+    suspend fun getCategories(): List<CategoryInfo> {
+        val response = exerciseDao.getCategories()
+        Log.d("DAO_TEST", "Categories from DAO: $response") // Útil para debug
         return response.map { it.toDomain() }
     }
 
-
-    suspend fun getCategories(): List<CategoryInfo> {
-        val response = exerciseDao.getCategories()
-        Log.d("DAO_TEST", "Categories from DAO: $response")
-
-        return response.map {
-            it.toDomain()
-        }
-    }
-
-    suspend fun getExerciseDetailsCount(routineId: Long): List<ExerciseDetailsCount> {
-        return exerciseDao.getExerciseDetailsCount(routineId)
-    }
-
+    // Cantidad de ejercicios en una rutina (flow)
     fun getExerciseFromRoutineCountFlow(routineId: Long): Flow<Int> {
         return exerciseDao.getExerciseFromRoutineCountFlow(routineId)
     }
 
+    // Cantidad de ejercicios en una rutina (directo)
     suspend fun getExerciseFromRoutineCount(routineId: Long): Int {
         return exerciseDao.getExerciseFromRoutineCount(routineId)
     }
 
-    suspend fun getDetailCountFromExercise(exerciseId: Long, routineId: Long):Int{
+    // Cuenta los detalles de un ejercicio en una rutina específica
+    suspend fun getDetailCountFromExercise(exerciseId: Long, routineId: Long): Int {
         return exerciseDao.getDetailCountFromExercise(exerciseId, routineId)
     }
 
-    suspend fun getNotesFromCrossRef(routineId: Long, exerciseId: Long): String?{
-        return exerciseDao.getNotesFromCrossRef(routineId = routineId, exerciseId = exerciseId)
+    // Obtiene las notas del crossref rutina-ejercicio
+    suspend fun getNotesFromCrossRef(routineId: Long, exerciseId: Long): String? {
+        return exerciseDao.getNotesFromCrossRef(routineId, exerciseId)
     }
 
-    suspend fun updateNotesFromCrossRef(routineId: Long, exerciseId: Long, notes:String){
-        exerciseDao.updateNotesFromCrossRef(routineId = routineId, exerciseId = exerciseId, notes)
+    // Actualiza las notas del crossref rutina-ejercicio
+    suspend fun updateNotesFromCrossRef(routineId: Long, exerciseId: Long, notes: String) {
+        exerciseDao.updateNotesFromCrossRef(routineId, exerciseId, notes)
     }
 
-    suspend fun getExercise(exerciseId: Long): ExerciseModel{
+    // Obtiene un ejercicio por ID y lo mapea a modelo de dominio
+    suspend fun getExercise(exerciseId: Long): ExerciseModel {
         return exerciseDao.getExercise(exerciseId).toDomain()
     }
 }

@@ -12,34 +12,45 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class DetailsRepository @Inject constructor(
-private val detailDao: DetailsDao
+    private val detailDao: DetailsDao
 ) {
 
-     fun getDetailOfRoutine(routineId: Long): List<DetailModel> {
+    // Devuelve los detalles de una rutina como modelo de dominio
+    fun getDetailOfRoutine(routineId: Long): List<DetailModel> {
         val response = detailDao.getDetailOfRoutine(routineId)
-        return response.map {  it.toDomain() }
+        return response.map { it.toDomain() }
     }
 
-    suspend fun insertDetailToRoutineExercise(detail: DetailsEntity){
+    // Inserta un detalle para una rutina y ejercicio específico
+    suspend fun insertDetailToRoutineExercise(detail: DetailsEntity) {
         detailDao.insertDetailToRoutineExercise(detail)
     }
 
-    suspend fun updateDetailToRoutineExercise(detail: List<DetailsEntity>){
+    // Actualiza múltiples detalles (útil cuando se editan todos los sets de un ejercicio)
+    suspend fun updateDetailToRoutineExercise(detail: List<DetailsEntity>) {
         detailDao.updateDetailToRoutineExercise(detail)
     }
 
-    suspend fun getDetailOfRoutineAndExercise(routineId: Long, exerciseId: Long): List<DetailModel> {
-        val response =  detailDao.getDetailOfRoutineAndExercise(routineId, exerciseId)
-        return response.map {it.toDomain() }
+    // Obtiene todos los detalles de un ejercicio dentro de una rutina
+    suspend fun getDetailOfRoutineAndExercise(
+        routineId: Long,
+        exerciseId: Long
+    ): List<DetailModel> {
+        val response = detailDao.getDetailOfRoutineAndExercise(routineId, exerciseId)
+        return response.map { it.toDomain() }
     }
 
-    fun getDetailOfRoutineAndExerciseFlow(routineId: Long, exerciseId: Long): Flow<List<DetailModel>> {
+    // Flow para obtener los detalles de un ejercicio dentro de una rutina de forma reactiva
+    fun getDetailOfRoutineAndExerciseFlow(
+        routineId: Long,
+        exerciseId: Long
+    ): Flow<List<DetailModel>> {
         return detailDao.getDetailOfRoutineAndExerciseFlow(routineId, exerciseId)
             .map { list -> list.map { it.toDomain() } }
     }
 
+    // Elimina el último detalle registrado para un ejercicio en una rutina
     suspend fun deleteLastDetail(routineId: Long, exerciseId: Long) {
-        detailDao.deleteLastDetail(routineId = routineId, exerciseId= exerciseId)
-
+        detailDao.deleteLastDetail(routineId = routineId, exerciseId = exerciseId)
     }
 }

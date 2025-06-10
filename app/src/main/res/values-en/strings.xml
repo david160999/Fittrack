@@ -16,6 +16,19 @@
     <string name="tv_description">Description</string>
     <string name="btn_ok">OK</string>
 
+    <!--    Login-->
+    <string name="login_complete_fields">You must fill in all fields</string>
+    <string name="login_check_email">Check your email to reset your password</string>
+    <string name="login_email_field">You must fill in the email field</string>
+    <string name="login_google_failure">Error authenticating with Google</string>
+    <string name="login_email_adress">Email address</string>
+    <string name="login_username">Username</string>
+    <string name="login_password">Password</string>
+    <string name="login_signIn">Sign in</string>
+    <string name="login_signUp">Register account</string>
+    <string name="login_forgottten_password">Forgot your password?</string>
+    <string name="login_create_account">Create account</string>
+
     <!--    HomeFragment-->
     <string name="home_training">Training</string>
     <string name="home_sub_training">Start logging your workouts!</string>

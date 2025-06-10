@@ -126,12 +126,6 @@ class CalendarFragment @Inject constructor() : Fragment() {
         binding.cvMainCalendarTrac.setupTouchAction {
             createTracDialog()
         }
-        binding.cvMainCalendarRoutine.setupTouchAction {
-            val routineId = calendarViewModel.routineInfo.value?.routineId
-            if (routineId != null) {
-                navigateToRoutine(routineId)
-            }
-        }
         // Listeners para botones de eliminar notas, peso, trac y rutina
         binding.btnDeleteMainCalendarNotes.setupTouchAction {
             createMenuOption(
@@ -437,15 +431,6 @@ class CalendarFragment @Inject constructor() : Fragment() {
                 .setDuration(300)
                 .start()
         }
-    }
-
-    // Navega al fragmento de rutina pasando el ID
-    private fun navigateToRoutine(routineId: Long) {
-        findNavController().navigate(
-            WeekFragmentDirections.actionWeekFragmentToRoutineFragment(
-                routineId
-            )
-        )
     }
 
     override fun onCreateView(

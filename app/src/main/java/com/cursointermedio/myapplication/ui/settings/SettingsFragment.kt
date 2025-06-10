@@ -210,23 +210,31 @@ class SettingsFragment @Inject constructor() : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        val isWeightKgMode = binding.modeToggleGroupWeight.checkedButtonId == R.id.btnWeightKg
-        val isExerciseKgMode = binding.modeToggleGroupExercise.checkedButtonId == R.id.btnExerciseKg
-        val isDarkMode = binding.btnDarkMode.isChecked
-        val language = selectedLanguage
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                val settings = UserSettings(
-                    isDarkMode = isDarkMode,
-                    isWeightKgMode = isWeightKgMode,
-                    isExerciseKgMode = isExerciseKgMode,
-                    language = language
-                )
-                settingsViewModel.saveUserSettingsData(settings)
-            } catch (e: Exception) {
-                Log.e("SettingsFragment", e.message.toString())
+        val state = settingsViewModel.userSettingsData.value
+        if (state is SettingsUiState.Success) {
+            val oldSettings = state.userSettings
+
+            val isWeightKgMode = binding.modeToggleGroupWeight.checkedButtonId == R.id.btnWeightKg
+            val isExerciseKgMode = binding.modeToggleGroupExercise.checkedButtonId == R.id.btnExerciseKg
+            val isDarkMode = binding.btnDarkMode.isChecked
+            val language = selectedLanguage
+
+            lifecycleScope.launch(Dispatchers.IO) {
+                try {
+                    val settings = oldSettings.copy(
+                        isDarkMode = isDarkMode,
+                        isWeightKgMode = isWeightKgMode,
+                        isExerciseKgMode = isExerciseKgMode,
+                        language = language
+                    )
+
+                    settingsViewModel.saveUserSettingsData(settings)
+                } catch (e: Exception) {
+                    Log.e("SettingsFragment", e.message.toString())
+                }
             }
         }
+
     }
 }

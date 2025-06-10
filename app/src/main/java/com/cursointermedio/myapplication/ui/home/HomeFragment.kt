@@ -154,6 +154,20 @@ class HomeFragment : Fragment() {
                     }
 
                 }
+                launch {
+                    homeViewModel.userSettingsData.collectLatest {state->
+                        when(state){
+                            is SettingsUiState.Error -> {
+                            }
+                            SettingsUiState.Loading -> {
+                            }
+                            is SettingsUiState.Success -> {
+                                binding.userName.text = getString(R.string.home_user_name, state.userSettings.username)
+                            }
+                        }
+
+                    }
+                }
             }
         }
     }
@@ -267,7 +281,7 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_homeFragment_to_settingsFragment)
         }
 
-        binding.cvTraining.setOnClickListener {
+        binding.cvTraining.setupTouchAction {
             findNavController().navigate(R.id.action_homeFragment_to_navigation)
         }
         observeDataUser()
@@ -277,8 +291,6 @@ class HomeFragment : Fragment() {
     private fun observeDataUser() {
         homeViewModel.userData.observe(viewLifecycleOwner) { user ->
             user?.let {
-                binding.userName.text = getString(R.string.home_user_name, user.name)
-
                 Glide.with(this)
                     .load(user.photoUrl)
                     .circleCrop()

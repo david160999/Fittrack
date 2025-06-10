@@ -60,6 +60,7 @@ class HomeViewModel @Inject constructor(
     init {
         getDateFlow()
         getTracByDateFlow()
+        getUserSettingsData()
 
         viewModelScope.launch {
             try {

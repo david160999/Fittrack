@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -40,8 +41,8 @@ class TrainingViewModel @Inject constructor(
     private val _trainingId = MutableSharedFlow<Long?>()
     val trainingId: SharedFlow<Long?> get() = _trainingId
 
-    private val _trainingHashCode = MutableLiveData<Pair<String, String>?>()
-    val trainingHashCode: LiveData<Pair<String, String>?> get() = _trainingHashCode
+    private val _trainingHashCode = MutableSharedFlow<Pair<String, String>?>()
+    val trainingHashCode: SharedFlow<Pair<String, String>?> get() = _trainingHashCode
 
     private val _uiState = MutableStateFlow<TrainingsUiState>(TrainingsUiState.Loading)
     val uiState: StateFlow<TrainingsUiState> = _uiState
@@ -141,12 +142,29 @@ class TrainingViewModel @Inject constructor(
                 val uniqueCode = getTrainingUseCase.uploadTrainingData(training)
 
                 if (uniqueCode != null) {
-                    _trainingHashCode.value =  Pair(name, uniqueCode)
+                    _trainingHashCode.emit(Pair(name, uniqueCode))
                 } else {
-                    _trainingHashCode.value = null
+                    _trainingHashCode.emit(null)
                 }
             } catch (e: FirebaseException) {
-                _trainingHashCode.value = null
+                _trainingHashCode.emit(null)
+            }
+        }
+    }
+
+    fun uploadTrainingDataFlow(training: TrainingModel): Flow<Pair<String, String>?> = flow{
+        val name = training.name
+        viewModelScope.launch {
+            try {
+                val uniqueCode = getTrainingUseCase.uploadTrainingData(training)
+
+                if (uniqueCode != null) {
+                    emit(Pair(name, uniqueCode))
+                } else {
+                    emit(null)
+                }
+            } catch (e: FirebaseException) {
+                emit(null)
             }
         }
     }

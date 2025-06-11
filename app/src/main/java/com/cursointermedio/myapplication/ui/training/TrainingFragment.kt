@@ -28,6 +28,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.cursointermedio.myapplication.utils.extensions.setupTouchAction
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 
 
@@ -146,14 +147,19 @@ class TrainingFragment @Inject constructor() : Fragment() {
     }
 
     private fun observeTrainingHashCode() {
-        trainingViewModel.trainingHashCode.observe(viewLifecycleOwner) { hash ->
-            hash?.let {
-                val trainingName = hash.first
-                val code = hash.second
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                trainingViewModel.trainingHashCode.collect{ hash ->
+                    hash?.let {
+                        val trainingName = hash.first
+                        val code = hash.second
 
-                shareTrainingDialog(trainingName = trainingName, code = code)
-            } ?: showSnackbar("Error al intentar compartir el entramiento")
+                        shareTrainingDialog(trainingName = trainingName, code = code)
+                    }
+                }
+            }
         }
+
     }
 
     private fun showSnackbar(msg: String) {

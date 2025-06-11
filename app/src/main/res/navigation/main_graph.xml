@@ -31,11 +31,6 @@
             app:destination="@id/navigation" />
     </fragment>
     <fragment
-        android:id="@+id/graphicsFragment"
-        android:name="com.cursointermedio.myapplication.ui.graphics.GraphicsFragment"
-        android:label="fragment_graphic"
-        tools:layout="@layout/fragment_graphic" />
-    <fragment
         android:id="@+id/settingsFragment"
         android:name="com.cursointermedio.myapplication.ui.settings.SettingsFragment"
         android:label="fragment_settings"
@@ -43,11 +38,6 @@
         <action
             android:id="@+id/action_settingsFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
-        <action
-            android:id="@+id/action_settingsFragment_to_graphicsFragment"
-            app:destination="@id/graphicsFragment"
-            app:popUpTo="@id/homeFragment"
-            app:popUpToInclusive="true" />
     </fragment>
     <navigation android:id="@+id/navigation"
         app:startDestination="@id/trainingFragment">

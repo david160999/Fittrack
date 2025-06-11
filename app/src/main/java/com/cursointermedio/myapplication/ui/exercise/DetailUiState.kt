@@ -1,7 +1,6 @@
 package com.cursointermedio.myapplication.ui.exercise
 
 import com.cursointermedio.myapplication.domain.model.DetailModel
-import com.cursointermedio.myapplication.domain.model.RoutineWithOrderedExercisesModel
 
 sealed class DetailUiState {
     data object Loading : DetailUiState()

@@ -1,6 +1,5 @@
 package com.cursointermedio.myapplication.ui.training
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,7 +18,6 @@ import com.cursointermedio.myapplication.ui.training.CurrentFeature.TypeFeature.
 import com.google.firebase.FirebaseException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,15 +36,19 @@ class TrainingViewModel @Inject constructor(
     private val getWeekUseCase: GetWeekUseCase
 ) : ViewModel() {
 
+    // Emite el ID del entrenamiento recién creado, o null si falla la creación
     private val _trainingId = MutableSharedFlow<Long?>()
     val trainingId: SharedFlow<Long?> get() = _trainingId
 
+    // Emite el par (nombre, código) al compartir entrenamiento
     private val _trainingHashCode = MutableSharedFlow<Pair<String, String>?>()
     val trainingHashCode: SharedFlow<Pair<String, String>?> get() = _trainingHashCode
 
+    // Estado principal de la UI (loading, success, error)
     private val _uiState = MutableStateFlow<TrainingsUiState>(TrainingsUiState.Loading)
     val uiState: StateFlow<TrainingsUiState> = _uiState
 
+    // Estado de la descarga de entrenamiento (éxito/error)
     private val _downloadState = MutableLiveData<Result<Unit>>() // Puede ser Result<Unit> si no necesitas retornar un dato
     val downloadState: LiveData<Result<Unit>> = _downloadState
 
@@ -61,6 +63,7 @@ class TrainingViewModel @Inject constructor(
         }
     }
 
+    // Devuelve el ID de navegación según la feature seleccionada (para Deep Linking o navegación modular)
     fun getFeature(): Int? {
         val feature: Int? = when (getTypeFeature()) {
             TrainingFeature -> null
@@ -73,9 +76,10 @@ class TrainingViewModel @Inject constructor(
 
     private fun getTypeFeature(): TypeFeature = Feature.getTypeFeature()
 
-
+    // Devuelve todos los entrenamientos como flujo (para otros usos)
     fun getTrainingsFromDataBase(): Flow<List<TrainingModel>> = getTrainingUseCase.invoke()
 
+    // Crea un nuevo entrenamiento y una semana asociada, y emite el ID creado
     fun insertTrainingAndWeek(trainingName: String) {
         viewModelScope.launch {
             try {
@@ -104,12 +108,14 @@ class TrainingViewModel @Inject constructor(
         getTrainingUseCase.deleteAll()
     }
 
+    // Elimina un entrenamiento
     fun deleteTraining(training: TrainingModel) {
         viewModelScope.launch {
             getTrainingUseCase.deleteTraining(training)
         }
     }
 
+    // Copia un entrenamiento con todas sus semanas y rutinas
     fun copyTraining(training: TrainingsWithWeekAndRoutineCounts) {
         viewModelScope.launch {
             val trainingsWithWeekAndRoutine =
@@ -125,15 +131,16 @@ class TrainingViewModel @Inject constructor(
 
             getWeekUseCase.createCopyOfWeek(oldWeekId, newTrainingId, CopyOption.CopyAllDetails)
         }
-
     }
 
+    // Cambia el nombre de un entrenamiento
     fun changeNameTraining(training: TrainingModel) {
         viewModelScope.launch {
             getTrainingUseCase.changeNameTraining(training)
         }
     }
 
+    // Sube un entrenamiento a la nube y emite su código si tiene éxito
     fun uploadTrainingData(training: TrainingModel) {
         val name = training.name
 
@@ -152,7 +159,8 @@ class TrainingViewModel @Inject constructor(
         }
     }
 
-    fun uploadTrainingDataFlow(training: TrainingModel): Flow<Pair<String, String>?> = flow{
+    // Alternativa: obtener flujo de código generado al subir
+    fun uploadTrainingDataFlow(training: TrainingModel): Flow<Pair<String, String>?> = flow {
         val name = training.name
         viewModelScope.launch {
             try {
@@ -169,6 +177,7 @@ class TrainingViewModel @Inject constructor(
         }
     }
 
+    // Descarga un entrenamiento de la nube usando un código y actualiza el estado
     fun downLoadTraining(code: String) {
         viewModelScope.launch {
             try {
@@ -178,12 +187,13 @@ class TrainingViewModel @Inject constructor(
                 _downloadState.value = Result.failure(e)
             } catch (e: NetworkException) {
                 _downloadState.value = Result.failure(e)
-            } catch (e: Exception){
+            } catch (e: Exception) {
                 _downloadState.value = if (e.cause != null) {
                     Result.failure(e.cause!!)
                 } else {
                     Result.failure(e)
-                }            }
+                }
+            }
         }
     }
 }

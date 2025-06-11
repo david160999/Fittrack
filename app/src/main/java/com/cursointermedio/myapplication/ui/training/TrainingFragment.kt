@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -28,10 +27,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.cursointermedio.myapplication.utils.extensions.setupTouchAction
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
 
-
+// Fragmento principal para mostrar y gestionar la lista de entrenamientos del usuario.
+// Permite crear, copiar, compartir, descargar e eliminar entrenamientos, así como navegar a las semanas de cada uno.
 @AndroidEntryPoint
 class TrainingFragment @Inject constructor() : Fragment() {
 
@@ -42,22 +40,22 @@ class TrainingFragment @Inject constructor() : Fragment() {
 
     private lateinit var adapter: TrainingAdapter
 
+    // Guarda el tamaño de la lista como String para usarlo como sugerencia en el diálogo de nuevo entrenamiento
     private lateinit var sizeListTraining: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initUI()
-
     }
 
+    // Inicializa la UI y listeners principales
     private fun initUI() {
         initList()
         initListener()
     }
 
+    // Inicializa el RecyclerView y su adaptador
     private fun initList() {
-
         adapter = TrainingAdapter(
             onItemSelected = { trainingId ->
                 navigateToWeek(trainingId)
@@ -81,6 +79,7 @@ class TrainingFragment @Inject constructor() : Fragment() {
         binding.rvTraining.adapter = adapter
     }
 
+    // Configura los listeners de los botones y observa los estados del ViewModel
     private fun initListener() {
         binding.ivPlus.setupTouchAction {
             createTrainingDialog()
@@ -95,11 +94,12 @@ class TrainingFragment @Inject constructor() : Fragment() {
         observeTrainingUiState()
     }
 
+    // Observa el resultado de la descarga de un entrenamiento
     private fun observeDownloadTraining() {
         trainingViewModel.downloadState.observe(viewLifecycleOwner) { result ->
             result?.let {
                 it.onSuccess {
-
+                    // Puedes mostrar feedback de éxito si lo deseas
                 }
                 it.onFailure { error ->
                     val message = error.message ?: "Ha ocurrido un error inesperado 😥"
@@ -109,18 +109,21 @@ class TrainingFragment @Inject constructor() : Fragment() {
         }
     }
 
+    // Muestra el shimmer mientras se carga la lista
     private fun showLoading() {
         binding.shimmerLayout.startShimmer()
         binding.shimmerLayout.visibility = View.VISIBLE
         binding.rvTraining.visibility = View.GONE
     }
 
+    // Oculta el shimmer al terminar la carga
     private fun hideLoading() {
         binding.shimmerLayout.stopShimmer()
         binding.shimmerLayout.visibility = View.GONE
         binding.rvTraining.visibility = View.VISIBLE
     }
 
+    // Observa el estado principal de la lista de entrenamientos
     private fun observeTrainingUiState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -131,6 +134,7 @@ class TrainingFragment @Inject constructor() : Fragment() {
         }
     }
 
+    // Observa el nuevo ID de entrenamiento insertado y navega automáticamente si es exitoso
     private fun observeTrainingId() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -146,22 +150,22 @@ class TrainingFragment @Inject constructor() : Fragment() {
         }
     }
 
+    // Observa el resultado de compartir un entrenamiento (nombre y código generado)
     private fun observeTrainingHashCode() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                trainingViewModel.trainingHashCode.collect{ hash ->
+                trainingViewModel.trainingHashCode.collect { hash ->
                     hash?.let {
                         val trainingName = hash.first
                         val code = hash.second
-
                         shareTrainingDialog(trainingName = trainingName, code = code)
                     }
                 }
             }
         }
-
     }
 
+    // Muestra Snackbar de error o información
     private fun showSnackbar(msg: String) {
         Snackbar.make(binding.root, msg, Snackbar.LENGTH_LONG)
             .setBackgroundTint(ContextCompat.getColor(binding.root.context, R.color.redDark))
@@ -169,6 +173,7 @@ class TrainingFragment @Inject constructor() : Fragment() {
             .show()
     }
 
+    // Maneja los distintos estados de UI de la lista de entrenamientos
     private fun handleUiState(state: TrainingsUiState) {
         when (state) {
             is TrainingsUiState.Loading -> showLoading()
@@ -179,7 +184,6 @@ class TrainingFragment @Inject constructor() : Fragment() {
                 binding.rvTraining.scrollToPosition(0)
                 binding.rvTraining.smoothScrollToPosition(0)
             }
-
             is TrainingsUiState.Error -> {
                 hideLoading()
                 showSnackbar(state.message)
@@ -188,6 +192,7 @@ class TrainingFragment @Inject constructor() : Fragment() {
         }
     }
 
+    // Navega al fragmento de semanas del entrenamiento seleccionado
     private fun navigateToWeek(trainingId: Long) {
         findNavController().navigate(
             TrainingFragmentDirections.actionTrainingFragmentToWeekFragment(
@@ -196,6 +201,7 @@ class TrainingFragment @Inject constructor() : Fragment() {
         )
     }
 
+    // Muestra el diálogo para crear un nuevo entrenamiento
     private fun createTrainingDialog() {
         val dialog = TrainingDialog(
             onSaveClickListener = { name ->
@@ -205,6 +211,7 @@ class TrainingFragment @Inject constructor() : Fragment() {
         dialog.show(parentFragmentManager, "dialog")
     }
 
+    // Muestra el diálogo para importar un entrenamiento por código
     private fun downloadTrainingDialog() {
         val dialog = DownloadTrainingDialog(
             onSaveClickListener = { code ->
@@ -214,11 +221,13 @@ class TrainingFragment @Inject constructor() : Fragment() {
         dialog.show(parentFragmentManager, "dialog")
     }
 
+    // Muestra el diálogo para compartir un entrenamiento (ver código)
     private fun shareTrainingDialog(trainingName: String, code: String) {
         val dialog = ShareTrainingDialog(trainingName = trainingName, code = code)
         dialog.show(parentFragmentManager, "dialog")
     }
 
+    // Muestra el diálogo para confirmar la eliminación de un entrenamiento
     private fun saveDeleteTraining(training: TrainingModel) {
         val dialog = AlertDialog.Builder(context, R.style.AlertDialogTheme)
             .setTitle(getString(R.string.training_dialog_delete_title))
@@ -233,30 +242,30 @@ class TrainingFragment @Inject constructor() : Fragment() {
             .show()
     }
 
+    // Infla el layout del fragmento con ViewBinding
     override fun onCreateView(
-
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentTrainingBinding.inflate(
             inflater, container, false
         )
-        val navController = findNavController()
         return binding.root
     }
 
+    // Limpia el binding al destruir la vista
     override fun onDestroyView() {
         super.onDestroyView()
-        // Limpiar el binding cuando la vista se destruya
         _binding = null
     }
 
+    // Inicia o detiene la animación shimmer según el ciclo de vida
     override fun onStart() {
         super.onStart()
-        binding.shimmerLayout.startShimmer() // Inicia la animación al iniciar el fragmento
+        binding.shimmerLayout.startShimmer()
     }
 
     override fun onStop() {
         super.onStop()
-        binding.shimmerLayout.stopShimmer() // Detiene la animación al detener el fragmento
+        binding.shimmerLayout.stopShimmer()
     }
 }

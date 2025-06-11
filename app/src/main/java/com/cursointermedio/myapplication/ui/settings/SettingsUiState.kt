@@ -1,8 +1,6 @@
 package com.cursointermedio.myapplication.ui.settings
 
 import com.cursointermedio.myapplication.domain.model.UserSettings
-import com.cursointermedio.myapplication.domain.model.WeekWithRoutinesModel
-
 
 sealed class SettingsUiState {
     data object Loading : SettingsUiState()

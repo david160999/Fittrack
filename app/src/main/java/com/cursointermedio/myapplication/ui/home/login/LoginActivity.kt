@@ -6,33 +6,24 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.lifecycleScope
 import com.cursointermedio.myapplication.R
-import com.cursointermedio.myapplication.data.repository.UserPreferencesRepositoryImpl
 import com.cursointermedio.myapplication.databinding.ActivityLoginBinding
 import com.cursointermedio.myapplication.domain.model.UserSettings
-import com.cursointermedio.myapplication.domain.useCase.GetExercisesUseCase
-import com.cursointermedio.myapplication.domain.useCase.GetRoutineUseCase
 import com.cursointermedio.myapplication.domain.useCase.GetUserPreferencesUseCase
 import com.cursointermedio.myapplication.ui.home.MainActivity
-import com.cursointermedio.myapplication.ui.home.dialog.TracDialog
 import com.cursointermedio.myapplication.ui.settings.Language
 import com.cursointermedio.myapplication.utils.extensions.setupTouchAction
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
 
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
@@ -44,6 +35,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var googleSignInClient: GoogleSignInClient
     private val auth = FirebaseAuth.getInstance()
 
+    // Launcher para el flujo de autenticación con Google
     private val googleSignInLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
@@ -66,6 +58,7 @@ class LoginActivity : AppCompatActivity() {
             goToMainScreen()
         }
 
+        // Configuración para Google Sign-In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id)) // Del google-services.json
             .requestEmail()
@@ -73,12 +66,13 @@ class LoginActivity : AppCompatActivity() {
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
+        // Botón de login con Google
         binding.btnGoogleSignIn.setOnClickListener {
             val signInIntent = googleSignInClient.signInIntent
             googleSignInLauncher.launch(signInIntent)
         }
 
-        // Lógica botón iniciar sesión manual
+        // Botón de login manual
         binding.btnManualLogin.setOnClickListener {
             val password = binding.etPassword.text.toString().trim()
             val email = binding.etEmail.text.toString().trim()
@@ -88,14 +82,14 @@ class LoginActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, getString(R.string.login_complete_fields), Toast.LENGTH_SHORT).show()
             }
-
-
         }
 
+        // Botón de registro manual (abre diálogo)
         binding.btnManualRegister.setOnClickListener {
             createRegisterDialog()
         }
 
+        // Recuperación de contraseña
         binding.forgotPasswordText.setupTouchAction {
             val email = binding.etEmail.text.toString()
             if (email.isNotEmpty()){
@@ -112,6 +106,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    // Autenticación con Google en Firebase
     private fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
@@ -134,6 +129,7 @@ class LoginActivity : AppCompatActivity() {
             }
     }
 
+    // Crea una nueva cuenta de usuario
     private fun createAccount(username: String, email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
@@ -156,6 +152,7 @@ class LoginActivity : AppCompatActivity() {
             }
     }
 
+    // Login manual con email y contraseña
     private fun signIn(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
@@ -168,14 +165,17 @@ class LoginActivity : AppCompatActivity() {
             }
     }
 
+    // Crea el diálogo de registro manual
     private fun createRegisterDialog() {
         val dialog = AddRegisterDialog(
             onItemSave = { username, email, password ->
                 createAccount(username = username, email = email, password = password)
-            }, context = applicationContext)
+            }
+        )
         dialog.show(supportFragmentManager, "dialog")
     }
 
+    // Envía un correo de recuperación de contraseña
     private fun sendRecuperationEmail(email: String, onResult: (Boolean, String?) -> Unit) {
         val auth = FirebaseAuth.getInstance()
         auth.sendPasswordResetEmail(email)
@@ -188,9 +188,9 @@ class LoginActivity : AppCompatActivity() {
             }
     }
 
+    // Abre la pantalla principal y cierra el login
     private fun goToMainScreen() {
         val intent = Intent(this, MainActivity::class.java)
-
         startActivity(intent)
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         finish()

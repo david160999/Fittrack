@@ -26,12 +26,10 @@ class ExerciseAdapter(
     class ExerciseDiffCallback : DiffUtil.ItemCallback<ExerciseModel>() {
 
         override fun areItemsTheSame(oldItem: ExerciseModel, newItem: ExerciseModel): Boolean {
-            // Compara los IDs para saber si son el mismo ejercicio
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: ExerciseModel, newItem: ExerciseModel): Boolean {
-            // Compara el contenido completo, incluido detailCount
             return oldItem == newItem
         }
     }

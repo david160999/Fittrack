@@ -1,8 +1,6 @@
 package com.cursointermedio.myapplication.ui.training.adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -12,8 +10,8 @@ import com.cursointermedio.myapplication.R
 import com.google.android.material.divider.MaterialDivider
 
 class TrainingMenuAdapter(
-    private val items: List<String>,
-    private val onClick: (Int) -> Unit
+    private val items: List<String>,            // Opciones del menú (texto)
+    private val onClick: (Int) -> Unit          // Acción al hacer click en una opción (por posición)
 ) : RecyclerView.Adapter<TrainingMenuAdapter.ViewHolder>() {
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -35,20 +33,21 @@ class TrainingMenuAdapter(
         return ViewHolder(view)
     }
 
+    // Asocia datos y estilos a cada ítem del menú
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val context = holder.itemView.context
         val isLast = position == items.lastIndex
 
-        // Set text
+        // Texto y color: la última opción es roja (típicamente "Eliminar")
         holder.text.text = items[position]
         holder.text.setTextColor(
             ContextCompat.getColor(context, if (isLast) R.color.red else R.color.black)
         )
 
-        // Set visibility of divider
+        // Oculta el divisor en la última opción
         holder.divider.visibility = if (isLast) View.GONE else View.VISIBLE
 
-        // Set background
+        // Fondo personalizado según posición (primero, último o intermedio)
         val backgroundRes = when (position) {
             0 -> R.drawable.item_bg_first_menu_training
             items.lastIndex -> R.drawable.item_bg_last_menu_training
@@ -56,7 +55,7 @@ class TrainingMenuAdapter(
         }
         holder.itemView.background = ContextCompat.getDrawable(context, backgroundRes)
 
-        // Accessibility
+        // Accesibilidad: descripción hablada para cada opción
         holder.text.contentDescription = "Training menu option ${items[position]}"
     }
 

@@ -7,7 +7,6 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.cursointermedio.myapplication.R
-import com.google.android.material.divider.MaterialDivider
 
 class HomeMenuOptionAdapter(
     private val items: List<String>,

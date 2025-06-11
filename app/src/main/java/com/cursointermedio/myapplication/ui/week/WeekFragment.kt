@@ -2,7 +2,6 @@ package com.cursointermedio.myapplication.ui.week
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -34,6 +33,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+// Fragmento encargado de mostrar y gestionar las rutinas de una semana específica dentro de un entrenamiento.
+// Permite visualizar, reordenar, agregar, copiar, eliminar rutinas y asignar fechas en calendario.
 
 @AndroidEntryPoint
 class WeekFragment @Inject constructor() : Fragment() {
@@ -57,24 +58,27 @@ class WeekFragment @Inject constructor() : Fragment() {
 
     private var notRoutineLayout = true
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         currentFeature.setFeature(WeekFeature)
         trainingId = args.id
         initUI()
         initListener()
-
     }
 
+    // Inicializa listeners de botones y observadores de LiveData/StateFlow
     private fun initListener() {
+        // Agregar/cambiar semana
         binding.ivPlusWeek.setupTouchAction {
             createDialog()
         }
 
+        // Agregar rutina
         binding.ivWeekAddRoutine.setupTouchAction {
             createRoutineDialog()
         }
+
+        // Activar modo edición para reordenar rutinas
         binding.btnWeekEdit.setupTouchAction {
             binding.btnWeekEdit.visibility = View.GONE
             binding.btnWeekOK.visibility = View.VISIBLE
@@ -83,6 +87,8 @@ class WeekFragment @Inject constructor() : Fragment() {
             binding.rvRoutine.layoutManager = layoutManager
             binding.rvRoutine.adapter = dragAdapter
         }
+
+        // Confirmar orden de rutinas
         binding.btnWeekOK.setupTouchAction {
             binding.btnWeekEdit.visibility = View.VISIBLE
             binding.btnWeekOK.visibility = View.GONE
@@ -94,23 +100,29 @@ class WeekFragment @Inject constructor() : Fragment() {
             binding.rvRoutine.adapter = adapter
         }
 
+        // Abrir diálogo de calendario
         binding.btnWeekCalendar.setupTouchAction {
             addToCalendarDialog()
         }
 
+        // Selecciona semana desde el menú desplegable
         binding.dropMenu.setOnItemClickListener { parent, view, position, id ->
             numWeekSpinnerSelected = position
             updateRoutineAdapter()
         }
 
+        // Volver atrás
         binding.tvTitle.setupTouchAction {
             findNavController().popBackStack()
         }
+
+        // Observadores de datos
         observeSpinnerList()
         observeWeekUiState()
         observeTrainingName()
     }
 
+    // Observa el nombre del entrenamiento y lo actualiza en la cabecera
     private fun observeTrainingName() {
         lifecycleScope.launch {
             weekViewModel.trainingName.collect { name ->
@@ -119,10 +131,10 @@ class WeekFragment @Inject constructor() : Fragment() {
         }
     }
 
+    // Observa la lista de semanas (para el menú desplegable)
     private fun observeSpinnerList() {
         lifecycleScope.launchWhenStarted {
             weekViewModel.spinnerList.collect { list ->
-                // Solo actualizar los datos del Adapter, sin recrearlo
                 spinnerAdapter.clear()
                 spinnerAdapter.addAll(list)
                 setupWeekSpinnerLastItem()
@@ -131,6 +143,7 @@ class WeekFragment @Inject constructor() : Fragment() {
         }
     }
 
+    // Observa el estado de la UI de las semanas y gestiona la vista según loading, éxito o error
     private fun observeWeekUiState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -141,19 +154,16 @@ class WeekFragment @Inject constructor() : Fragment() {
         }
     }
 
-    private fun showLoading() {
-    }
+    private fun showLoading() { /* Implementar shimmer si se desea */ }
+    private fun hideLoading() { /* Implementar shimmer si se desea */ }
 
-    private fun hideLoading() {
-    }
-
+    // Cambia la UI según el estado de la semana
     private fun handleUiState(state: WeekUiState) {
         when (state) {
             is WeekUiState.Loading -> showLoading()
             is WeekUiState.Success -> {
                 hideLoading()
                 updateRoutineAdapter()
-
             }
             is WeekUiState.Error -> {
                 hideLoading()
@@ -162,6 +172,7 @@ class WeekFragment @Inject constructor() : Fragment() {
         }
     }
 
+    // Muestra layout cuando hay rutinas
     private fun disableLayoutNotRoutines() {
         binding.flWeekRoutineShimmer.visibility = View.GONE
         binding.ivPlusWeek.visibility = View.VISIBLE
@@ -170,6 +181,7 @@ class WeekFragment @Inject constructor() : Fragment() {
         binding.rvRoutine.visibility = View.VISIBLE
     }
 
+    // Muestra layout vacío cuando no hay rutinas
     private fun setLayoutNotRoutines() {
         binding.flWeekRoutineShimmer.visibility = View.VISIBLE
         binding.rvRoutine.visibility = View.GONE
@@ -178,8 +190,8 @@ class WeekFragment @Inject constructor() : Fragment() {
         binding.btnWeekEdit.visibility = View.GONE
     }
 
+    // Actualiza los adaptadores según la rutina seleccionada en el spinner
     private fun updateRoutineAdapter() {
-
         val updatedRoutine = weekViewModel.weeks.value.getOrNull(numWeekSpinnerSelected)?.routineList.orEmpty()
 
         if (updatedRoutine.isEmpty()) {
@@ -192,10 +204,11 @@ class WeekFragment @Inject constructor() : Fragment() {
 
         dragAdapter.updateList(updatedRoutine)
         adapter.submitList(updatedRoutine)
-
     }
 
+    // Inicializa adaptadores, layoutManager y el spinner de semanas
     private fun initUI() {
+        // Adaptador de rutinas (modo visualización)
         adapter = RoutineAdapter(
             onItemSelected = { routineId ->
                 navigateToRoutine(routineId)
@@ -218,6 +231,7 @@ class WeekFragment @Inject constructor() : Fragment() {
         binding.rvRoutine.layoutManager = layoutManager
         binding.rvRoutine.adapter = adapter
 
+        // Spinner de semanas
         spinnerAdapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_dropdown_item,
@@ -226,16 +240,17 @@ class WeekFragment @Inject constructor() : Fragment() {
         val dropMenu = binding.dropMenu
         dropMenu.setAdapter(spinnerAdapter)
 
+        // Adaptador de drag para reordenar rutinas
         dragAdapter = DragRoutineAdapter()
         setUpItemTouchHelper()
-
     }
 
+    // Configura el ItemTouchHelper para arrastrar y reordenar rutinas
     private fun setUpItemTouchHelper() {
         val updatedRoutine = weekViewModel.weeks.value.getOrNull(numWeekSpinnerSelected)?.routineList.orEmpty()
         dragAdapter.updateList(updatedRoutine)
 
-        // Setup ItemTouchHelper
+        // Setup ItemTouchHelper con animaciones visuales
         val callback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0
         ) {
@@ -254,22 +269,24 @@ class WeekFragment @Inject constructor() : Fragment() {
                 // No swipe action
             }
 
+            // Eleva y resalta el item al arrastrar
             override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
                 super.onSelectedChanged(viewHolder, actionState)
                 if (actionState == ItemTouchHelper.ACTION_STATE_DRAG && viewHolder != null) {
-                    viewHolder.itemView.elevation = 24f  // Puedes ajustar la elevación a tu gusto
+                    viewHolder.itemView.elevation = 24f
                     viewHolder.itemView.translationZ = 24f
-                    viewHolder.itemView.alpha = 0.7f // más bajo = más translúcido
+                    viewHolder.itemView.alpha = 0.7f
                     viewHolder.itemView.scaleX = 1.05f
                     viewHolder.itemView.scaleY = 1.05f
                 }
             }
 
+            // Restaura el estado visual al soltar
             override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
                 super.clearView(recyclerView, viewHolder)
-                viewHolder.itemView.elevation = 0f // Restaurar a su valor original
+                viewHolder.itemView.elevation = 0f
                 viewHolder.itemView.translationZ = 0f
-                viewHolder.itemView.alpha = 1f // más bajo = más translúcido
+                viewHolder.itemView.alpha = 1f
                 viewHolder.itemView.scaleX = 1f
                 viewHolder.itemView.scaleY = 1f
             }
@@ -279,16 +296,9 @@ class WeekFragment @Inject constructor() : Fragment() {
         itemTouchHelper.attachToRecyclerView(binding.rvRoutine)
     }
 
-//    private fun getSelectedItemFromDropMenu(): Int {
-//        val weekTitles = weekViewModel.spinnerList.value
-//        val selectedText = binding.dropMenu.text.toString()
-//
-//        return weekTitles.indexOf(selectedText)
-//    }
-
+    // Selecciona la última semana en el spinner (al añadir una nueva)
     private fun setupWeekSpinnerLastItem() {
         val dropMenu = binding.dropMenu
-
         val itemCount = binding.dropMenu.adapter?.count ?: 0
         if (itemCount > 0) {
             val item = dropMenu.adapter.getItem(itemCount - 1)
@@ -297,7 +307,7 @@ class WeekFragment @Inject constructor() : Fragment() {
         }
     }
 
-
+    // Diálogo para copiar la semana actual (con opciones)
     private fun createDialog() {
         val weekId = weekViewModel.weeks.value.getOrNull(numWeekSpinnerSelected)?.week?.weekId
 
@@ -307,14 +317,12 @@ class WeekFragment @Inject constructor() : Fragment() {
                     weekId, trainingId, option
                 )
             }
-        }
-        )
-
+        })
         dialog.show(parentFragmentManager, "dialog")
     }
 
+    // Diálogo para asignar fechas de calendario a las rutinas
     private fun addToCalendarDialog() {
-
         val dialog = AddCalendarDialog(
             onSaveClickListener = { routineList, removeDateList ->
                 weekViewModel.insertDatesToRoutines(
@@ -324,10 +332,10 @@ class WeekFragment @Inject constructor() : Fragment() {
             },
             weekViewModel.weeks.value[numWeekSpinnerSelected].routineList
         )
-
         dialog.show(parentFragmentManager, "dialog")
     }
 
+    // Diálogo para crear una nueva rutina en la semana
     private fun createRoutineDialog() {
         val weekId = weekViewModel.weeks.value.getOrNull(numWeekSpinnerSelected)?.week?.weekId
 
@@ -344,6 +352,7 @@ class WeekFragment @Inject constructor() : Fragment() {
         }
     }
 
+    // Diálogo para confirmar borrado de una rutina
     private fun saveDeleteTraining(routine: RoutineModel) {
         val dialog = AlertDialog.Builder(context, R.style.AlertDialogTheme)
             .setTitle(getString(R.string.week_dialog_delete_title))
@@ -358,6 +367,7 @@ class WeekFragment @Inject constructor() : Fragment() {
             .show()
     }
 
+    // Navega al detalle de la rutina seleccionada
     private fun navigateToRoutine(routineId: Long) {
         findNavController().navigate(
             WeekFragmentDirections.actionWeekFragmentToRoutineFragment(
@@ -367,7 +377,6 @@ class WeekFragment @Inject constructor() : Fragment() {
     }
 
     override fun onCreateView(
-
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentWeekBinding.inflate(
@@ -381,6 +390,7 @@ class WeekFragment @Inject constructor() : Fragment() {
         _binding = null
     }
 
+    // Al volver al fragmento, reinicializa UI y adaptadores
     override fun onResume() {
         super.onResume()
         initUI()
@@ -388,5 +398,3 @@ class WeekFragment @Inject constructor() : Fragment() {
         notRoutineLayout = true
     }
 }
-
-

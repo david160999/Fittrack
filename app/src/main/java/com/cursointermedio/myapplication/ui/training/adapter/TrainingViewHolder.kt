@@ -23,11 +23,13 @@ import com.cursointermedio.myapplication.domain.model.toDomain
 import com.cursointermedio.myapplication.utils.extensions.setupTouchAction
 import com.cursointermedio.myapplication.utils.extensions.setupTouchActionRecyclerView
 
-
+// ViewHolder para un ítem de entrenamiento en el RecyclerView.
+// Permite mostrar información, cambiar nombre, y mostrar un menú contextual con acciones.
 class TrainingViewHolder(
     private val binding: ItemTrainingBinding
-)  : RecyclerView.ViewHolder(binding.root) {
+) : RecyclerView.ViewHolder(binding.root) {
 
+    // EditText para cambiar el nombre del entrenamiento
     private val editText: EditText = binding.root.findViewById(R.id.editTextTitleItemTraining)
 
     @SuppressLint("ClickableViewAccessibility")
@@ -41,14 +43,17 @@ class TrainingViewHolder(
         val numWeeks = trainingItemResponse.numWeeks
         val numRoutines = trainingItemResponse.numRoutines
 
+        // Muestra nombre, número de rutinas y semanas
         binding.tvTitle.text = trainingItemResponse.training.name
         binding.tvNumTrainings.text = context.getString(R.string.training_numDays, numRoutines)
         binding.tvNumCurrentsWeeks.text = context.getString(R.string.training_numWeeks, numWeeks)
 
-        binding.root.setupTouchActionRecyclerView() {
+        // Acción al tocar el card principal: selecciona el ítem
+        binding.root.setupTouchActionRecyclerView {
             onItemSelected(trainingItemResponse.training.trainingId!!)
         }
 
+        // Acción para abrir el menú contextual (editar, copiar, compartir, eliminar)
         binding.ivTrainingOptions.setupTouchAction {
             showMenu(
                 binding.root,
@@ -58,9 +63,9 @@ class TrainingViewHolder(
                 onItemSelected
             )
         }
-
     }
 
+    // Muestra el menú contextual de opciones del entrenamiento
     private fun showMenu(
         view: View,
         context: Context,
@@ -68,9 +73,7 @@ class TrainingViewHolder(
         menuActions: TrainingMenuActions,
         onItemSelected: (Long) -> Unit
     ) {
-
         val popupView = LayoutInflater.from(context).inflate(R.layout.popup_menu_training, null)
-
         val popupWindow = PopupWindow(
             popupView,
             LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -78,9 +81,10 @@ class TrainingViewHolder(
             true
         )
 
-        val recyclerView = popupView.findViewById<RecyclerView>((R.id.rvTrainingMenu))
+        val recyclerView = popupView.findViewById<RecyclerView>(R.id.rvTrainingMenu)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
+        // Opciones: Cambiar nombre, Copiar, Compartir, Eliminar
         val items = listOf(
             ContextCompat.getString(context, R.string.training_menuOption1),
             ContextCompat.getString(context, R.string.training_menuOption2),
@@ -96,7 +100,6 @@ class TrainingViewHolder(
                     trainingItemResponse,
                     onItemSelected
                 )
-
                 1 -> menuActions.onCopy(trainingItemResponse)
                 2 -> menuActions.onShare(trainingItemResponse.training.toDomain())
                 3 -> menuActions.onEliminate(trainingItemResponse.training.toDomain())
@@ -112,35 +115,32 @@ class TrainingViewHolder(
         popupWindow.softInputMode = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
         popupWindow.animationStyle = R.style.MenuTRainingPopupFadeAnimation
 
-        if (isItemBelowThreshold()){
+        // Decide posición del menú contextual
+        if (isItemBelowThreshold()) {
             popupWindow.showAsDropDown(view, 450, -630)
-        }else{
+        } else {
             popupWindow.showAsDropDown(view, 450, -30)
         }
-
-
     }
 
+    // Verifica si el ítem está cerca de la parte baja de la pantalla para no tapar el menú
     private fun isItemBelowThreshold(): Boolean {
         val location = IntArray(2)
         binding.root.getLocationOnScreen(location)
 
-        val itemTop = location[1] // Coordenada Y del top del item
-        val itemBottom = itemTop + binding.root.height // Coordenada Y del bottom del item
+        val itemTop = location[1] // Coordenada Y top
+        val itemBottom = itemTop + binding.root.height // Coordenada Y bottom
 
         val screenHeight = Resources.getSystem().displayMetrics.heightPixels
         val percentageThreshold = 0.75f
 
         val threshold = screenHeight * percentageThreshold
 
-        // Verificar si el borde inferior del item ha superado el umbral (80%)
-        return if (itemBottom > threshold) {
-            true
-        } else {
-            false
-        }
+        // True si el borde inferior del ítem supera el 75% de la pantalla
+        return itemBottom > threshold
     }
 
+    // Habilita la edición del nombre del entrenamiento
     private fun changeName(
         training: TrainingModel,
         menuActions: TrainingMenuActions,
@@ -162,12 +162,13 @@ class TrainingViewHolder(
                 binding.tvTitle.text = name
             }
             disableLayoutChangeName()
-            binding.root.setupTouchAction() {
+            binding.root.setupTouchAction {
                 onItemSelected(trainingItemResponse.training.trainingId!!)
             }
         }
     }
 
+    // Cambia la UI para mostrar el EditText y ocultar el título, y oculta el menú de opciones
     @SuppressLint("ClickableViewAccessibility")
     private fun activateLayoutChangeName() {
         binding.root.setOnTouchListener(null)
@@ -175,7 +176,7 @@ class TrainingViewHolder(
         binding.root.setOnClickListener {
             editText.post {
                 if (!editText.hasFocus()) {
-                    editText.requestFocus() // make sure it's focused
+                    editText.requestFocus()
                     ViewCompat.getWindowInsetsController(editText)
                         ?.show(WindowInsetsCompat.Type.ime())
                 }
@@ -194,8 +195,8 @@ class TrainingViewHolder(
         changeLayout()
     }
 
+    // Restaura la UI al estado normal y oculta el teclado
     private fun disableLayoutChangeName() {
-
         binding.ivTrainingOptions.visibility = View.VISIBLE
         binding.ivTrainingSave.visibility = View.GONE
 
@@ -210,6 +211,7 @@ class TrainingViewHolder(
         changeLayout()
     }
 
+    // Cambia la relación de constraints según si está visible el EditText o el título
     private fun changeLayout() {
         val constraintSet = ConstraintSet()
         constraintSet.clone(binding.clItemTraining)
@@ -234,5 +236,3 @@ class TrainingViewHolder(
         constraintSet.applyTo(binding.clItemTraining)
     }
 }
-
-

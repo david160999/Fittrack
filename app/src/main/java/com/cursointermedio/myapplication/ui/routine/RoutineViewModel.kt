@@ -4,11 +4,8 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cursointermedio.myapplication.data.database.entities.ExerciseDetailsCount
 import com.cursointermedio.myapplication.data.database.entities.RoutineExerciseCrossRef
-import com.cursointermedio.myapplication.data.database.entities.RoutineWithExercises
 import com.cursointermedio.myapplication.domain.model.ExerciseModel
-import com.cursointermedio.myapplication.domain.model.RoutineModel
 import com.cursointermedio.myapplication.domain.useCase.GetExercisesUseCase
 import com.cursointermedio.myapplication.domain.useCase.GetRoutineUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,26 +18,33 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+// ViewModel para gestionar la lógica de una rutina y sus ejercicios asociados.
+// Permite observar los ejercicios de una rutina, eliminarlos y actualizar su orden.
 @HiltViewModel
 class RoutineViewModel @Inject constructor(
-    private val getRoutineUseCase: GetRoutineUseCase,
-    private val getExercisesUseCase: GetExercisesUseCase,
-    private val savedStateHandle: SavedStateHandle
-
+    private val getRoutineUseCase: GetRoutineUseCase,       // Caso de uso para obtener y modificar rutinas
+    private val getExercisesUseCase: GetExercisesUseCase,   // Caso de uso para obtener datos de ejercicios
+    private val savedStateHandle: SavedStateHandle          // Manejador de estado para recuperar argumentos (ID de rutina)
 ) : ViewModel() {
 
+    // ID de la rutina que se está mostrando (obtenido por navegación)
     val routineId: Long = savedStateHandle.get<Long>("id") ?: -1L
 
+    // Estado observable de la rutina y sus ejercicios (Loading, Success, Error)
     private val _routineWithExercise = MutableStateFlow<RoutineUiState>(RoutineUiState.Loading)
     val routineWithExercise: StateFlow<RoutineUiState> = _routineWithExercise
 
-
     init {
+        // Al iniciar el ViewModel, observa la rutina y sus ejercicios en tiempo real
         viewModelScope.launch {
             getRoutineUseCase.getRoutineWithOrderedExercisesFlow(routineId)
                 .flowOn(Dispatchers.IO)
-                .catch { e -> _routineWithExercise.value = RoutineUiState.Error(e.message ?: "Ha ocurrido un error inesperado.") }
+                .catch { e ->
+                    // Si ocurre un error, lo refleja en el estado
+                    _routineWithExercise.value = RoutineUiState.Error(e.message ?: "Ha ocurrido un error inesperado.")
+                }
                 .collectLatest { routine ->
+                    // Por cada ejercicio, obtiene el conteo de detalles y lo añade al modelo
                     val updatedExercises = routine.exercises.mapNotNull { exercise ->
                         val exerciseId = exercise.id
                         val routineId = routine.routine.routineId
@@ -54,12 +58,13 @@ class RoutineViewModel @Inject constructor(
                             null // Ignora si falta un ID
                         }
                     }
+                    // Emite el estado actualizado con los ejercicios enriquecidos
                     _routineWithExercise.value = RoutineUiState.Success(routine.copy(exercises = updatedExercises))
                 }
         }
     }
 
-
+    // Elimina un ejercicio de la rutina
     fun deleteRoutine(exercise: ExerciseModel) {
         viewModelScope.launch {
             try {
@@ -74,18 +79,16 @@ class RoutineViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 Log.e("DeleteRoutine", "Error al eliminar ejercicio de rutina", e)
-
             }
         }
-
-
     }
 
-    fun changeOrderRoutines(exercise :List<ExerciseModel>) {
+    // Actualiza el orden de los ejercicios en la rutina después de un drag & drop
+    fun changeOrderRoutines(exercise: List<ExerciseModel>) {
         viewModelScope.launch {
             try {
-                exercise.mapIndexed { index, exercise->
-                    if (exercise.id != null){
+                exercise.mapIndexed { index, exercise ->
+                    if (exercise.id != null) {
                         getRoutineUseCase.updateOrderCrossRefRoutineExercise(exercise.id, routineId, index)
                         Log.e("REF", exercise.id.toString() + routineId.toString() + index)
                     }

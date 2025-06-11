@@ -8,7 +8,6 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import com.cursointermedio.myapplication.databinding.DialogDownloadTrainingBinding
-import com.cursointermedio.myapplication.databinding.DialogTrainingBinding
 import com.cursointermedio.myapplication.utils.extensions.setupTouchAction
 import android.content.Context
 import android.text.Editable
@@ -19,13 +18,16 @@ import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import com.cursointermedio.myapplication.R
 
+// Diálogo para descargar/importar un entrenamiento usando un código. Permite pegar desde el portapapeles y habilita el botón solo si hay texto.
 class DownloadTrainingDialog(
-    private val onSaveClickListener: (String) -> Unit
+    private val onSaveClickListener: (String) -> Unit    // Callback cuando se pulsa "Importar"
 ) : DialogFragment() {
 
+    // ViewBinding para acceder a las vistas del layout
     private var _binding: DialogDownloadTrainingBinding? = null
     private val binding get() = _binding!!
 
+    // Crea el diálogo personalizado con animación, fondo y tamaño ajustados
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = DialogDownloadTrainingBinding.inflate(layoutInflater)
 
@@ -40,18 +42,19 @@ class DownloadTrainingDialog(
         }
 
         initListeners()
-
         return dialog
-
     }
 
+    // Asigna listeners a los botones y controla la activación/desactivación según el texto
     private fun initListeners() {
+        // Botón de importar: pasa el código al callback y cierra el diálogo
         binding.btnImport.setupTouchAction {
             val code = binding.editTextCode.text.toString()
             onSaveClickListener.invoke(code)
             this.dialog?.dismiss()
         }
 
+        // Icono de pegar: pega texto del portapapeles en el EditText
         binding.textInputLayout.setEndIconOnClickListener {
             val clipboard = context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clipData = clipboard.primaryClip
@@ -61,25 +64,25 @@ class DownloadTrainingDialog(
                 binding.editTextCode.setText(pastedText)
             }
         }
+
+        // Habilita o deshabilita el botón según si hay texto, y cambia color
         binding.editTextCode.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // Aquí ya cambió el texto
                 val hasText = !s.isNullOrEmpty()
                 binding.btnImport.isEnabled = hasText
                 if (hasText){
                     binding.btnImport.setBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.icons))
-                }else{
+                } else {
                     binding.btnImport.setBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.Grey))
                 }
             }
-            override fun afterTextChanged(p0: Editable?) {
-            }
+            override fun afterTextChanged(p0: Editable?) { }
         })
     }
 
+    // Ajusta el tamaño del diálogo al mostrarse
     override fun onStart() {
         super.onStart()
         dialog?.window?.setLayout(

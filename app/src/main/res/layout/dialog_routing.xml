@@ -34,8 +34,9 @@
             app:boxBackgroundMode="outline"
             app:boxCornerRadiusBottomEnd="6dp"
             app:boxCornerRadiusBottomStart="6dp"
+            android:textColorHint="@color/secondary_text"
             app:boxCornerRadiusTopEnd="6dp"
-            app:boxCornerRadiusTopStart="6dp">>
+            app:boxCornerRadiusTopStart="6dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextRoutineName"

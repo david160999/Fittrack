@@ -10,9 +10,7 @@ import com.cursointermedio.myapplication.domain.model.DetailModel
 class ObjDetailAdapter(
     private val onItemChanged: (DetailModel) -> Unit,
     private val onItemChangedFragment: (Int) -> Unit
-
-)
-    : ListAdapter<DetailModel, ObjDetailViewHolder>(DetailDiffCallback()) {
+) : ListAdapter<DetailModel, ObjDetailViewHolder>(DetailDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ObjDetailViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_obj_details, parent, false)
@@ -25,7 +23,7 @@ class ObjDetailAdapter(
 
     class DetailDiffCallback : DiffUtil.ItemCallback<DetailModel>() {
         override fun areItemsTheSame(oldItem: DetailModel, newItem: DetailModel): Boolean {
-            return oldItem.detailsId == newItem.detailsId // o la propiedad única que identifique el item
+            return oldItem.detailsId == newItem.detailsId
         }
 
         override fun areContentsTheSame(oldItem: DetailModel, newItem: DetailModel): Boolean {

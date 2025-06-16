@@ -52,8 +52,10 @@
                 android:hint="@string/home_sub_add_notes"
                 android:textColor="@color/secondary_text"
                 android:textSize="14sp"
+                android:inputType="textMultiLine"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/ivSubNotes" />
+                app:layout_constraintStart_toEndOf="@+id/ivSubNotes"
+                android:paddingEnd="100dp"/>
 
             <TextView
                 android:id="@+id/btnSaveNotes"

@@ -20,6 +20,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
+import java.math.RoundingMode
 import javax.inject.Inject
 
 @HiltViewModel
@@ -55,10 +57,6 @@ class ExerciseViewModel @Inject constructor(
     private val _detailList = MutableStateFlow<DetailUiState>(DetailUiState.Loading)
     val detailList: StateFlow<DetailUiState> = _detailList
 
-    // Estado para la lista de detalles que maneja el adaptador
-    private val _detailResponseList = MutableStateFlow<List<DetailModel>>(emptyList())
-    val detailResponseList: StateFlow<List<DetailModel>> = _detailResponseList
-
     init {
         getDetailOfRoutineAndExerciseFlow() // Carga detalles del ejercicio en la rutina
         getNotesFromCrossRef()              // Carga notas asociadas al ejercicio
@@ -86,9 +84,11 @@ class ExerciseViewModel @Inject constructor(
                     (it.realWeight ?: 0) * (it.realReps ?: 0)
                 }
                 // Suma total de 1ERM usando la fórmula de Brzycki
-                val weight1ERM = detail.sumOf {
+                var weight1ERM = detail.sumOf {
                     E1RMFormulas.brzycki(it.realWeight ?: 0, it.realReps ?: 0)
                 }
+                weight1ERM = BigDecimal(weight1ERM).setScale(2, RoundingMode.HALF_UP).toDouble()
+
                 Triple(detail, "$weightTotal $unit", "$weight1ERM $unit")
             }
                 .flowOn(Dispatchers.IO)
@@ -98,7 +98,6 @@ class ExerciseViewModel @Inject constructor(
                 }
                 .collectLatest { (detailList, formattedWeight, weight1ERM) ->
                     _detailList.value = DetailUiState.Success(detailList)
-                    _detailResponseList.value = detailList
                     _exerciseStatistics.value = Pair(formattedWeight, weight1ERM)
                 }
         }
@@ -119,7 +118,6 @@ class ExerciseViewModel @Inject constructor(
                 getDetailsUseCase.insertDetailToRoutineExercise(newDetail)
             } catch (e: Exception) {
                 Log.e("insertDetailToRoutineExercise", "Error al insertar detalles", e)
-                Log.e("insertDetailToRoutineExercise", routineId.toString() + exerciseId.toString(), e)
             }
         }
     }
@@ -127,7 +125,7 @@ class ExerciseViewModel @Inject constructor(
     /**
      * Actualiza la lista de detalles en la base de datos.
      */
-    fun updateDetailToRoutineExercise(detail: List<DetailModel>) {
+    fun updateDetailToRoutineExercise(detail: DetailModel) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 getDetailsUseCase.updateDetailToRoutineExercise(detail)
@@ -194,16 +192,6 @@ class ExerciseViewModel @Inject constructor(
                 Log.e("updateNotesFromCrossRef", "Error al actualizar las notas del ejercicio", e)
             }
         }
-    }
-
-    /**
-     * Actualiza la lista de detalles en memoria, reemplazando el item modificado.
-     */
-    fun updateList(updatedItem: DetailModel) {
-        val updatedList = _detailResponseList.value.map {
-            if (it.detailsId == updatedItem.detailsId) updatedItem else it
-        }
-        _detailResponseList.value = updatedList
     }
 
     /**

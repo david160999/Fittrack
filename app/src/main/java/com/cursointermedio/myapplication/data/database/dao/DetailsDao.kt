@@ -33,14 +33,14 @@ interface DetailsDao {
     /**
      * Inserta o reemplaza un detalle para un ejercicio en una rutina.
      */
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     suspend fun insertDetailToRoutineExercise(details: DetailsEntity)
 
     /**
      * Actualiza una lista de detalles (varios registros) en la base de datos.
      */
     @Update
-    suspend fun updateDetailToRoutineExercise(details: List<DetailsEntity>)
+    suspend fun updateDetailToRoutineExercise(details: DetailsEntity)
 
     /**
      * Elimina un detalle específico.

@@ -133,12 +133,14 @@ class WeekFragment @Inject constructor() : Fragment() {
 
     // Observa la lista de semanas (para el menú desplegable)
     private fun observeSpinnerList() {
-        lifecycleScope.launchWhenStarted {
-            weekViewModel.spinnerList.collect { list ->
-                spinnerAdapter.clear()
-                spinnerAdapter.addAll(list)
-                setupWeekSpinnerLastItem()
-                spinnerAdapter.notifyDataSetChanged()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                weekViewModel.spinnerList.collect { list ->
+                    spinnerAdapter.clear()
+                    spinnerAdapter.addAll(list)
+                    setupWeekSpinnerLastItem()
+                    spinnerAdapter.notifyDataSetChanged()
+                }
             }
         }
     }
@@ -154,8 +156,11 @@ class WeekFragment @Inject constructor() : Fragment() {
         }
     }
 
-    private fun showLoading() { /* Implementar shimmer si se desea */ }
-    private fun hideLoading() { /* Implementar shimmer si se desea */ }
+    private fun showLoading() { /* Implementar shimmer si se desea */
+    }
+
+    private fun hideLoading() { /* Implementar shimmer si se desea */
+    }
 
     // Cambia la UI según el estado de la semana
     private fun handleUiState(state: WeekUiState) {
@@ -165,6 +170,7 @@ class WeekFragment @Inject constructor() : Fragment() {
                 hideLoading()
                 updateRoutineAdapter()
             }
+
             is WeekUiState.Error -> {
                 hideLoading()
                 showSnackbar(binding.root, state.message, binding.root.context)
@@ -192,7 +198,8 @@ class WeekFragment @Inject constructor() : Fragment() {
 
     // Actualiza los adaptadores según la rutina seleccionada en el spinner
     private fun updateRoutineAdapter() {
-        val updatedRoutine = weekViewModel.weeks.value.getOrNull(numWeekSpinnerSelected)?.routineList.orEmpty()
+        val updatedRoutine =
+            weekViewModel.weeks.value.getOrNull(numWeekSpinnerSelected)?.routineList.orEmpty()
 
         if (updatedRoutine.isEmpty()) {
             notRoutineLayout = true
@@ -208,6 +215,7 @@ class WeekFragment @Inject constructor() : Fragment() {
 
     // Inicializa adaptadores, layoutManager y el spinner de semanas
     private fun initUI() {
+
         // Adaptador de rutinas (modo visualización)
         adapter = RoutineAdapter(
             onItemSelected = { routineId ->
@@ -247,7 +255,8 @@ class WeekFragment @Inject constructor() : Fragment() {
 
     // Configura el ItemTouchHelper para arrastrar y reordenar rutinas
     private fun setUpItemTouchHelper() {
-        val updatedRoutine = weekViewModel.weeks.value.getOrNull(numWeekSpinnerSelected)?.routineList.orEmpty()
+        val updatedRoutine =
+            weekViewModel.weeks.value.getOrNull(numWeekSpinnerSelected)?.routineList.orEmpty()
         dragAdapter.updateList(updatedRoutine)
 
         // Setup ItemTouchHelper con animaciones visuales
@@ -282,7 +291,10 @@ class WeekFragment @Inject constructor() : Fragment() {
             }
 
             // Restaura el estado visual al soltar
-            override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+            override fun clearView(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder
+            ) {
                 super.clearView(recyclerView, viewHolder)
                 viewHolder.itemView.elevation = 0f
                 viewHolder.itemView.translationZ = 0f
@@ -395,6 +407,7 @@ class WeekFragment @Inject constructor() : Fragment() {
         super.onResume()
         initUI()
         updateRoutineAdapter()
-        notRoutineLayout = true
+
+        val state = weekViewModel.spinnerList.value
     }
 }

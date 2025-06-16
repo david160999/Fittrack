@@ -2,6 +2,7 @@ package com.cursointermedio.myapplication.ui.exercise.adapter.detailsAdapter
 
 import android.annotation.SuppressLint
 import android.view.View
+import android.widget.EditText
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.cursointermedio.myapplication.databinding.ItemDetailsBinding
@@ -61,9 +62,9 @@ class RealDetailViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         }
 
         // Rellena los EditText con los valores existentes (si existen)
-        detail.realWeight?.let { binding.etWeight.setText(it.toString()) }
-        detail.realReps?.let { binding.etReps.setText(it.toString()) }
-        detail.realRpe?.let { binding.etRpe.setText(it.toString()) }
+        binding.etWeight.setText(detail.realWeight?.toString() ?: "")
+        binding.etReps.setText(detail.realReps?.toString() ?: "")
+        binding.etRpe.setText(detail.realRpe?.toString() ?: "")
     }
 
     /**
@@ -73,29 +74,36 @@ class RealDetailViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var currentDetail = detail
 
         // Listener para cambios en el campo de peso real
-        binding.etWeight.doAfterTextChanged { text ->
-            val newWeight = text.toString().toIntOrNull()
-            if (newWeight != currentDetail.realWeight) {
-                currentDetail = currentDetail.copy(realWeight = newWeight)
-                onItemChanged(currentDetail)
+        binding.etWeight.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
+                val newWeight = (v as EditText).text.toString().toIntOrNull()
+                if (newWeight != currentDetail.realWeight) {
+                    currentDetail = currentDetail.copy(realWeight = newWeight)
+                    onItemChanged(currentDetail)
+                }
             }
+
         }
 
         // Listener para cambios en el campo de repeticiones reales
-        binding.etReps.doAfterTextChanged { text ->
-            val newReps = text.toString().toIntOrNull()
-            if (newReps != currentDetail.realReps) {
-                currentDetail = currentDetail.copy(realReps = newReps)
-                onItemChanged(currentDetail)
+        binding.etReps.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
+                val newReps = (v as EditText).text.toString().toIntOrNull()
+                if (newReps != currentDetail.realReps) {
+                    currentDetail = currentDetail.copy(realReps = newReps)
+                    onItemChanged(currentDetail)
+                }
             }
         }
 
         // Listener para cambios en el campo de RPE real
-        binding.etRpe.doAfterTextChanged { text ->
-            val newRpe = text.toString().toIntOrNull()
-            if (newRpe != currentDetail.realRpe) {
-                currentDetail = currentDetail.copy(realRpe = newRpe)
-                onItemChanged(currentDetail)
+        binding.etRpe.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
+                val newRpe = (v as EditText).text.toString().toIntOrNull()
+                if (newRpe != currentDetail.realRpe) {
+                    currentDetail = currentDetail.copy(realRpe = newRpe)
+                    onItemChanged(currentDetail)
+                }
             }
         }
     }

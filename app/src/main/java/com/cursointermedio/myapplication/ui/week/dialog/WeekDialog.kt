@@ -37,13 +37,13 @@ class WeekDialog(
 
         // Copiar todos los detalles de los ejercicios
         binding.tvAllExercise.setOnClickListener {
-            onSaveClickListener.invoke(CopyOption.CopyAllDetails)
+            onSaveClickListener.invoke(CopyOption.CopyOnlyObjective)
             dialog.dismiss()
         }
 
         // Copiar solo los objetivos
-        binding.tvAllObjective.setOnClickListener {
-            onSaveClickListener.invoke(CopyOption.CopyOnlyObjective)
+        binding.tvAllWeek.setOnClickListener {
+            onSaveClickListener.invoke(CopyOption.CopyAllDetails)
             dialog.dismiss()
         }
 

@@ -27,7 +27,7 @@ class DetailsRepository @Inject constructor(
     }
 
     // Actualiza múltiples detalles (útil cuando se editan todos los sets de un ejercicio)
-    suspend fun updateDetailToRoutineExercise(detail: List<DetailsEntity>) {
+    suspend fun updateDetailToRoutineExercise(detail: DetailsEntity) {
         detailDao.updateDetailToRoutineExercise(detail)
     }
 

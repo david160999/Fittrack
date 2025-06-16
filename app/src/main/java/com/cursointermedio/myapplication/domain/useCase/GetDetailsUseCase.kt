@@ -1,5 +1,6 @@
 package com.cursointermedio.myapplication.domain.useCase
 
+import android.util.Log
 import com.cursointermedio.myapplication.data.database.entities.DetailsEntity
 import com.cursointermedio.myapplication.data.database.entities.toDatabase
 import com.cursointermedio.myapplication.data.repository.DetailsRepository
@@ -25,8 +26,8 @@ class GetDetailsUseCase @Inject constructor(
     }
 
     // Actualiza una lista de detalles de rutina convirtiéndolos a entidades antes de guardar.
-    suspend fun updateDetailToRoutineExercise(detail: List<DetailModel>) {
-        repository.updateDetailToRoutineExercise(detail.map { it.toDatabase() })
+    suspend fun updateDetailToRoutineExercise(detail: DetailModel) {
+        repository.updateDetailToRoutineExercise(detail.toDatabase())
     }
 
     // Copia todos los detalles de una rutina a una nueva rutina, asignando un nuevo ID y manteniendo todos los valores.
@@ -66,6 +67,8 @@ class GetDetailsUseCase @Inject constructor(
                 objRpe = detalle.objRpe
             )
             insertDetailToRoutineExercise(nuevoDetalle)
+            Log.e("AAAAA", nuevoDetalle.toString())
+
         }
     }
 

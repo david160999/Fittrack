@@ -232,6 +232,7 @@
                         android:textColor="@color/secondary_text"
                         android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        android:paddingEnd="100dp"
                         app:layout_constraintStart_toEndOf="@+id/ivMainCalendarSubNotes" />
 
                     <ImageView

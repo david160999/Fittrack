@@ -51,7 +51,7 @@ class RealFragment : Fragment() {
         adapter = RealDetailAdapter(
             onItemChanged = { detail ->
                 // Callback para cuando se actualiza un detalle
-                exerciseViewModel.updateList(detail)
+                exerciseViewModel.updateDetailToRoutineExercise(detail)
             },
             onItemChangedFragment = { fragment ->
                 // Callback para cambiar el fragmento desde el adaptador
@@ -135,7 +135,8 @@ class RealFragment : Fragment() {
         super.onPause()
 
         // Actualiza la lista de detalles en el ViewModel
-        exerciseViewModel.updateDetailToRoutineExercise(exerciseViewModel.detailResponseList.value)
+//        exerciseViewModel.updateDetailToRoutineExercise(exerciseViewModel.
+//        detailResponseList.value)
 
         // Actualiza las notas si el campo no está vacío
         val notes = binding.etNotes.text.toString()
